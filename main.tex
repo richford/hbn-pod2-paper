@@ -57,12 +57,96 @@ We present HBN-POD2, one of the largest youth diffusion imaging datasets with de
 
 \section*{Methods}
 
-We curated the imaging metadata for 2,615 of the 2,747 currently available HBN subjects. Using dcm2bids and custom scripts, we conformed the data to the Brain Imaging Data Structure (BIDS; Gorgolewski 2016) specification. We then performed dMRI preprocessing on 2,136 subjects, using QSIPrep (Cieslak 2020), a robust and scalable pipeline to group, distortion correct, motion correct, denoise, coregister and resample MRI scans (see Figure 1). In total, 417 subjects failed this preprocessing step, largely due to missing dMRI files. To assess image quality, we released a citizen science web application, drawing on the success of a previous application in assessing the quality of HBN's structural MRI data (Keshavan 2019). After a brief tutorial, citizen scientists provided binary pass/fail ratings based on the directionally-colorized fractional anisotropy from DTI of each subject's preprocessed dMRI data. These citizen scientist ratings were then combined with expert ratings (see Figure 2) to train a neural network to assign a quality control (QC) rating to each subject.
+
+Diffusion MRI data from the Healthy Brain Network pediatric mental health study \cite{alexander2017open}, containing dMRI data from 1651 subjects with ages 5-21. These data were measured in 3T Siemens MRI scanners at two sites in the New York area: Rutgers University Brain Imaging Center and the CitiGroup Cornell Brain Imaging Center. Age distributions of participants in the different sites are in \nameref{S9_Fig}. Informed consent was obtained from each participant aged 18 or older. For participants younger than 18, written consent was obtained from their legal guardians and written assent was obtained from the participant. Voxel resolution was $1.8 \times 1.8 \times 1.8 \text{mm}^3$ with 64 non-colinear directions measured for each of $b=1000 \text{s} / \text{mm}^2$ and $b=2000 \text{s} / \text{mm}^2$.
 
 \subsection*{BIDS curation}
+
+We curated the imaging metadata for 2,615 of the 2,747 currently available HBN subjects. Using dcm2bids and custom scripts, we conformed the data to the Brain Imaging Data Structure (BIDS; \cite{gorgolewski2016-lh}) specification.
+
+\todo[inline]{Add more BIDS curation information}
+
 \subsection*{Diffusion preprocessing}
+
+We performed dMRI preprocessing on 2,136 subjects, using \emph{QSIPrep}
+\cite{cieslak2021-iq} 0.12.1, which is based on \emph{Nipype} 1.5.1
+\cite{nipype1,nipype2}, RRID:SCR\_002502. \emph{QSIPrep} a robust and scalable
+pipeline to group, distortion correct, motion correct, denoise, coregister and
+resample MRI scans.  \emph{QSIPrep} fosters reproducibility by automatically
+generating thorough methods boilerplate for later use in scientific
+publications, which we use below to document each preprocessing step.
+
+\begin{itemize}
+
+\item {\it Anatomical data preprocessing}
+The T1-weighted (T1w) image was corrected for intensity non-uniformity
+(INU) using \texttt{N4BiasFieldCorrection} \cite[ANTs 2.3.1]{n4}, and
+used as T1w-reference throughout the workflow. The T1w-reference was
+then skull-stripped using \texttt{antsBrainExtraction.sh} (ANTs 2.3.1),
+using OASIS as target template. Spatial normalization to the ICBM 152
+Nonlinear Asymmetrical template version 2009c
+\cite{mni}, RRID:SCR\_008796 was performed through nonlinear
+registration with \texttt{antsRegistration} \cite{ants}, ANTs 2.3.1,
+RRID:SCR\_004757, using brain-extracted versions of both T1w
+volume and template. Brain tissue segmentation of cerebrospinal fluid
+(CSF), white-matter (WM) and gray-matter (GM) was performed on the
+brain-extracted T1w using \texttt{FAST} \cite{fsl_fast}, FSL 6.0.3:b862cdd5, RRID:SCR\_002823.
+
+\item {\it Diffusion data preprocessing}
+
+Any images with a b-value less than 100 s/mm\^{}2 were treated as a
+\emph{b}=0 image. MP-PCA denoising as implemented in MRtrix3's
+\texttt{dwidenoise}\cite{dwidenoise1} was applied with a 5-voxel
+window. After MP-PCA, B1 field inhomogeneity was corrected using
+\texttt{dwibiascorrect} from MRtrix3 with the N4 algorithm \cite{n4}.
+After B1 bias correction, the mean intensity of the DWI series was
+adjusted so all the mean intensity of the b=0 images matched across
+eachseparate DWI scanning sequence.
+
+FSL (version 6.0.3:b862cdd5)'s eddy was used for head motion correction
+and Eddy current correction \cite{anderssoneddy}. Eddy was configured
+with a \(q\)-space smoothing factor of 10, a total of 5 iterations, and
+1000 voxels used to estimate hyperparameters. A linear first level model
+and a linear second level model were used to characterize Eddy
+current-related spatial distortion. \(q\)-space coordinates were
+forcefully assigned to shells. Field offset was attempted to be
+separated from subject movement. Shells were aligned post-eddy. Eddy's
+outlier replacement was run \cite{eddyrepol}. Data were grouped by
+slice, only including values from slices determined to contain at least
+250 intracerebral voxels. Groups deviating by more than 4 standard
+deviations from the prediction had their data replaced with imputed
+values. Data was collected with reversed phase-encode blips, resulting
+in pairs of images with distortions going in opposite directions. Here,
+b=0 reference images with reversed phase encoding directions were used
+along with an equal number of b=0 images extracted from the DWI scans.
+From these pairs the susceptibility-induced off-resonance field was
+estimated using a method similar to that described in \cite{topup}. The
+fieldmaps were ultimately incorporated into the Eddy current and head
+motion correction interpolation. Final interpolation was performed using
+the \texttt{jac} method.
+
+Several confounding time-series were calculated based on the
+\emph{preprocessed DWI}: framewise displacement (FD) using the implementation
+in \emph{Nipype} following the definitions by \cite{power_fd_dvars}. The DWI
+time-series were resampled to ACPC, generating a \emph{preprocessed DWI run
+in ACPC space}.
+
+\item {\it MRtrix3 Reconstruction}
+
+Reconstruction was performed using \emph{QSIprep} 0.12.1. Multi-tissue fiber response functions were estimated using the dhollander algorithm. FODs were estimated via constrained spherical deconvolution (CSD, \cite{originalcsd, tournier2008csd}) using an unsupervised multi-tissue method \cite{dhollander2019response, dhollander2016unsupervised}. Reconstruction was done using MRtrix3 \cite{mrtrix3}. FODs were intensity-normalized using mtnormalize \cite{mtnormalize}.
+
+\end{itemize}
+
+Many internal operations of \emph{QSIPrep} use \emph{Nilearn} 0.6.2 \cite{nilearn}, RRID:SCR\_001362 and \emph{DIPY} \cite{dipy}. For more details of the pipeline, see \href{https://qsiprep.readthedocs.io/en/latest/workflows.html}{the section corresponding to workflows in \emph{QSIPrep}'s documentation}.
+
+In total, 417 subjects failed this preprocessing step, largely due to missing dMRI files.
+
 \subsection*{Expert quality control}
+
 \subsection*{Community scientist quality control}
+
+To assess image quality, we released a citizen science web application, drawing on the success of a previous application in assessing the quality of HBN's structural MRI data \cite{keshavan2019-er}. After a brief tutorial, citizen scientists provided binary pass/fail ratings based on the directionally-colorized fractional anisotropy from DTI of each subject's preprocessed dMRI data. These citizen scientist ratings were then combined with expert ratings to train a neural network to assign a quality control (QC) rating to each subject.
+
 \subsection*{Deep learning to predict quality control}
 \subsection*{Brain age prediction}
 
@@ -70,12 +154,35 @@ We curated the imaging metadata for 2,615 of the 2,747 currently available HBN s
 
 \section*{Acknowledgements}
 
-Acknowledgements should be brief, and should not include thanks to anonymous referees and editors, or effusive comments. Grant or contribution numbers may be acknowledged.
+We would like to thank Anisha Keshavan for useful discussions of community science and web-based quality control. This manuscript was prepared using a limited access dataset obtained from the Child Mind Institute Biobank, The Healthy Brain Network dataset. This manuscript reflects the views of the authors and does not necessarily reflect the opinions or views of the Child Mind Institute.
+
+\todo[inline]{Add grant numbers.}
 
 \section*{Author contributions statement}
 
-Must include all authors, identified by initials, for example:
-A.A. conceived the experiment(s),  A.A. and B.A. conducted the experiment(s), C.A. and D.A. analysed the results.  All authors reviewed the manuscript. 
+The first author named is the corresponding author.
+The last two authors named share senior authorship.
+The first two authors named share lead authorship.
+The next ten authors' contributions extended beyond providing community science annotations and are listed in alphabetical order.
+All other authors are Fibr community scientists and are listed in descending order of the number of QC labels they produced.
+
+\todo[inline]{Please add your initials here as appropriate}
+
+We describe contributions to the paper using the CRediT taxonomy \cite{brand2015-vd}.
+Conceptualization: A.R-H., A.R., T.S., and M.C.;
+Methodology: A.R-H. and A.R.;
+Software: A.R-H. and M.C.;
+Validation: ;
+Formal Analysis: A.R-H. and M.C.;
+Investigation: A.R-H. and M.C.;
+Resources: M.M.;
+Data curation: M.C. and L.A.;
+Writing – Original Draft: A.R-H. and A.R.;
+Writing – Review & Editing: ;
+Visualization: A.R-H.;
+Supervision: A.R. and T.S.;
+Project Administration: A.R-H. and A.R.;
+Funding Acquisition: A.R. and T.S.
 
 \section*{Additional information}
 
