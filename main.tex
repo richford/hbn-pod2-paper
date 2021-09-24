@@ -45,7 +45,7 @@
 
 \section*{Introduction}
 
-The Healthy Brain Network (HBN) is a landmark pediatric mental health study collecting MRI images and clinical assessment data from 10,000 New York City area children and adolescents (Alexander 2017). The HBN dataset contains a wealth of phenotypic and imaging data, including diffusion MRI (dMRI) data, which allows for analysis of the physical properties of developing white matter (Wandell 2016). This dMRI data is openly available in raw form through the Functional Connectomes Project and the International Neuroimaging Data-Sharing Initiative (FCP-INDI), spurring collaboration on open big-data reproducible science (Avesani 2019). However, analysis of dMRI data must start with a pipeline of critical preprocessing steps, such as eddy current correction, motion correction, and adjustment of the gradient directions. Because of the complexity of some of these steps, investigators may neglect to perform preprocessing or may make errors that can induce bias in their subsequent interpretation of the data (Jones 2010). Furthermore, once preprocessing is done correctly and transparently once, there is little need for researchers to repeat this step. Thus, there is a need for an openly available preprocessed diffusion derivative dataset that applies best practices in preprocessing in a robust and transparent way (Cieslak 2020). Accordingly, here we introduce the HBN Preprocessed Open Diffusion Derivatives (HBN-POD2), a large dataset for the analysis of structural brain connectivity and pediatric mental health.
+The Healthy Brain Network (HBN) is a landmark pediatric mental health study collecting MRI images and clinical assessment data from 10,000 New York City area children and adolescents \cite{alexander2017-yc}. The HBN dataset contains a wealth of phenotypic and imaging data, including diffusion MRI (dMRI) data, which allows for analysis of the physical properties of developing white matter (Wandell 2016). This dMRI data is openly available in raw form through the Functional Connectomes Project and the International Neuroimaging Data-Sharing Initiative (FCP-INDI), spurring collaboration on open big-data reproducible science (Avesani 2019). However, analysis of dMRI data must start with a pipeline of critical preprocessing steps, such as eddy current correction, motion correction, and adjustment of the gradient directions. Because of the complexity of some of these steps, investigators may neglect to perform preprocessing or may make errors that can induce bias in their subsequent interpretation of the data (Jones 2010). Furthermore, once preprocessing is done correctly and transparently once, there is little need for researchers to repeat this step. Thus, there is a need for an openly available preprocessed diffusion derivative dataset that applies best practices in preprocessing in a robust and transparent way (Cieslak 2020). Accordingly, here we introduce the HBN Preprocessed Open Diffusion Derivatives (HBN-POD2), a large dataset for the analysis of structural brain connectivity and pediatric mental health.
 
 \section*{Results}
 
@@ -58,7 +58,7 @@ We present HBN-POD2, one of the largest youth diffusion imaging datasets with de
 \section*{Methods}
 
 
-Diffusion MRI data from the Healthy Brain Network pediatric mental health study \cite{alexander2017open}, containing dMRI data from 1651 subjects with ages 5-21. These data were measured in 3T Siemens MRI scanners at two sites in the New York area: Rutgers University Brain Imaging Center and the CitiGroup Cornell Brain Imaging Center. Age distributions of participants in the different sites are in \nameref{S9_Fig}. Informed consent was obtained from each participant aged 18 or older. For participants younger than 18, written consent was obtained from their legal guardians and written assent was obtained from the participant. Voxel resolution was $1.8 \times 1.8 \times 1.8 \text{mm}^3$ with 64 non-colinear directions measured for each of $b=1000 \text{s} / \text{mm}^2$ and $b=2000 \text{s} / \text{mm}^2$.
+Diffusion MRI data from the Healthy Brain Network pediatric mental health study \cite{alexander2017-yc}, containing dMRI data from 1651 subjects with ages 5-21. These data were measured in 3T Siemens MRI scanners at four sites in the New York area: Rutgers University Brain Imaging Center (RU), the CitiGroup Cornell Brain Imaging Center (CBIC), CUNY, and SI. \todo[inline]{Add full names for CUNY and SI.} Informed consent was obtained from each participant aged 18 or older. For participants younger than 18, written consent was obtained from their legal guardians and written assent was obtained from the participant. Voxel resolution was $1.8 \times 1.8 \times 1.8 \text{mm}^3$ with 64 non-colinear directions measured for each of $b=1000 \text{s} / \text{mm}^2$ and $b=2000 \text{s} / \text{mm}^2$.
 
 \subsection*{BIDS curation}
 
@@ -178,7 +178,7 @@ Investigation: A.R-H. and M.C.;
 Resources: M.M.;
 Data curation: M.C. and L.A.;
 Writing – Original Draft: A.R-H. and A.R.;
-Writing – Review & Editing: ;
+Writing – Review \& Editing: ;
 Visualization: A.R-H.;
 Supervision: A.R. and T.S.;
 Project Administration: A.R-H. and A.R.;
