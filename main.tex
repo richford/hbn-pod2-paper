@@ -66,15 +66,18 @@ We curated the imaging metadata for 2,615 of the 2,747 currently available HBN s
 
 \todo[inline]{Add more BIDS curation information}
 
-\subsection*{Diffusion preprocessing}
+\subsection*{Preprocessing}
 
 We performed dMRI preprocessing on 2,136 subjects, using \emph{QSIPrep}
 \cite{cieslak2021-iq} 0.12.1, which is based on \emph{Nipype} 1.5.1
 \cite{nipype1,nipype2}, RRID:SCR\_002502. \emph{QSIPrep} a robust and scalable
 pipeline to group, distortion correct, motion correct, denoise, coregister and
-resample MRI scans.  \emph{QSIPrep} fosters reproducibility by automatically
-generating thorough methods boilerplate for later use in scientific
-publications, which we use below to document each preprocessing step.
+resample MRI scans.  In total, 417 subjects failed this preprocessing step,
+largely due to missing dMRI files.
+
+\emph{QSIPrep} fosters reproducibility by automatically generating thorough
+methods boilerplate for later use in scientific publications, which we use for
+the remainder of this subsection to document each preprocessing step.
 
 \begin{itemize}
 
@@ -139,7 +142,9 @@ Reconstruction was performed using \emph{QSIprep} 0.12.1. Multi-tissue fiber res
 
 Many internal operations of \emph{QSIPrep} use \emph{Nilearn} 0.6.2 \cite{nilearn}, RRID:SCR\_001362 and \emph{DIPY} \cite{dipy}. For more details of the pipeline, see \href{https://qsiprep.readthedocs.io/en/latest/workflows.html}{the section corresponding to workflows in \emph{QSIPrep}'s documentation}.
 
-In total, 417 subjects failed this preprocessing step, largely due to missing dMRI files.
+\subsection*{Cloud-based distributed preprocessing}
+
+\todo[inline]{Add information on cloudknot}
 
 \subsection*{Expert quality control}
 
