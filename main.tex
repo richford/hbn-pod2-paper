@@ -1,10 +1,10 @@
 \documentclass[fleqn,10pt]{wlscirep}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-
+\usepackage[inline]{enumitem}
 \usepackage{xargs}                      % Use more than one optional parameter in a new commands
-
 \usepackage[colorinlistoftodos,prependcaption]{todonotes}
+
 \newcommandx{\alltodo}[2][1=]{\todo[author=Everyone,linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 \newcommandx{\mctodo}[2][1=]{\todo[author=Matt,linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
 \newcommandx{\comment}[2][1=]{\todo[author=Comment,linecolor=lime,backgroundcolor=lime!25,bordercolor=lime,#1]{#2}}
@@ -50,10 +50,10 @@
 \maketitle
 \thispagestyle{empty}
 
-\todo[inline]{ %
+\todo[inline]{%
     Note to reviewing authors:
-    We use the \texttt{todonotes} package to keep track of remaining tasks and comments.
-    You can add a task for Adam with the \texttt{\textbackslash{}arhtodo} command, a task for Matt with the \texttt{\textbackslash{}mctodo} command, a task for all reviewing authors with the \texttt{\textbackslash{}alltodo} command, and a general comment with the \texttt{\textbackslash{}comment} command.
+
+    We use the \texttt{todonotes} package to keep track of remaining tasks and comments. You can add a task for Adam with the \texttt{\textbackslash{}arhtodo} command, a task for Matt with the \texttt{\textbackslash{}mctodo} command, a task for all reviewing authors with the \texttt{\textbackslash{}alltodo} command, and a general comment with the \texttt{\textbackslash{}comment} command.
 }
 \comment[inline]{Comments look like this.}
 \arhtodo[inline]{Tasks for Adam look like this.}
@@ -66,11 +66,55 @@ The Healthy Brain Network (HBN) is a landmark pediatric mental health study coll
 
 \section*{Results}
 
-Outputs from each of the curation and preprocessing steps, as well as QC ratings, are openly available on FCP-INDI. Similarly, HBN-POD2 offers open QC metrics, eliminating the need for investigators to repeat quality assessment for over 2,000 scans. Using a previously developed cloud-computing library 7 to parallelize the preprocessing over individual subjects on spot instances in the Amazon Web Services Batch service, this dMRI preprocessing cost less than \textdollar1.00 per subject.
+The aims of this study were fourfold:
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before=\unskip{: },%
+    itemjoin={{, }},%
+    itemjoin*={{, and }}]
+    \item curate the HBN MRI data into a fully-BIDS compliant MRI dataset
+    \item perform state-of-the-art diffusion preprocessing using \emph{QSIPrep}
+    \item assign QC scores to each subject using a combination of expert labelling, community science, and deep learning
+    \item provide unrestricted public release of the outputs from each of these steps.
+\end{enumerate*}
 
-\begin{itemize}
-    \item Foo
-\end{itemize}
+\begin{figure}[ht]
+    \centering
+    % \includegraphics[width=\linewidth]{stream}
+    \missingfigure{Insert sankey diagram}
+    \caption{%
+        {\bf HBN-POD2 data provenance}:
+        Imaging data for 2,747 subjects, aged 5-21 years and collected at four
+        sites in the New York City area, was made available through the
+        Functional Connectomes Project and the International Neuroimaging
+        Data-Sharing Initiative (FCP-INDI).
+        %
+        These data were curated for compliance to the Brain Imaging Data
+        Structure (BIDS) specification \cite{gorgolewski2016-lh} and
+        availability of imaging metadata in json format. 2,615 subjects met this
+        specification.
+        %
+        Imaging data was preprocessed using \emph{QSIPrep} \cite{cieslak2021-iq}
+        to group, distortion correct, motion correct, denoise, coregister and
+        resample MRI scans. 2,136 subjects passed this step, with the majority
+        of failures coming from subjects with missing dMRI scans.
+        %
+        Expert raters assigned QC scores to 200 of these participants, creating
+        a ``gold standard'' QC subset. Community raters then assigned binary QC
+        ratings to a superset of the gold standard containing 1,653
+        participants. An image classification algorithm was trained on a
+        combination of automated QC metrics from QSIPrep and community scientist
+        reviews to ``extend'' the expert ratings to the community science
+        subset.  Finally, a deep learning QC model was trained on the community
+        science subset to assign QC scores to the entire dataset and to future
+        releases from HBN.
+        %
+        The HBN-POD2 dataset, including QC ratings, is openly available through
+        FCP-INDI.
+    }
+    \label{fig:stream}
+\end{figure}
+. Using a previously developed cloud-computing library 7 to parallelize the preprocessing over individual subjects on spot instances in the Amazon Web Services Batch service, this dMRI preprocessing cost less than \textdollar1.00 per subject.
 
 \section*{Discussion}
 
