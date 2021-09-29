@@ -133,7 +133,7 @@
   {}
   [\ \textbullet\ ]  
   
-\RequirePackage{enumitem}
+\RequirePackage[inline]{enumitem}
 %\setlist{nolistsep} % Uncomment to remove spacing between items in lists (enumerate, itemize)
 
 % Remove brackets from numbering in List of References
