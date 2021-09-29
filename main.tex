@@ -68,6 +68,10 @@ The Healthy Brain Network (HBN) is a landmark pediatric mental health study coll
 
 Outputs from each of the curation and preprocessing steps, as well as QC ratings, are openly available on FCP-INDI. Similarly, HBN-POD2 offers open QC metrics, eliminating the need for investigators to repeat quality assessment for over 2,000 scans. Using a previously developed cloud-computing library 7 to parallelize the preprocessing over individual subjects on spot instances in the Amazon Web Services Batch service, this dMRI preprocessing cost less than \textdollar1.00 per subject.
 
+\begin{itemize}
+    \item Foo
+\end{itemize}
+
 \section*{Discussion}
 
 We present HBN-POD2, one of the largest youth diffusion imaging datasets with derived measures currently available. It is openly available and complies with the current draft of the BIDS diffusion derivative specification. It will grow continuously as the HBN study acquires more data, eventually reaching its 10,000 subject goal. The data is amenable to many different analyses, including tractometry (Yeatman 2012), graph theoretical analysis (Yeh 2020), and combinations with functional data for the same subjects. The availability of standardized preprocessed diffusion data will allow researchers to create and test hypotheses on the white matter properties underlying behavior and disease, from reading and math acquisition to childhood adversity and mental health. As such, this dataset will accelerate discovery at the nexus of structural connectivity and neurodevelopmental and learning disorders.
@@ -178,6 +182,16 @@ To assess image quality, we released a citizen science web application, drawing 
 
 \subsection*{Deep learning to predict quality control}
 
+\begin{itemize}
+    \item Fibr solution does not scale to new releases or left out data from this release.
+    \item Solution deep learning
+    \item Show architecture and point to the CT scan paper \cite{zunair2020-bs}.
+    \item Two model types
+    \item Data format (4-channels + QSIPrep QC metric input)
+    \item Learning curves
+    \item ROC AUC curves (move to results)
+\end{itemize}
+
 \subsection*{Brain age prediction}
 
 \bibliography{hbn-pod2}
@@ -221,6 +235,8 @@ We describe contributions to the paper using the CRediT taxonomy \cite{brand2015
 To include, in this order: \textbf{Accession codes} (where applicable); \textbf{Competing interests} (mandatory statement). 
 
 The corresponding author is responsible for submitting a \href{http://www.nature.com/srep/policies/index.html#competing}{competing interests statement} on behalf of all authors of the paper. This statement must be included in the submitted article file.
+
+\todo[inline]{ARH: Add accession codes and competing interests statement.}
 
 % \begin{figure}[ht]
 % \centering
