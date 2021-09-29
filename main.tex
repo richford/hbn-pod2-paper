@@ -1,7 +1,14 @@
 \documentclass[fleqn,10pt]{wlscirep}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{todonotes}
+
+\usepackage{xargs}                      % Use more than one optional parameter in a new commands
+
+\usepackage[colorinlistoftodos,prependcaption]{todonotes}
+\newcommandx{\alltodo}[2][1=]{\todo[author=Everyone,linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\mctodo}[2][1=]{\todo[author=Matt,linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\comment}[2][1=]{\todo[author=Comment,linecolor=lime,backgroundcolor=lime!25,bordercolor=lime,#1]{#2}}
+\newcommandx{\arhtodo}[2][1=]{\todo[author=Adam,linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
 
 \title{A preprocessed open diffusion derivatives dataset from the Healthy Brain Network}
 
@@ -35,13 +42,23 @@
 %\keywords{Keyword1, Keyword2, Keyword3}
 
 \begin{abstract}
-\todo[inline]{Write abstract}
+\arhtodo[inline]{Write abstract}
 \end{abstract}
 \begin{document}
 
 \flushbottom
 \maketitle
 \thispagestyle{empty}
+
+\todo[inline]{ %
+    Note to reviewing authors:
+    We use the \texttt{todonotes} package to keep track of remaining tasks and comments.
+    You can add a task for Adam with the \texttt{\textbackslash{}arhtodo} command, a task for Matt with the \texttt{\textbackslash{}mctodo} command, a task for all reviewing authors with the \texttt{\textbackslash{}alltodo} command, and a general comment with the \texttt{\textbackslash{}comment} command.
+}
+\comment[inline]{Comments look like this.}
+\arhtodo[inline]{Tasks for Adam look like this.}
+\mctodo[inline]{Tasks for Matt look like this.}
+\alltodo[inline]{Tasks for all reviewing authors look like this.}
 
 \section*{Introduction}
 
@@ -58,13 +75,13 @@ We present HBN-POD2, one of the largest youth diffusion imaging datasets with de
 \section*{Methods}
 
 
-Diffusion MRI data from the Healthy Brain Network pediatric mental health study \cite{alexander2017-yc}, containing dMRI data from 1651 subjects with ages 5-21. These data were measured in 3T Siemens MRI scanners at four sites in the New York area: Rutgers University Brain Imaging Center (RU), the CitiGroup Cornell Brain Imaging Center (CBIC), CUNY, and SI. \todo[inline]{Add full names for CUNY and SI.} Informed consent was obtained from each participant aged 18 or older. For participants younger than 18, written consent was obtained from their legal guardians and written assent was obtained from the participant. Voxel resolution was $1.8 \times 1.8 \times 1.8 \text{mm}^3$ with 64 non-colinear directions measured for each of $b=1000 \text{s} / \text{mm}^2$ and $b=2000 \text{s} / \text{mm}^2$.
+Diffusion MRI data from the Healthy Brain Network pediatric mental health study \cite{alexander2017-yc}, containing dMRI data from 1651 subjects with ages 5-21. These data were measured in 3T Siemens MRI scanners at four sites in the New York area: Rutgers University Brain Imaging Center (RU), the CitiGroup Cornell Brain Imaging Center (CBIC), CUNY, and SI. \arhtodo[inline]{Add full names for CUNY and SI.} Informed consent was obtained from each participant aged 18 or older. For participants younger than 18, written consent was obtained from their legal guardians and written assent was obtained from the participant. Voxel resolution was $1.8 \times 1.8 \times 1.8 \text{mm}^3$ with 64 non-colinear directions measured for each of $b=1000 \text{s} / \text{mm}^2$ and $b=2000 \text{s} / \text{mm}^2$.
 
 \subsection*{BIDS curation}
 
 We curated the imaging metadata for 2,615 of the 2,747 currently available HBN subjects. Using dcm2bids and custom scripts, we conformed the data to the Brain Imaging Data Structure (BIDS; \cite{gorgolewski2016-lh}) specification.
 
-\todo[inline]{Add more BIDS curation information}
+\mctodo[inline]{Add more BIDS curation information}
 
 \subsection*{Preprocessing}
 
@@ -144,16 +161,16 @@ Many internal operations of \emph{QSIPrep} use \emph{Nilearn} 0.6.2 \cite{nilear
 
 \subsection*{Cloud-based distributed preprocessing}
 
-\todo[inline]{Add information on cloudknot}
+\arhtodo[inline]{Add information on cloudknot}
 
 \subsection*{Expert quality control}
 
 The expert QC ``gold standard'' subset was created by randomly selecting 200 subjects from the preprocessed dataset, sampled such that the proportional site distribution in the gold standard subset matched that of the preprocessed dataset.
 
 We created a web application for expert quality control of preprocessed dMRI, called \emph{dmriprep-viewer} \cite{richie-halford2021-viewer}.
-\todo[inline]{Is that even what we want to keep calling this thing? If we're going to be more tool agnostic and allow reports outside of nipreps, what should we call the viewer? niQCV (neuroimaging quality control viewer)?}
+\comment[inline]{We might change the name of the viewer now that it's going to be modality agnostic.}
 
-\todo[inline]{Add information on dmriprep-viewer, the QC instruction video, and the expert QC}
+\arhtodo[inline]{Add information on dmriprep-viewer, the QC instruction video, and the expert QC}
 
 \subsection*{Community scientist quality control}
 
@@ -169,7 +186,7 @@ To assess image quality, we released a citizen science web application, drawing 
 
 We would like to thank Anisha Keshavan for useful discussions of community science and web-based quality control. This manuscript was prepared using a limited access dataset obtained from the Child Mind Institute Biobank, The Healthy Brain Network dataset. This manuscript reflects the views of the authors and does not necessarily reflect the opinions or views of the Child Mind Institute.
 
-\todo[inline]{Add grant numbers.}
+\alltodo[inline]{Add grant numbers.}
 
 \section*{Author contributions statement}
 
@@ -179,7 +196,7 @@ The first two authors named share lead authorship.
 The next ten authors' contributions extended beyond providing community science annotations and are listed in alphabetical order.
 All other authors are Fibr community scientists and are listed in descending order of the number of QC labels they produced.
 
-\todo[inline]{Please add your initials here as appropriate}
+\alltodo[inline]{Please add your initials here as appropriate}
 
 We describe contributions to the paper using the CRediT taxonomy \cite{brand2015-vd}:
 \begin{itemize}
