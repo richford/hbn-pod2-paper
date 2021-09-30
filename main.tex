@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{siunitx}
+\usepackage{subcaption}
 \usepackage{xargs}  % Use more than one optional parameter in a new commands
 \usepackage[colorinlistoftodos,prependcaption]{todonotes}
 
@@ -96,13 +97,12 @@ The aims of this study were fourfold
     itemjoin*={{, and }}]
     \item curate the HBN MRI data into a fully-BIDS compliant MRI dataset
     \item perform state-of-the-art diffusion preprocessing using \emph{QSIPrep}
-    \item assign QC scores to each subject using a combination of expert
-    labelling, community science, and deep learning
+    \item assign QC scores to each subject
     \item provide unrestricted public release of the outputs from each of these
     steps.
 \end{enumerate*}
 
-Figure \ref{fig:hbn-sankey} depicts the data provenance of the HBN-POD2 dataset.
+Figure~\ref{fig:hbn-sankey} depicts the data provenance of the HBN-POD2 dataset.
 Starting with MRI data from \num{2747} HBN participants available on FCP-INDI,
 we curated these data for compliance with the Brain Imaging Data Structure
 (BIDS) specification \cite{gorgolewski2016-lh} and preprocessed the structural
@@ -146,14 +146,238 @@ MRI (sMRI) and diffusion MRI (dMRI) data using \emph{QSIPrep}, resulting in
     \label{fig:hbn-sankey}
 \end{figure}
 
+To achieve the QC aim of the project, we adopted a hybrid QC approach that
+combines expert rating, community science\footnote{%
+    While the legacy term ``citizen science'' evokes a sense of civic duty in
+    scientific engagement, it can be limiting by creating a barrier for
+    community members who want to contribute to science but may not be U.S.
+    citizens. In this manuscript we use the more modern ``community science''
+    term.
+}, and deep learning, drawing on the success of a previous application in
+assessing the quality of HBN's structural MRI data \cite{keshavan2019-er}.
+This method
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before={{ }},%
+    itemjoin={{, }},%
+    itemjoin*={{ and }}]
+    \item starts with dMRI expert raters labelling a small subset of subjects,
+    the ``gold standard'' dataset
+    \item amplifies these labels using a community science web application to
+    extend expert ratings to a much larger subset of the data, the community
+    science subset
+    \item trains a deep learning model on the community science subset to
+    predict expert decisions on the entire dataset.
+\end{enumerate*}
+
 \subsection*{Expert quality control}
 
-- Qsiprep QC metric distributions and correlations with avg gold standard rating
-- Two Scatterplots: y-axis is gold standard rating. X is either avg fibr rating or XGB output
-- ROC curves for XGB models (add simple fibr average to that), add the CNN model
-- Attribution masks from integrated gradients for select subjects (high consensus pass or fail)
-- QC so what? Age prediction performance on QC strata after varying QC cutoff
+To create the gold standard dataset, we first created \emph{dmriprep-viewer}, a
+dMRI data viewer and QC rating web application to display \emph{QSIPrep} outputs
+and collect expert ratings \cite{richie-halford2021-viewer}.  We recruited six
+dMRI experts to rate a 200-participant subset of the HBN-POD2 data using
+extensive visual examination of each subjects dMRI data, including the diffusion
+weighting imaging (DWI) time series itself, a plot of motion parameters through
+the DWI scan, and full 3D volumes depicting
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before={{ }},%
+    itemjoin={{, }},%
+    itemjoin*={{ and }}]
+    \item the brain mask and $b=0$ to T1w registration
+    \item a diffusion tensor imaging (DTI) tensor fractional anisotropy (FA)
+    model visualized over the $b=0$ volume.
+\end{enumerate*}
+The experts rated subjects using a five-point scale with ratings of ``definitely
+fail,'' ``probably fail,'' ``unsure,'' ``probably pass,'' and ``definitely
+pass.'' Figure \ref{fig:expert-qc:scatter} shows the distribution of expert
+ratings and the relationship between the mean expert ratings and some of the
+automated QC metrics output by \emph{QSIPrep}: neighboring DWI correlation (NDC)
+\cite{yeh2019-kb}, maximum relative translation, and number of outlier slices.
+NDC characterizes the pairwise spatial correlation between pairs of DWI volumes
+that sample neighboring points in $q$-space. Since lower values indicate reduced
+data quality, it is reassuring that NDC correlates directly with expert rating.
+Conversely, high relative translation and a high number of motion outlier slices
+reflect poor data quality and so these metrics are inversely related to mean
+expert rating.
 
+In addition to agreeing qualitatively with \emph{QSIPrep}'s automated QC
+metrics, the expert raters also agreed with each other. To demonstrate
+inter-rater reliability (IRR), in Figure \ref{fig:expert-qc:irr} we show the
+pairwise Cohen's $\kappa$ \cite{di_eugenio2004-bb} for each pair of expert
+raters as well as an additional XGB rater which we describe in the next
+subsection.
+
+In addition to the pairwise $\kappa$, we also present the intra-class
+correlation (ICC) \cite{hallgren2012-ze} as a measure of IRR.  ICC3 and ICC3k
+are appropriate variants of ICC when a fixed set of $k$ raters rate each subject
+(i.e. a fully crossed design), which is what we have for HBN-POD2. When all
+subjects are coded by multiple raters and the average of their ratings is used
+for hypothesis testing, ICC3k is appropriate.  When a subset of subjects is
+coded by multiple raters and the reliability of their ratings is meant to
+generalize to other subjects rated by only one coder, the single-measure ICC3
+must be used. The high ICC3k value for each expert rater entitles us to use the
+mean expert rating as training data for the XGB algorithm.  And the high ICC
+value after inclusion of the XGB model entitles us to treat XGB as a seventh
+rater, thereby extending the expert ratings to the entire community science
+subset.
+
+\begin{figure}[ht]
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    % \includegraphics[width=.8\linewidth]{image_file_name}
+    \missingfigure{Insert QC metric scatterplots}
+    \caption{}
+    \label{fig:expert-qc:scatter}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    % \includegraphics[width=.8\linewidth]{image_file_name}
+    \missingfigure{Insert expert rater IRR}
+    \caption{}
+    \label{fig:expert-qc:irr}
+    \end{subfigure}
+    \caption{%
+        {\bf Expert QC results}:
+        Six dMRI experts rated a subset of \num{200} subjects.
+        \textbf{(a)} Experts agree with \emph{QSIPrep}'s automated QC metrics.
+        Here we show associations between the expert QC rating and the
+        \emph{QSIPrep} metrics neighboring diffusion-weighted imaging
+        correlation (NDC) \cite{yeh2019-kb}, maximum relative translation, and
+        number of outlier slices. As expected, NDC is directly correlated with expert rating while
+        the other two metrics are inversely correlated with expert rating.
+        %
+        \textbf{(b)} Experts agree with each other. Here we show the pairwise
+        Cohen's $\kappa$ measure of inter-rater reliability.  One can also use
+        interclass correlation to demonstrate interrater reliability. The expert
+        raters achieved an $\textbf{ICC3k} = 0.930 (95\% CI: [0.91, 0.94])$,
+        $\textbf{ICC3} = 0.688 (95\% CI: [0.64, 0.74])$, $\langle \kappa \rangle
+        = 0.648$.  We trained a gradient boosting model (XGB) to predict expert
+        ratings based on community science ratings and automated QC metrics,
+        obtaining a cross-validated ROC-AUC of $0.96 \pm 0.01$. Treating
+        XGB as a seventh expert rater, preserves inter-rater reliability:
+        $\textbf{ICC3k} = 0.945 (95\% CI: [0.93, 0.96])$, $\textbf{ICC3} = 0.709
+        (95\% CI: [0.66, 0.75])$.  This entitles us to extend it's ratings to
+        the community science dataset.
+    }
+    \label{fig:expert-qc}
+\end{figure}
+
+\subsection*{Community science quality control}
+
+Although the expert raters achieved an acceptable inter-rater reliability and
+yielded intuitive associations with \emph{QSIPrep}'s automated QC metrics,
+generating expert QC labels for the entire HBN-POD2 dataset would be
+prohibitively time consuming. To assess the image quality of the remaining
+subjects, we released \emph{Fibr} (\url{https://fibr.dev}), a community science
+web application in which users assign binary pass/fail labels assessing the
+quality of horizonal slice tensor FA images. That is, \emph{Fibr} users saw
+individual slices or an animated sequence of slices taken from the entire tensor
+FA volume that the expert raters saw. The \emph{Fibr} users therefore saw only a
+subset of the imaging data that the dMRI experts had access to. In total,
+\num{374} community scientists provided \num{587778} ratings for a mean of $>50$
+ratings per slice (or $>200$ ratings per subject). Of these, \num{145} raters
+provided $>3,000$ votes each and are included as co-authors on this paper.
+
+We then trained a gradient boosting model \cite{chen2016-eb} to predict expert
+scores based on a combination of community science ratings and automated QSIPrep
+QC metrics. We refer to this model as XGB.  To clarify the contributions of the
+automated QC metrics and the community science raters, we trained two additional
+gradient boosting models
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before=\unskip{: },%
+    itemjoin={{, }},%
+    itemjoin*={{ and }}]
+    \item one trained only on the automated \emph{QSIPrep} QC metrics, which we
+    call XGB-q
+    \item one trained on only the \emph{Fibr} ratings, which we call XGB-f.
+\end{enumerate*}
+XGB-f may be viewed as a data-driven weighting of community scientists' ratings,
+while XGB-q may be viewed as a generalization of QC metric exclusion criteria.
+\arhtodo{%
+    Add reference to paper showing the basic QC metric exclusion does about as
+    good as braindr ratings for sMRI.
+}
+In Figure \ref{fig:fibr-qc:scatter}, we show the associations between the mean
+expert rating and both the mean \emph{Fibr} rating and the XGB predictions.  The
+unadjusted \emph{Fibr} ratings are overly optimistic; on average, community
+scientists are not as critical as the expert raters. The XGB predictions remedy
+this by
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before={{ }},%
+    itemjoin={{, }},%
+    itemjoin*={{ and }}]
+    \item incorporating automated QC metrics from \emph{QSIPrep}
+    \item weighting the contribution of \emph{Fibr} raters who agree more with
+    the experts on the training set.
+\end{enumerate*}
+Figure \ref{fig:fibr-qc:roc} depicts the ROC curves for the XGB, XGB-q, and
+XGB-f models.
+XGB attains a cross validated area under the receiver operating curve (ROC-AUC) of
+$0.96 \pm 0.01$ on the ``gold standard,'' where the $\pm$ indicates the standard
+deviation of scores from repeated $k$-fold cross-validation.
+In contrast, XGB-q attained an ROC-AUC of $0.91 \pm 0.03$ and XGB-f achieved an
+ROC-AUC of $0.84 \pm 0.04$.
+The enhanced performance of XGB-q over XGB-f shows that community scientists
+alone are not as good as automated metrics at predicting expert ratings. And
+yet, the increased performance of XGB over XGB-q demonstrates that there is
+additional image quality information to be gained by visual inspecting dMRI
+data.
+
+\begin{figure}[ht]
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    % \includegraphics[width=.8\linewidth]{image_file_name}
+    \missingfigure{Insert scatterplot of expert ratings with fibr avg and XGB output.}
+    \caption{}
+    \label{fig:fibr-qc:scatter}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    % \includegraphics[width=.8\linewidth]{image_file_name}
+    \missingfigure{Insert ROC curve of XGB models}
+    \caption{}
+    \label{fig:fibr-qc:roc}
+    \end{subfigure}
+    \caption{%
+        {\bf Community science predictions of the expert ratings}:
+        \textbf{(a)} Scatterplots showing the relationship between mean expert
+        rating and both mean \emph{Fibr} rating (left) and XGB prediction
+        (right). \emph{Fibr} raters overestimate the quality of images compared
+        to expert raters. But the XGB prediction compensates for this by
+        incorporating automated QC metrics and weighting more valuable
+        \emph{Fibr} raters.
+        %
+        \textbf{(b)} ROC curves for the XGB, XGB-q, and XGB-f models.
+    }
+    \label{fig:fibr-qc}
+\end{figure}
+
+\subsection*{Automated QC labelling through deep learning}
+
+The XGB ``rater'' does a good job of extending QC ratings to the entire
+community science subset, but requires \emph{Fibr} scores. Without community
+science ratings, it would fall back on the suboptimal XGB-q prediction. Instead,
+we would like a fully automated QC approach that can be readily applied to new
+data releases from HBN. We therefore trained a deep convolution neural network
+to predict the XGB ratings from \emph{QSIPrep} outputs alone.
+
+\arhtodo{
+    Compute attribution masks from integrated gradients for select subjects (high
+    consensus pass or fail)
+}
+
+\subsection*{So what?}
+
+\arhtodo{
+    Show QC bin tract profiles.
+
+    Add effect of QC cutoff on age prediction from tract profiles.
+
+    Try effect of QC cutoff on SES prediction from tract profiles.
+}
 
 \section*{Discussion}
 
@@ -170,6 +394,14 @@ underlying behavior and disease, from reading and math acquisition to childhood
 adversity and mental health. As such, this dataset will accelerate discovery at
 the nexus of structural connectivity and neurodevelopmental and learning
 disorders.
+
+\subsection*{Standardized preprocessing reduces burden on downstream researchers}
+
+\subsection*{Data sharing increases data value}
+
+\subsection*{Limitations}
+
+\subsection*{Future work}
 
 \section*{Methods}
 
@@ -306,30 +538,29 @@ called \emph{dmriprep-viewer} \cite{richie-halford2021-viewer}.
 }
 
 \arhtodo[inline]{%
-    Add information on dmriprep-viewer, the QC instruction video, and the expert QC
+    Add information on dmriprep-viewer, the QC instruction video, and the expert
+    QC procedures
 }
 
 \subsection*{Community scientist quality control}
 
-To assess image quality, we released a citizen science web application, drawing
-on the success of a previous application in assessing the quality of HBN's
-structural MRI data \cite{keshavan2019-er}. After a brief tutorial, citizen
-scientists provided binary pass/fail ratings based on the
-directionally-colorized fractional anisotropy from DTI of each subject's
-preprocessed dMRI data. These citizen scientist ratings were then combined with
-expert ratings to train a neural network to assign a quality control (QC) rating
-to each subject.
+The community science web application is based on the
+\href{https://swipesforscience.org/}{SwipesForScience framework}, which
+generates a web application for community science given an open repository of
+images to be labelled and a configuration file.
+After a brief tutorial, community scientists provided binary pass/fail ratings
+based on the directionally-colorized fractional anisotropy from DTI of each
+subject's preprocessed dMRI data. These community scientist ratings were then
+combined with expert ratings to train a neural network to assign a quality
+control (QC) rating to each subject.
 
 \subsection*{Deep learning to predict quality control}
 
 \begin{itemize}
-    \item Fibr solution does not scale to new releases or left out data from this release.
-    \item Solution deep learning
     \item Show architecture and point to the CT scan paper \cite{zunair2020-bs}.
     \item Two model types
     \item Data format (4-channels + QSIPrep QC metric input)
     \item Learning curves
-    \item ROC AUC curves (move to results)
 \end{itemize}
 
 \subsection*{Brain age prediction}
@@ -344,7 +575,6 @@ limited access dataset obtained from the Child Mind Institute Biobank, The
 Healthy Brain Network dataset. This manuscript reflects the views of the authors
 and does not necessarily reflect the opinions or views of the Child Mind
 Institute.
-
 \alltodo[inline]{Add grant numbers.}
 
 \section*{Author contributions statement}
