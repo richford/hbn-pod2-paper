@@ -71,6 +71,14 @@
 
 \section*{Introduction}
 
+Childhood and adolscence are a time of rapid dynamic change to human brain
+function. It is also a time during which susceptibility to mental health
+disorders tends to manifest. Understanding individual differences in brain
+development and understanding the interplay between brain development and the
+development of these disorders requires measurements from many invidividuals.
+\arhtodo{cite studies/reviews that show the need for large sample sizes;
+citations for other statements here also needed}
+
 The Healthy Brain Network (HBN) is a landmark pediatric mental health study
 collecting MRI images and clinical assessment data from \num{10000} New York
 City area children and adolescents \cite{alexander2017-yc}. The HBN dataset
@@ -79,19 +87,67 @@ data, which allows for analysis of the physical properties of developing white
 matter \cite{wandell2016-qt}. This dMRI data is openly available in raw form
 through the Functional Connectomes Project and the International Neuroimaging
 Data-Sharing Initiative (FCP-INDI), spurring collaboration on open big-data
-reproducible science \cite{avesani2019-ey}. However, analysis of dMRI data must
-start with a pipeline of critical preprocessing steps, such as eddy current
-correction, motion correction, and adjustment of the gradient directions.
-Because of the complexity of some of these steps, investigators may neglect to
-perform preprocessing or may make errors that can induce bias in their
-subsequent interpretation of the data \cite{jones2010-ps}. Furthermore, once
-preprocessing is done correctly and transparently once, there is little need for
-researchers to repeat this step. Thus, there is a need for an openly available
-preprocessed diffusion derivative dataset that applies best practices in
-preprocessing in a robust and transparent way \cite{cieslak2021-iq}.
-Accordingly, here we introduce the HBN Preprocessed Open Diffusion Derivatives
-(HBN-POD2), a large dataset for the analysis of structural brain connectivity
-and pediatric mental health.
+reproducible science \cite{avesani2019-ey}. However, even with the data publicly
+available, several steps need to be completed before the data can be fruitfully
+analyzed.
+
+First, analysis of dMRI data must start with a pipeline of critical
+preprocessing steps, such as eddy current correction, motion correction, and
+adjustment of the gradient directions. Because of the complexity of some of
+these steps, investigators may neglect to perform some preprocessing steps or
+may make errors that can induce bias in their subsequent interpretation of the
+data \cite{jones2010-ps}. Furthermore, once preprocessing is done correctly and
+transparently once, there is little need for researchers to repeat this step.
+Thus, there is a need for an openly available preprocessed diffusion derivative
+dataset that applies best practices in preprocessing in a robust and transparent
+way \cite{cieslak2021-iq}. Accordingly, here we introduce the HBN Preprocessed
+Open Diffusion Derivatives (HBN-POD2), a large dataset for the analysis of
+structural brain connectivity and pediatric mental health.
+
+Second, dMRI measurements are susceptible to a variety of artifacts that affect
+the quality of the signals and the ability make accurate inferences from them.
+In small studies, with few participants, it is common to thoroughly examine the
+data from every participant as part of a quality control (QC) process. Expert
+examination is time consuming and is prohibitive in large datasets, such as HBN.
+This difficulty could be ameliorated through the automation of QC. Thanks fot
+their success in many other visual recognition tasks previously only achievable
+by humans, machine learning and computer vision methods, such as convolutional
+deep artificial neural networks, or ``deep learning'' \arhtodo{Cite Lecun et
+al.'s 2015 deep learning review} are promising avenues for automation of QC. One
+of the challenges of these new methods is that they require a large training
+dataset to attain accurate performance. In previous work, we demonstrated that
+deep learning can accurately emulate expert examination of T1-weighted brain
+images for QC \cite{keshavan2019}. To obtain a large enough training dataset of
+T1w images in that case, we deployed a community science application that
+collected quality control scores of parts of the dataset from volunteers through
+a web application \footnote{%
+While the legacy term ``citizen science'' evokes a sense of civic duty in
+scientific engagement, it can also imply a barrier for community members who
+want to contribute to science but may not be citizens of a particular country.
+In this manuscript we use the more modern term ``community science'' instead. }.
+These scores were then calibrated using a gold standard expert-scored subset of
+these images. A deep learning neural network was trained on the calibrated and
+aggregated score, resulting in very high concordance with expert ratings on a
+separate test dataset. We term this approach ``hybrid QC'', because it combines
+information from experts with information from community scientists to create a
+scalable machine learning algorithm that can be applied to future data
+collection.
+
+Here, we expanded this approach to encompass quality control of HBN-POD2
+\arhtodo{This last sentence doesn't quite seem strong enough. Consider
+rewording}. One of the common critiques of deep learning is that it can learn
+irrelevant features of the data and does not provide information that is
+transparent enough to interpret \arhtodo{cite relevant papers. the radiology
+paper about the annotation of x-rays and so on}. Therefore, we used machine
+learning interpretation methods in order to confirm whether the deep learning
+algorithm uses meaningful features of the images to perform accurate QC
+\arhtodo{cite Bin Yu's intepretable machine learning paper and integrated
+gradients paper}.
+
+Taken together, BIDS-curated data, processed data and quality control scores
+generated by the deep learning algorithm provide researchers with everything
+that they need in order to start applying a large variety of analysis approaches
+to HBN-POD2 and to help answer the important questions that this data was collected to address.
 
 \arhtodo[inline]{Intro needs a lot more meet with relevant lit on importance of open datasets, dMRI, and QC.}
 
@@ -155,13 +211,7 @@ MRI (sMRI) and diffusion MRI (dMRI) data using \emph{QSIPrep}, resulting in
 \end{figure}
 
 To achieve the QC aim of the project, we adopted a hybrid QC approach that
-combines expert rating, community science\footnote{%
-    While the legacy term ``citizen science'' evokes a sense of civic duty in
-    scientific engagement, it can also imply a barrier for
-    community members who want to contribute to science but may not be U.S.
-    citizens. In this manuscript we use the more modern ``community science''
-    term.
-}, and deep learning, drawing on the success of a previous application in
+combines expert rating, community science, and deep learning, drawing on the success of a previous application in
 assessing the quality of HBN's structural MRI data \cite{keshavan2019-er}.
 This method
 \begin{enumerate*}[%
@@ -180,13 +230,13 @@ This method
 
 \subsection*{Expert quality control}
 
-To create the gold standard dataset, we first created \emph{dmriprep-viewer}, a
-dMRI data viewer and QC rating web application to display \emph{QSIPrep} outputs
-and collect expert ratings \cite{richie-halford2021-viewer}.  We recruited six
-dMRI experts to rate a 200-participant subset of the HBN-POD2 data using
-extensive visual examination of each subjects dMRI data, including the diffusion
-weighting imaging (DWI) time series itself, a plot of motion parameters through
-the DWI scan, and full 3D volumes depicting
+To create the gold standard dataset, we first developed \emph{dmriprep-viewer},
+a dMRI data viewer and QC rating web application to display \emph{QSIPrep}
+outputs and collect expert ratings \cite{richie-halford2021-viewer}. Six of the
+co-authors, who are all dMRI experts, rated a 200-participant subset of the
+HBN-POD2 data using extensive visual examination of each subjects dMRI data,
+including the diffusion weighting imaging (DWI) time series itself, a plot of
+motion parameters through the DWI scan, and full 3D volumes depicting
 \begin{enumerate*}[%
     label=(\roman*),%
     before={{ }},%
@@ -421,6 +471,16 @@ childhood adversity and mental health. As such, this dataset will accelerate
 discovery at the nexus of structural connectivity and neurodevelopmental and
 learning disorders.
 
+Importantly, the deep learning network architecture and parameters are also
+provided as part of this work, allowing application of this network to future
+releases of HBN data, and allowing other researchers to build upon and improve
+upon this work. Moreover, undertaking this processing and QC effort required
+construction and deployment of substantial informatics infrastructure, including
+tools for cloud computing, web applications for expert annotation and for
+community science rating and analysis software. All of these tools are provided
+openly, so that this approach can be adopted widely in other projects and in
+other scientific fields.
+
 \subsection*{HBN-POD2 provides a baseline for methods researchers}
 
 While the primary audience of HBN-POD2 is researchers in neurodevelopment who
@@ -450,6 +510,9 @@ scores. Large dataset with which to pilot new QC methods.
 
 Future releases (what to do)
 Generalization to other datasets
+
+\arhtodo{Need to discuss comparison with previous T1-weighted work. One thing to discuss there is that expert inter-rater reliability was *a lot* higher for T1-weighted. This is potentially a problem, but also highlights how important it is to have an automated, "objective" approach.}
+
 
 \section*{Methods}
 
