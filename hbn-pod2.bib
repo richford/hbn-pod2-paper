@@ -1951,3 +1951,58 @@
   url       = {https://proceedings.mlr.press/v70/sundararajan17a.html},
   abstract  = {We study the problem of attributing the prediction of a deep network to its input features, a problem previously studied by several other works. We identify two fundamental axioms—Sensitivity and Implementation Invariance that attribution methods ought to satisfy. We show that they are not satisfied by most known attribution methods, which we consider to be a fundamental weakness of those methods. We use the axioms to guide the design of a new attribution method called Integrated Gradients. Our method requires no modification to the original network and is extremely simple to implement; it just needs a few calls to the standard gradient operator. We apply this method to a couple of image models, a couple of text models and a chemistry model, demonstrating its ability to debug networks, to extract rules from a network, and to enable users to engage with models better.}
 }
+
+@article{lecun2015deep,
+  title       = {{Deep learning}},
+  author      = {LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+  affiliation = {1] Facebook AI Research, 770 Broadway, New York, New York
+                 10003 USA. [2] New York University, 715 Broadway, New York,
+                 New York 10003, USA. Department of Computer Science and
+                 Operations Research Universit{\'e} de Montr{\'e}al, Pavillon
+                 Andr{\'e}-Aisenstadt, PO Box 6128 Centre-Ville STN
+                 Montr{\'e}al, Quebec H3C 3J7, Canada. 1] Google, 1600
+                 Amphitheatre Parkway, Mountain View, California 94043, USA.
+                 [2] Department of Computer Science, University of Toronto, 6
+                 King's College Road, Toronto, Ontario M5S 3G4, Canada.},
+  abstract    = {Deep learning allows computational models that are composed of
+                 multiple processing layers to learn representations of data
+                 with multiple levels of abstraction. These methods have
+                 dramatically improved the state-of-the-art in speech
+                 recognition, visual object recognition, object detection and
+                 many other domains such as drug discovery and genomics. Deep
+                 learning discovers intricate structure in large data sets by
+                 using the backpropagation algorithm to indicate how a machine
+                 should change its internal parameters that are used to compute
+                 the representation in each layer from the representation in
+                 the previous layer. Deep convolutional nets have brought about
+                 breakthroughs in processing images, video, speech and audio,
+                 whereas recurrent nets have shone light on sequential data
+                 such as text and speech.},
+  journal     = {Nature},
+  volume      = 521,
+  number      = 7553,
+  pages       = {436--444},
+  month       = may,
+  year        = 2015,
+  url         = {http://dx.doi.org/10.1038/nature14539},
+  language    = {en},
+  issn        = {0028-0836, 1476-4687},
+  pmid        = {26017442},
+  doi         = {10.1038/nature14539}
+}
+
+@article{murdoch2019definitions,
+  author    = {Murdoch, W. James and Singh, Chandan and Kumbier, Karl and Abbasi-Asl, Reza and Yu, Bin},
+  title     = {Definitions, methods, and applications in interpretable machine learning},
+  volume    = {116},
+  number    = {44},
+  pages     = {22071--22080},
+  year      = {2019},
+  doi       = {10.1073/pnas.1900654116},
+  publisher = {National Academy of Sciences},
+  abstract  = {The recent surge in interpretability research has led to confusion on numerous fronts. In particular, it is unclear what it means to be interpretable and how to select, evaluate, or even discuss methods for producing interpretations of machine-learning models. We aim to clarify these concerns by defining interpretable machine learning and constructing a unifying framework for existing methods which highlights the underappreciated role played by human audiences. Within this framework, methods are organized into 2 classes: model based and post hoc. To provide guidance in selecting and evaluating interpretation methods, we introduce 3 desiderata: predictive accuracy, descriptive accuracy, and relevancy. Using our framework, we review existing work, grounded in real-world studies which exemplify our desiderata, and suggest directions for future work.Machine-learning models have demonstrated great success in learning complex patterns that enable them to make predictions about unobserved data. In addition to using models for prediction, the ability to interpret what a model has learned is receiving an increasing amount of attention. However, this increased focus has led to considerable confusion about the notion of interpretability. In particular, it is unclear how the wide array of proposed interpretation methods are related and what common concepts can be used to evaluate them. We aim to address these concerns by defining interpretability in the context of machine learning and introducing the predictive, descriptive, relevant (PDR) framework for discussing interpretations. The PDR framework provides 3 overarching desiderata for evaluation: predictive accuracy, descriptive accuracy, and relevancy, with relevancy judged relative to a human audience. Moreover, to help manage the deluge of interpretation methods, we introduce a categorization of existing techniques into model-based and post hoc categories, with subgroups including sparsity, modularity, and simulatability. To demonstrate how practitioners can use the PDR framework to evaluate and understand interpretations, we provide numerous real-world examples. These examples highlight the often underappreciated role played by human audiences in discussions of interpretability. Finally, based on our framework, we discuss limitations of existing methods and directions for future work. We hope that this work will provide a common vocabulary that will make it easier for both practitioners and researchers to discuss and choose from the full range of interpretation methods.},
+  issn      = {0027-8424},
+  url       = {https://www.pnas.org/content/116/44/22071},
+  eprint    = {https://www.pnas.org/content/116/44/22071.full.pdf},
+  journal   = {Proceedings of the National Academy of Sciences}
+}

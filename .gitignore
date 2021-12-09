@@ -7,6 +7,5 @@ __latexindent_temp.tex
 *.fls
 *.log
 *.out
-*.pdf
 
 **.DS_Store
