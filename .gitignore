@@ -8,3 +8,5 @@ __latexindent_temp.tex
 *.log
 *.out
 *.pdf
+
+**.DS_Store
