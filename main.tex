@@ -50,6 +50,7 @@
 
 \begin{abstract}
 \arhtodo[inline]{Write abstract}
+\arieltodo[inline]{Any input on the abstract is much appreciated.}
 \end{abstract}
 \begin{document}
 
@@ -858,15 +859,16 @@ Dockerfiles \cite{merkel2014docker} necessary to reproduce the methods described
 herein are provided in the HBN-POD2 GitHub repository at
 \url{https://github.com/richford/hbn-pod2-qc}. The specific version of the
 repository used in this study is also available at
-\url{https://doi.org/our.awesome.doi}. The \texttt{make} command will list the
-available commands and \texttt{make build} will build the requisite Docker
-images to analyze HBN-POD2 QC data. In order to separate data from analysis code
-\cite{Wilson2017-rj}, we provide intermediate data necessary to analyze the QC
-results in an OSF \cite{Foster-MSLS2017-rl} project \cite{hbn-pod2-osf}, which
-can be downloaded using the \texttt{make data} command in the root of the
-HBN-POD2 GitHub repository. Most of the code in this repository uses Pandas
-\cite{mckinney-proc-scipy-2010,reback2020pandas}, Numpy \cite{harris2020array},
-Matplotlib \cite{hunter2007matplotlib}, and Seaborn \cite{waskom2021seaborn}.
+\url{https://doi.org/our.awesome.doi}. The \texttt{make} or \texttt{make help}
+commands will list the available commands and \texttt{make build} will build the
+requisite Docker images to analyze HBN-POD2 QC data. In order to separate data
+from analysis code \cite{Wilson2017-rj}, we provide intermediate data necessary
+to analyze the QC results in an OSF \cite{Foster-MSLS2017-rl} project
+\cite{hbn-pod2-osf}, which can be downloaded using the \texttt{make data}
+command in the root of the HBN-POD2 GitHub repository. Most of the code in this
+repository uses Pandas \cite{mckinney-proc-scipy-2010,reback2020pandas}, Numpy
+\cite{harris2020array}, Matplotlib \cite{hunter2007matplotlib}, and Seaborn
+\cite{waskom2021seaborn}.
 \arhtodo[inline]{Zenodo the Github repo and add a citation here.}
 
 Inputs for this study consisted of MRI data from the Healthy Brain Network
@@ -1056,41 +1058,6 @@ using the \texttt{make community-qc} command in the HBN-POD2 GitHub repository.
 
 \subsection*{Deep learning to predict quality control}
 
-The voting classifier's predictions were then used as targets to train a deep
-learning classifier to predict QC scores based on each subject's preprocessed
-dMRI data. We trained two different model architectures
-\begin{enumerate*}[%
-    label=(\roman*),%
-    before=\unskip{: },%
-    itemjoin={{, }},%
-    itemjoin*={{ and }}]
-    \item CNN-i, which took only preprocessed dMRI images as input
-    \item CNN-i+q, whose input also included \emph{QSIPrep}'s automated QC metrics.
-\end{enumerate*}
-Both models were implemented in Tensorflow 2 \cite{tensorflow} using the Keras
-module \cite{keras}. The image processing part of the model architecture was
-identical for both models: a modification of an existing 3D CNN
-\cite{zunair2020-bs} previously applied to the assess tuberculosis severity
-\cite{dicente2019clef}. It accepts a 3D volume as input with four channels
-\begin{enumerate*}[%
-    label=(\roman*),%
-    before=\unskip{: },%
-    itemjoin={{, }},%
-    itemjoin*={{ and }}]
-    \item the B=0 reference volume
-    \item tensor FA in the $x$-direction
-    \item tensor FA in the $y$-direction
-    \item tensor FA in the $z$-direction.
-\end{enumerate*}
-The \emph{QSIPrep}'s automated QC metrics were included as an additional fifth
-channel. The CNN-i+q model architecture is depicted in Figure
-\ref{fig:dl-architecture}. Upon input, the CNN-i+q model extracts the imaging
-channels and passes them through the CNN architecture. The remaining QC metric
-channel is flattened and passed ``around'' the CNN architecture and concatenated
-with the output of the convolutional layers. This concatenated output is then
-passed through a fully-connected layer to produce a single output, the
-probability of passing QC. This architecture has 1,438,783 trainable parameters.
-
 \begin{figure}[tbp]
     \begin{subfigure}[t]{0.6\textwidth}
     \centering
@@ -1129,6 +1096,41 @@ probability of passing QC. This architecture has 1,438,783 trainable parameters.
     \label{fig:dl-architecture}
 \end{figure}
 
+The voting classifier's predictions were then used as targets to train a deep
+learning classifier to predict QC scores based on each subject's preprocessed
+dMRI data. We trained two different model architectures
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before=\unskip{: },%
+    itemjoin={{, }},%
+    itemjoin*={{ and }}]
+    \item CNN-i, which took only preprocessed dMRI images as input
+    \item CNN-i+q, whose input also included \emph{QSIPrep}'s automated QC metrics.
+\end{enumerate*}
+Both models were implemented in Tensorflow 2 \cite{tensorflow} using the Keras
+module \cite{keras}. The image processing part of the model architecture was
+identical for both models: a modification of an existing 3D CNN
+\cite{zunair2020-bs} previously applied to the assess tuberculosis severity
+\cite{dicente2019clef}. It accepts a 3D volume as input with four channels
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before=\unskip{: },%
+    itemjoin={{, }},%
+    itemjoin*={{ and }}]
+    \item the B=0 reference volume
+    \item tensor FA in the $x$-direction
+    \item tensor FA in the $y$-direction
+    \item tensor FA in the $z$-direction.
+\end{enumerate*}
+The \emph{QSIPrep}'s automated QC metrics were included as an additional fifth
+channel. The CNN-i+q model architecture is summarized in Figure
+\ref{fig:dl-architecture}. Upon input, the CNN-i+q model extracts the imaging
+channels and passes them through the CNN architecture. The remaining QC metric
+channel is flattened and passed ``around'' the CNN architecture and concatenated
+with the output of the convolutional layers. This concatenated output is then
+passed through a fully-connected layer to produce a single output, the
+probability of passing QC. This architecture has 1,438,783 trainable parameters.
+
 We used \emph{DIPY} \cite{dipy} and \emph{cloudknot} \cite{cloudknot} to
 generate these multichannel volumes for each subject and save them as NIfTI-1
 files \cite{nifti}. These NIfTI files were then converted to the Tensorflow
@@ -1145,45 +1147,54 @@ available in the ``notebooks'' directory of the \emph{Fibr} GitHub
 repository.
 
 We trained each model using the Google Cloud AI Platform Training service and
-the HBN-POD2 GitHub repository contains Docker services to launch training and
-prediction jobs on Google Cloud, provided the user has provided the appropriate
-credentials in an environment file and placed the TFRecord files on Google Cloud
-Storage. To estimate the variability in model training, we trained ten separate
-models using different training and validation splits of the data. The gold
-standard dataset was not included in any of these splits and was reserved for
-reporting final model performance. Models were optimized for binary crossentropy
-loss using the Adam optimizer \cite{kingma2017adam} with an initial learning
-rate of 0.0001. We reduced the learning rate by a factor of 0.5 when the
-validation loss plateaued for more than two epochs. We also stopped training
-when the validation loss failed to improve by more than 0.001 for twenty
-consecutive epochs.  These two adjustments were made using the
-\texttt{ReduceLROnPlateau} and \texttt{EarlyStopping} callbacks in Tensorflow 2
-\cite{tensorflow} respectively. The training and validation loss curves for both
-the CNN-i and CNN-i+q models are depicted in Figure \ref{fig:dl-loss}. While the
-CNN-i+q model achieved better validation loss, it did not outperform the CNN-i
-model on the held out gold standard dataset.
+the HBN-POD2 GitHub repository contains Docker services to launch training (with
+\texttt{make dl-train}) and prediction (with \texttt{make dl-predict}) jobs on
+Google Cloud, provided the user has provided the appropriate credentials in an
+environment file and placed the TFRecord files on Google Cloud Storage. To
+estimate the variability in model training, we trained ten separate models using
+different training and validation splits of the data. The gold standard dataset
+was not included in any of these splits and was reserved for reporting final
+model performance. Models were optimized for binary crossentropy loss using the
+Adam optimizer \cite{kingma2017adam} with an initial learning rate of 0.0001. We
+reduced the learning rate by a factor of 0.5 when the validation loss plateaued
+for more than two epochs. We also stopped training when the validation loss
+failed to improve by more than 0.001 for twenty consecutive epochs.  These two
+adjustments were made using the \texttt{ReduceLROnPlateau} and
+\texttt{EarlyStopping} callbacks in Tensorflow 2 \cite{tensorflow} respectively.
+The training and validation loss curves for both the CNN-i and CNN-i+q models
+are depicted in Figure \ref{fig:dl-loss}. While the CNN-i+q model achieved
+better validation loss, it did not outperform the CNN-i model on the held out
+gold standard dataset.
 
 \begin{figure}[tbp]
     \begin{subfigure}[t]{0.5\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/dl_learning_curve_with_qc.pdf}
+    \includegraphics[width=0.9\linewidth]{deep-learning-qc/dl_learning_curve_with_qc.pdf}
     \caption{CNN-i+q}
     \label{fig:dl-loss:both}
     \end{subfigure}
     \begin{subfigure}[t]{0.5\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/dl_learning_curve_without_qc.png.pdf}
+    \includegraphics[width=0.9\linewidth]{deep-learning-qc/dl_learning_curve_without_qc.pdf}
     \caption{CNN-i}
     \label{fig:dl-loss:imaging}
     \end{subfigure}
     \caption{%
-        {\bf Deep learning model architecture}:
-        \textbf{(a)}
-        %
-        \textbf{(b)}
+        {\bf Deep learning model loss curves}:
+        The binary cross-entropy loss (top), accuracy (middle), and ROC AUC
+        (bottom) for the CNN-i model (left) and the CNN-i+q model (right). Model
+        performance typically plateaued after twenty epochs but was allowed
+        continue until meeting the early stopping criterion.
     }
-    \label{fig:dl-architecture}
+    \label{fig:dl-loss}
 \end{figure}
+
+To generate the attribution maps, we followed Tensorflow's integrated gradients
+tutorial \cite{integrated-gradients-tutorial} with a black baseline image and
+128 steps in the Reimann sum approximation of the integral (i.e.
+\texttt{m\_steps = 128}). In the HBN-POD2 GitHub repository, we provide a Docker
+service to compute integrated gradient attribution maps on Google Cloud, which
+can be invoked using the \texttt{make dl-integrated-gradients} command.
 
 \subsection*{QC bundle profiles}
 
