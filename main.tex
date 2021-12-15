@@ -49,6 +49,11 @@
 %\keywords{Keyword1, Keyword2, Keyword3}
 
 \begin{abstract}
+(For Scientific data max 170 words)
+
+The Healthy Brain Network (HBN) is a landmark pediatric mental health study. Among other data, the HBN collects diffusion MRI (dMRI) from its participants, used to make inferences about brain connections. We curated the currently-available dMRI data from \num{2747} HBN subjects into the widely accepted Brain Imaging Data Structure (BIDS) format, we processed the data through a series of standard steps, to denoise the data and correct it for motion and eddy current effects. To perform quality control (QC) on this large dataset, we deployed a community science app. Together with a small subset of expert QC data, community science QC scores provided the information needed to train an artificial neural network that scores the data for quality in a manner that highly agrees with expert QC. We demonstrate that the neural network uses sensible features of the data and also demonstrate that accurate quality control has implications for subsequent analysis of this data. We openly released the processed derivatives and QC scores for use by the scientific community.
+
+
 \arhtodo[inline]{Write abstract}
 \rokemtodo[inline]{Any input on the abstract is much appreciated.}
 \end{abstract}
@@ -77,11 +82,7 @@
 
 \section*{Introduction}
 
-Childhood and adolscence are a time of rapid dynamic change to human brain
-function. It is also a time during which susceptibility to mental health
-disorders tends to manifest. Understanding individual differences in brain
-development and understanding the interplay between brain development and the
-development of these disorders requires measurements from many invidividuals.
+Childhood and adolescence are marked by rapid dynamic change to human brain structure and function. It is also a time during which susceptibility to mental health disorders tends to manifest. Understanding individual differences in brain development and understanding the interplay between brain development and the development of these disorders requires measurements from many invidividuals.
 \arhtodo[inline]{%
     cite studies/reviews that show the need for large sample sizes;
     citations for other statements here also needed
@@ -113,12 +114,12 @@ Open Diffusion Derivatives (HBN-POD2), a large dataset for the analysis of
 structural brain connectivity and pediatric mental health.
 
 Second, dMRI measurements are susceptible to a variety of artifacts that affect
-the quality of the signals and the ability make accurate inferences from them.
+the quality of the signals and the ability to make accurate inferences from them.
 In small studies, with few participants, it is common to thoroughly examine the
 data from every participant as part of a quality control (QC) process. Expert
 examination is time consuming and is prohibitive in large datasets, such as HBN.
 This difficulty could be ameliorated through the automation of QC. Thanks to
-their success in many other visual recognition tasks previously only achievable
+their success in many other visual recognition tasks, previously only achievable
 by humans, machine learning and computer vision methods, such as convolutional
 deep artificial neural networks, or ``deep learning'' \cite{lecun2015deep}
 are promising avenues for automation of QC. One
