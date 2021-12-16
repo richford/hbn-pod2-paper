@@ -49,14 +49,22 @@
 %\keywords{Keyword1, Keyword2, Keyword3}
 
 \begin{abstract}
-(For Scientific data max 170 words)
-
-The Healthy Brain Network (HBN) is a landmark pediatric mental health study. Among other data, the HBN collects diffusion MRI (dMRI) from its participants, used to make inferences about brain connections. We curated the currently-available dMRI data from \num{2747} HBN subjects into the widely accepted Brain Imaging Data Structure (BIDS) format, we processed the data through a series of standard steps, to denoise the data and correct it for motion and eddy current effects. To perform quality control (QC) on this large dataset, we deployed a community science app. Together with a small subset of expert QC data, community science QC scores provided the information needed to train an artificial neural network that scores the data for quality in a manner that highly agrees with expert QC. We demonstrate that the neural network uses sensible features of the data and also demonstrate that accurate quality control has implications for subsequent analysis of this data. We openly released the processed derivatives and QC scores for use by the scientific community.
-
-
-\arhtodo[inline]{Write abstract}
-\rokemtodo[inline]{Any input on the abstract is much appreciated.}
+The Healthy Brain Network (HBN) is a landmark pediatric mental health study.
+Among other data, the HBN collects diffusion MRI (dMRI) from its participants,
+used to make inferences about brain connections. We curated the
+currently-available dMRI data from \num{2747} HBN subjects into the widely
+accepted Brain Imaging Data Structure (BIDS) format, we processed the data
+through a series of standard steps, to denoise the data and correct it for
+motion and eddy current effects. To perform quality control (QC) on this large
+dataset, we deployed a community science app. Together with a small subset of
+expert QC data, community science QC scores provided the information needed to
+train an artificial neural network that scores the data for quality in a manner
+that highly agrees with expert QC. We demonstrate that the neural network uses
+sensible features of the data and also demonstrate that accurate quality control
+has implications for subsequent analysis of this data. We openly released the
+processed derivatives and QC scores for use by the scientific community.
 \end{abstract}
+
 \begin{document}
 
 \flushbottom
@@ -65,6 +73,10 @@ The Healthy Brain Network (HBN) is a landmark pediatric mental health study. Amo
 
 \todo[inline]{%
     Note to editing authors:
+
+    We're targeting eLife for first submission, but we have used the Scientific
+    Data \LaTeX template. For Scientific data, the abstract max is 170 words.
+    eLife has no set max.
 
     We use the \texttt{todonotes} package to keep track of remaining tasks and
     comments. You can add a task for Adam with the
@@ -82,7 +94,12 @@ The Healthy Brain Network (HBN) is a landmark pediatric mental health study. Amo
 
 \section*{Introduction}
 
-Childhood and adolescence are marked by rapid dynamic change to human brain structure and function. It is also a time during which susceptibility to mental health disorders tends to manifest. Understanding individual differences in brain development and understanding the interplay between brain development and the development of these disorders requires measurements from many invidividuals.
+Childhood and adolescence are marked by rapid dynamic change to human brain
+structure and function. It is also a time during which susceptibility to mental
+health disorders tends to manifest. Understanding individual differences in
+brain development and understanding the interplay between brain development and
+the development of these disorders requires measurements from many
+invidividuals.
 \arhtodo[inline]{%
     cite studies/reviews that show the need for large sample sizes;
     citations for other statements here also needed
@@ -114,7 +131,9 @@ reconstructing diffusion MRI data, which implements these best practices
 \cite{cieslak2021-iq}. To find the relevant files within a dataset, QSIPrep
 relies on the Brain Imaging Data Specification standard \cite{gorgolewski2016},
 which describes a way to organize neuroimaging data for automated processing.
-That is, it is a BIDS App \cite{Gorgolewski2017-mb}. To reach full compliance with the BIDS standard, data in HBN had to first be curated \mctodo{maybe we need a couple more words here to say what that means?}.
+That is, it is a BIDS App \cite{Gorgolewski2017-mb}. To reach full compliance
+with the BIDS standard, data in HBN had to first be curated.
+\mctodo[inline]{maybe we need a couple more words here to say what that means?}
 
 Second, dMRI measurements are susceptible to a variety of artifacts that affect
 the quality of the signals and the ability to make accurate inferences from them.
@@ -777,29 +796,52 @@ data, as suggested by the improvements in age prediction shown in Figure
 \ref{fig:age-prediction}. In addition, neuroimaging QC methods developers will
 benefit from a large benchmark dataset with which to pilot new QC methods.
 
-\arhtodo{We need the XGB-q QC scores in the derivatives on FCP-INDI}
+\arhtodo[inline]{Add XGB-q QC scores to the participants.tsv on FCP-INDI}
 
-We provided four different scores because we think that people might feel uncomfortable using the DL scores, despite the fact that we did the whole integrated gradients thing. XGB is great, but only for those subjects that have community scientist scores. A really decent fallback is XGB-q, and if you don't want to use the DL thing, maybe use that.
+We provide four different scores in anticipation of end-user's reluctance to
+trust a QC score generated through deep learning \cite{lipton2017doctor,
+salahuddin2022transparency, Zech2018-ki}. We addressed these concerns through
+example-based explanations of the scores, with attribution maps calculated using
+integrated gradients. However, we recognize that some researchers may still be
+leery of the deep learning generated scores. We therefore provide
+\begin{enumerate}
+    \item the mean expert QC score for the 200 subjects in the gold standard
+    dataset,
+    \item the scores predicted by the XGB model, which outperformed all other models
+    when evaluated against the gold standard ratings, but which are only available
+    for participants that have community science scores,
+    \item the scores predicted by the XGB-q model, which underperformed the deep
+    learning generated scores, but which rely only on the automated QC metrics
+    output by \emph{QSIPrep}, and may therefore be viewed as more interpretable.
+    These are available for all participants.
+\end{enumerate}
+We view the XGB-q scores as a more interpretable fallback for users who are not
+comfortable basing study exclusion decisions on a deep learning model
+\cite{rudin2019stop}. The decision to use a more interpretable but slightly less
+performant method of generating QC scores was also advocated by Tobe et
+al.~\cite{tobe2021longitudinal}, who noted that the Euler number can reliably
+predict braindr scores in the NKI-Rockland dataset.
 
-\arhtodo[inline]{%
-    Mention that the XGB-q model performs really well. Not quite as good as the
-    CNN-i model but it's more transparent and relies only on QSIPrep automated
-    QC metrics. Maybe cite Rudin's paper \cite{rudin2019stop}. We release the
-    CNN-i scores since they better reproduce the expert ratings but the XGB-q
-    model is reproducible using the qc repo's docker commands and readers may
-    want to use that if they want a more interpretable prediction.
-
-    This is also a good place to cite Figure 9 of Tobe et
-    al.~\cite{tobe2021longitudinal}, which shows that Euler number can reliably
-    predict braindr scores in NKI-Rockland.
-}
+We also note that the issue of algorithmic impact in choosing a QC method is not
+exclusive to the deep learning model. We have chosen models that most reliably
+reproduce the gold standard ratings, but a reliable algorithm might still
+negatively influence researcher's decisions. For example, excluding participants
+by QC score could spur them to exclude populations deserving of study, as when
+QC score is highly correlates with age or socio-economic status. We therefore
+caution researchers to examine interactions between the QC scores we provide and
+their phenotype of interest.
 
 \subsection*{Generalizing the hybrid QC approach to dMRI}
 
-In this work, we have generalized our previous work on what we now call ``hybrid QC''. This approach, originally applied to the HBN T1-weighted data
-\cite{keshavan2019-er} makes use of a small expert-labeled data set, a larger set of community scientist-labeled data and two steps of machine learning: the first to match between the community scientists and the experts, and the second to match between the images and the augmented community scientist labels.
+In this work, we have generalized our previous work on what we now call ``hybrid
+QC''. This approach, originally applied to the HBN T1-weighted data
+\cite{keshavan2019-er} makes use of a small expert-labeled data set, a larger
+set of community scientist-labeled data and two steps of machine learning: the
+first to match between the community scientists and the experts, and the second
+to match between the images and the augmented community scientist labels.
 
-This approach was generalized in several respects: first, from a single volume of T1-weighted data to the multi-volume dMRI.
+This approach was generalized in several respects: first, from a single volume
+of T1-weighted data to the multi-volume dMRI.
 
 \arhtodo[inline]{%
     Add some text about the benefit of generalizing the hybrid approach to
@@ -817,39 +859,29 @@ This approach was generalized in several respects: first, from a single volume o
 
 \subsection*{Future work and open problems}
 
-\rokemtodo[inline]{%
-    Discuss future releases of HBN data. This seems to be an open problem
-    affecting most multi-year projects, which data derivatives being released
-    before study completion. The use of QSIPrep and containerization make it
-    easy to run the same pipeline on new subjects and even assign QC scores to
-    them. However, there is the question of what we will do when QSIPrep
-    inevitable improves and releases a new version.
-    Running again with improved methods will be burdensome, but here again we
-    can spin that: remember that we provide a baseline against which future
-    improvements will be compared.
-}
-
-\arhtodo[inline]{%
-    Add a brief note about algorithmic impact. I remember some paper with
-    recommendations for ML researchers to include an algorithmic impact
-    statement in their discussion sections. I don't recall the exact paper
-    though. But we should discuss potential impact of the CNN-i model. We've
-    demonstrated that it is reliable for the HBN-POD2 dataset and will hint
-    at its generalizability to other datasets. We did example based explanations
-    using integrated gradients but are punting on a more thorough investivation
-    of intepretability.
-
-    But a reliable algorithm might still negatively influence expert's
-    decisions, e.g. by spurring them to exclude populations deserving of study.
-    Or by forging a less thorough research community, outsourcing decision
-    making to algorithms without a clear understanding of the data.
-    Caveat emptor.
-}
+The HBN's plans to acquire imaging data for \num{10000} participants,
+necessitating future releases. Future releases of HBN will require future
+releases of HBN-POD2, plan for future releases is essential. This is a general
+issue affecting multi-year neuroimaging projects for which derivative data is
+being released before study completion. The use of \emph{QSIPrep},
+\emph{cloudknot} and the containerization of the QC score assignment process
+facilitate running the exact pipeline described in this paper on newly released
+subjects. However, this approach is somewhat unsatisfactory because it fails to
+anticipate improvements in preprocessing methodology. That is, what should we do
+when \emph{QSIPrep} is inevitably updated between HBN releases: enforce
+standardization by using an outdated pipeline or use state-of-the-art
+preprocessing at the expense of standardized processing between releases?
+Because the use of \emph{cloudknot} and AWS Spot Instances made preprocessing
+relatively inexpensive, we propose a third way: if improvements to the
+preprocessing pipeline are available with a new HBN release, we plan to execute
+the improved pipeline on the entire HBN dataset, while preserving the previous
+baseline release in an archived BIDS derivative dataset.
 
 \rokemtodo[inline]{%
-    Speculate about generalization to other datasets. We should point out ABCD
-    in particular since the CUNY and CBIC sites are supposed to be harmonized
-    with ABCD. This discussion will hinge on the results of the remaining multi-site
+    After we run the site generalization experiements, speculate about
+    generalization to other datasets. We should point out ABCD in particular
+    since the CUNY and CBIC sites are supposed to be harmonized with ABCD. This
+    discussion will hinge on the results of the remaining multi-site
     generalization experiments.
 }
 
