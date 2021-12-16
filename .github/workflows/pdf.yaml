@@ -1,0 +1,30 @@
+name: Makefile PDF build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install TeXlive and Tex-related things
+      run: sudo apt-get install texlive texlive-publishers texlive-science latexmk cm-super texlive-xetex texlive-fonts-extra texlive-extra-utils xindy
+
+    - name: Build pdf
+      run: make all
+
+    - name: Upload PDF
+      uses: actions/upload-artifact@v1
+      with:
+        name: manuscript
+        path: main.pdf
+
+    - name: Word count
+      run: make wordcount
