@@ -725,27 +725,29 @@ large-scale neuroimaging datasets.
 \subsection*{Standardized preprocessing reduces burden on community researchers}
 
 The most immediate contribution of this work is a large analysis-ready dMRI
-dataset, openly accessible to the public. In the past decade, projects such as
-the HBN, Human Connectome Project (HCP) \cite{van-essen2013-oi}, UK Biobank
-\cite{miller2016-mq}, ABCD \cite{jernigan2018-my}, CamCAN
-\cite{taylor2017-or,shafto2014-ld} and, of course, FCP-INDI \cite{Mennes2013-eu}
-have ushered a culture of data sharing in open big-data neuroscience. The
-adoption and reuse of these datasets reduces or eliminates the data collection
-burden on downstream researchers.  Some data collection projects, such as the
-HCP \cite{glasser2013-lo}, provide preprocessed diffusion derivatives, further
-reducing researchers' burden and extending the benefits of data-sharing from
-data collection to preprocessing and secondary analysis. Following the example
-of the HCP, HBN-POD2 provides analysis-ready dMRI derivatives. This avoids
-duplication of preprocessing effort while also ensuring a minimum standard of
-data quality for HBN researchers. The data is amenable to many different
-analyses, including tractometry \cite{yeatman2012-rc, kruper2021evaluating},
-graph theoretical analysis \cite{yeh2020-nu}, and combinations with functional
-data for the same subjects. The availability of standardized preprocessed
-diffusion data will allow researchers to create and test hypotheses on the white
-matter properties underlying behavior and disease, from reading and math
-acquisition to childhood adversity and mental health. As such, this dataset will
-accelerate discovery at the nexus of structural connectivity and
-neurodevelopmental and learning disorders.
+dataset, openly accessible to the public. In the past decade, data collection
+projects such as the HBN, Human Connectome Project (HCP)
+\cite{van-essen2013-oi}, UK Biobank \cite{miller2016-mq}, ABCD
+\cite{jernigan2018-my}, CamCAN \cite{taylor2017-or,shafto2014-ld} and of
+course FCP-INDI \cite{Mennes2013-eu} have ushered a culture of data sharing in
+open big-data neuroscience. The adoption and reuse of these datasets reduces or
+eliminates the data collection burden on downstream researchers.  Some data
+collection projects, such as the HCP \cite{glasser2013-lo}, provide preprocessed
+diffusion derivatives, further reducing researchers' burden and extending the
+benefits of data-sharing from data collection to preprocessing and secondary
+analysis. Following the example of the HCP, HBN-POD2 provides analysis-ready
+dMRI derivatives. This avoids duplication of preprocessing effort while also
+ensuring a minimum standard of data quality for HBN researchers. The data is
+amenable to many different analyses, including tractometry \cite{yeatman2012-rc,
+kruper2021evaluating}, graph theoretical analysis \cite{yeh2020-nu}, and
+combinations with functional data for the same subjects. The availability of
+standardized preprocessed diffusion data will allow researchers to create and
+test hypotheses on the white matter properties underlying behavior and disease,
+from reading and math acquisition to childhood adversity and mental health. As
+such, this dataset will accelerate discovery at the nexus of structural
+connectivity and neurodevelopmental and learning disorders.
+
+\arhtodo{This paper looks relevant: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8111663/. We should take a closer look}
 
 \subsection*{A preprocessing baseline for methods researchers}
 
@@ -772,20 +774,15 @@ data, as suggested by the improvements in age prediction shown in Figure
 \ref{fig:age-prediction}. In addition, neuroimaging QC methods developers will
 benefit from a large benchmark dataset with which to pilot new QC methods.
 
-While CNN-i and CNN-i+q underperform relative to the full XGB model, they can be
-applied to data for which no community scientist ratings are available, removing
-associated logistical burden of collecting community science ratings.
-
-Importantly, the deep learning network architecture and parameters are also
-provided as part of this work, allowing application of this network to future
-releases of HBN data, and allowing other researchers to build upon and improve
-upon this work. Moreover, undertaking this processing and QC effort required
-construction and deployment of substantial informatics infrastructure, including
-tools for cloud computing, web applications for expert annotation and for
-community science rating and analysis software. All of these tools are provided
-openly, so that this approach can be adopted widely in other projects and in
-other scientific fields.
-
+Importantly, the deep learning network architecture and parameters used to
+determine the final QC scores are also provided as part of this work, allowing
+application of this network to future releases of HBN data, and allowing other
+researchers to build upon and improve upon this work. Moreover, undertaking this
+processing and QC effort required construction and deployment of substantial
+informatics infrastructure, including tools for cloud computing, web
+applications for expert annotation and for community science rating and analysis
+software. All of these tools are provided openly, so that this approach can be
+adopted widely in other projects and in other scientific fields.
 
 \rokemtodo[inline]{%
     Expound on the impact of the inclusion of QC scores from a data upcycling
@@ -822,6 +819,8 @@ other scientific fields.
 }
 
 \subsection*{Future work and open problems}
+
+One of the challenges that arise from this work is the possibility of future improvements to processing pipelines and the release of future versions of processed data. It is currently an open question how to address such improvements, but one approach taken by some projects is to fix a "long-term support" version of a processing pipeline and to stick to this particular version for the duration of an extensive data collection effort.
 
 \rokemtodo[inline]{%
     Discuss future releases of HBN data. This seems to be an open problem
