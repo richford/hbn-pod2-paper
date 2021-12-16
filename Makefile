@@ -39,6 +39,9 @@ debug:
 
 spell: $(addsuffix .spchk,$(basename $(SOURCES)))
 
+wordcount:
+	texcount main.tex | grep "Words in text"
+
 %.spchk: %.tex
 	@aspell --lang=en --home-dir=. --personal=dictionary.txt -t -c $<
 
