@@ -18,7 +18,7 @@ jobs:
       run: sudo apt-get install texlive texlive-publishers texlive-science latexmk cm-super texlive-xetex texlive-fonts-extra texlive-extra-utils xindy
 
     - name: Build pdf
-      run: make all
+      run: make once
 
     - name: Upload PDF
       uses: actions/upload-artifact@v1
