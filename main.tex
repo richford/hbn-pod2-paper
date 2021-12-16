@@ -136,7 +136,7 @@ a web application \footnote{%
     While the legacy term ``citizen science'' evokes a sense of civic duty in
     scientific engagement, it can also imply a barrier for community members who
     want to contribute to science but may not be citizens of a particular
-    country.  In this manuscript we use the more modern term ``community
+    country. In this manuscript we use the more modern term ``community
     science.''
 }.
 These scores were then calibrated using a gold standard expert-scored subset of
@@ -149,7 +149,7 @@ collection.
 
 However, the hybrid QC proof-of-concept left lingering questions about its
 applicability to other datasets because it was trained on a single-site,
-single-modality dataset.  Here, we expand the hybrid-QC approach to a large
+single-modality dataset. Here, we expand the hybrid-QC approach to a large
 multi-site diffusion MRI dataset. Moreover, one of the common critiques of deep
 learning is that it can learn irrelevant features of the data and does not
 provide information that is transparent enough to interpret
@@ -217,7 +217,7 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
         \num{1653} participants. An image classification algorithm was trained
         on a combination of automated QC metrics from QSIPrep and community
         scientist reviews to ``extend'' the expert ratings to the community
-        science subset.  Finally, a deep learning QC model was trained on the
+        science subset. Finally, a deep learning QC model was trained on the
         community science subset to assign QC scores to the entire dataset and
         to future releases from HBN.
         %
@@ -284,15 +284,15 @@ raters as well as an additional XGB rater which we describe in the next
 subsection.
 
 In addition to the pairwise $\kappa$, we also present the intra-class
-correlation (ICC) \cite{hallgren2012-ze} as a measure of IRR.  ICC3 and ICC3k
+correlation (ICC) \cite{hallgren2012-ze} as a measure of IRR. ICC3 and ICC3k
 are appropriate variants of ICC when a fixed set of $k$ raters rate each subject
 (i.e. a fully crossed design), which is what we have for HBN-POD2. When all
 subjects are coded by multiple raters and the average of their ratings is used
-for hypothesis testing, ICC3k is appropriate.  When a subset of subjects is
+for hypothesis testing, ICC3k is appropriate. When a subset of subjects is
 coded by multiple raters and the reliability of their ratings is meant to
 generalize to other subjects rated by only one coder, the single-measure ICC3
 must be used. The high ICC3k value for each expert rater entitles us to use the
-mean expert rating as training data for the XGB algorithm.  And the high ICC
+mean expert rating as training data for the XGB algorithm. And the high ICC
 value after inclusion of the XGB model entitles us to treat XGB as a seventh
 rater, thereby extending the expert ratings to the entire community science
 subset.
@@ -322,16 +322,16 @@ subset.
         the other two metrics are inversely correlated with expert rating.
         %
         \textbf{(b)} Experts agree with each other. Here we show the pairwise
-        Cohen's $\kappa$ measure of inter-rater reliability.  One can also use
+        Cohen's $\kappa$ measure of inter-rater reliability. One can also use
         interclass correlation to demonstrate interrater reliability. The expert
         raters achieved an $\textbf{ICC3k} = 0.930 (95\% CI: [0.91, 0.94])$,
         $\textbf{ICC3} = 0.688 (95\% CI: [0.64, 0.74])$, $\langle \kappa \rangle
-        = 0.648$.  We trained a gradient boosting model (XGB) to predict expert
+        = 0.648$. We trained a gradient boosting model (XGB) to predict expert
         ratings based on community science ratings and automated QC metrics,
         obtaining a cross-validated ROC-AUC of $0.96 \pm 0.01$. Treating
         XGB as a seventh expert rater, preserves inter-rater reliability:
         $\textbf{ICC3k} = 0.945 (95\% CI: [0.93, 0.96])$, $\textbf{ICC3} = 0.709
-        (95\% CI: [0.66, 0.75])$.  This entitles us to extend it's ratings to
+        (95\% CI: [0.66, 0.75])$. This entitles us to extend it's ratings to
         the community science dataset.
     }
     \label{fig:expert-qc}
@@ -356,7 +356,7 @@ Consortium as co-authors on this paper.
 
 We then trained a gradient boosting model \cite{chen2016-eb} to predict expert
 scores based on a combination of community science ratings and automated \emph{QSIPrep}
-QC metrics. We refer to this model as XGB.  To clarify the contributions of the
+QC metrics. We refer to this model as XGB. To clarify the contributions of the
 automated QC metrics and the community science raters, we trained two additional
 gradient boosting models
 \begin{enumerate*}[%
@@ -371,7 +371,7 @@ gradient boosting models
 XGB-f may be viewed as a data-driven weighting of community scientists' ratings,
 while XGB-q may be viewed as a generalization of QC metric exclusion criteria.
 In Figure \ref{fig:fibr-qc:scatter}, we show the associations between the mean
-expert rating and both the mean \emph{Fibr} rating and the XGB predictions.  The
+expert rating and both the mean \emph{Fibr} rating and the XGB predictions. The
 unadjusted \emph{Fibr} ratings are overly optimistic; on average, community
 scientists are not as critical as the expert raters. The XGB predictions remedy
 this by
@@ -533,7 +533,7 @@ thereby bolstering the decision to apply it to new data. Figure \ref{fig:ig}
 shows the attribution maps for example participants from each confusion class:
 true positive, true negative, false positive, and false negative. The columns
 correspond to the different channels of the deep learning input volume: the B=0
-reference image and the DTI FA in the $x$, $y$, and $z$ directions.  The true
+reference image and the DTI FA in the $x$, $y$, and $z$ directions. The true
 positive map (Figure \ref{fig:ig:true-pos}) indicates that the network is
 looking at the entire brain rather than focusing on any one anatomical region.
 Moreover, the model identifies white matter fascicles that travel along the
@@ -586,7 +586,7 @@ brain as informative as voxels in the major white matter bundles.
         failure). The underlying greyscale depicts the input channel. Each row
         depicts a representative subject from each confusion class:
         %
-        \textbf{(a)} Attribution maps for a true positive prediction.  The model
+        \textbf{(a)} Attribution maps for a true positive prediction. The model
         looks at the entire brain and focuses on known white matter bundles in
         the FA channels. In particular, it focuses on lateral bundles in the
         $x$ direction, anterior-posterior bundles in the $y$ direction, and
@@ -681,7 +681,7 @@ is intuitive: we know from \ref{fig:qc-profiles:md} that participants with
 low QC scores have reduced MD, but MD also decreases as subjects mature
 \cite{yeatman2014lifespan,richie-halford2021multidimensional}.
 Eliminating subjects with low QC therefore removes subjects who may look
-artificially older from the analysis, improving overall performance.  The most
+artificially older from the analysis, improving overall performance. The most
 noticeable improvement in performance comes after imposing the most modest
 cutoff of $0.05$, suggesting that researchers will benefit from \emph{any} QC
 screening. On the other hand, QC screening inherently introduces a tension
@@ -697,7 +697,7 @@ analyses and recommend that researchers using HBN-POD2 conduct their own.
     \caption{%
         {\bf Imposing a QC cutoff improves age prediction}:
         Cross validated $R^2$ scores (left axis, blue dots) from an age
-        prediction model increase after screening subjects by QC score.  We see
+        prediction model increase after screening subjects by QC score. We see
         the most dramatic increase in $R^2$ after imposing even the lowest
         cutoff of $0.05$. Thereafter, the $R^2$ scores trend upward until a
         cutoff of $\sim 0.95$, where the training set size (right axis, orange
@@ -724,7 +724,7 @@ the HBN, Human Connectome Project (HCP) \cite{van-essen2013-oi}, UK Biobank
 \cite{miller2016-mq}, ABCD \cite{jernigan2018-my}, and CamCAN
 \cite{taylor2017-or,shafto2014-ld} have ushered a culture of data sharing in
 open big-data neuroscience. The adoption and reuse of these datasets reduces or
-eliminates the data collection burden on downstream researchers.  Some projects,
+eliminates the data collection burden on downstream researchers. Some projects,
 such as the HCP \cite{glasser2013-lo}, provide preprocessed diffusion
 derivatives, further reducing researchers' burden and extending the benefits of
 data-sharing from data collection to preprocessing and secondary analysis.
@@ -891,7 +891,7 @@ $b=2000$ \unit{\second \per \mm^{2}}.
 We curated the imaging metadata for \num{2615} of the \num{2747} currently
 available HBN subjects. Using dcm2bids and custom scripts, we conformed the data
 to the Brain Imaging Data Structure (BIDS; \cite{gorgolewski2016-lh})
-specification.  The BIDS-curated dataset is available on FCP-INDI and can be
+specification. The BIDS-curated dataset is available on FCP-INDI and can be
 accessed via AWS S3 at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/}.
 
 \mctodo[inline]{Add more BIDS curation information}
@@ -902,7 +902,7 @@ We performed dMRI preprocessing on \num{2136} subjects, using \emph{QSIPrep}
 \cite{cieslak2021-iq} 0.12.1, which is based on \emph{Nipype} 1.5.1
 \cite{nipype1,nipype2}, RRID:SCR\_002502. \emph{QSIPrep} a robust and scalable
 pipeline to group, distortion correct, motion correct, denoise, coregister and
-resample MRI scans.  In total, \num{417} subjects failed this preprocessing
+resample MRI scans. In total, \num{417} subjects failed this preprocessing
 step, largely due to missing dMRI files. In keeping with the BIDS specification,
 the preprocessed dataset is available as a derivative dataset within the
 BIDS-curated dataset and can be access on AWS S3 at
@@ -932,7 +932,7 @@ Any images with a $b$-value less than \qty{100}{\second \per \mm^{2}} were treat
 as a $b=0$ image. MP-PCA denoising as implemented in MRtrix3's
 \texttt{dwidenoise}\cite{dwidenoise1} was applied with a 5-voxel window. After
 MP-PCA, B1 field inhomogeneity was corrected using \texttt{dwibiascorrect} from
-MRtrix3 with the N4 algorithm \cite{n4}.  After B1 bias correction, the mean
+MRtrix3 with the N4 algorithm \cite{n4}. After B1 bias correction, the mean
 intensity of the DWI series was adjusted so all the mean intensity of the $b=0$
 images matched across eachseparate DWI scanning sequence.
 
@@ -984,7 +984,7 @@ user-defined Python function and creates the necessary AWS infrastructure to map
 that function onto a range of inputs, in this case, the subject IDs. The Python
 preprocessing function was a thin wrapper around \emph{QSIPrep}'s command line
 interface and is provided in a jupyter notebook in the HBN-POD2 GitHub
-repository in the ``notebooks'' directory.  Using \emph{cloudknot} and AWS Batch
+repository in the ``notebooks'' directory. Using \emph{cloudknot} and AWS Batch
 Spot Instances, the preprocessing cost less than \textdollar1.00 per subject.
 
 \subsection*{Expert quality control}
@@ -1076,7 +1076,7 @@ using the \texttt{make community-qc} command in the HBN-POD2 GitHub repository.
         {\bf Deep learning model architecture}:
         \textbf{(a)} The CNN-i+q model accepts multichannel input that combined
         four imaging channels with a fifth channel containing 31 \emph{QSIPrep}
-        automated QC metrics.  The imaging channels are separated from the QC
+        automated QC metrics. The imaging channels are separated from the QC
         channel using \texttt{Lambda} layers. The imaging channels are passed
         through a CNN \textbf(b), the output of which is concatenated with the
         QC metrics, batch normalized and passed through two fully-connected (FC)
@@ -1089,7 +1089,7 @@ using the \texttt{make community-qc} command in the HBN-POD2 GitHub repository.
         through four convolutional blocks. Each block consists of a 3D
         convolutional layer with a kernel size of 3 and a ReLu activation, a 3D
         max pooling layer with a pool size of 2, and a batch normalization layer
-        with Tensorflow's default parameters.  The number of filters in the
+        with Tensorflow's default parameters. The number of filters in the
         convolutional layers in each block are 64, 64, 128, and 256 respecively.
         The output of the final block is passed through a 3D global average
         pooling layer with Tensorflow's default parameters.
@@ -1159,7 +1159,7 @@ model performance. Models were optimized for binary crossentropy loss using the
 Adam optimizer \cite{kingma2017adam} with an initial learning rate of 0.0001. We
 reduced the learning rate by a factor of 0.5 when the validation loss plateaued
 for more than two epochs. We also stopped training when the validation loss
-failed to improve by more than 0.001 for twenty consecutive epochs.  These two
+failed to improve by more than 0.001 for twenty consecutive epochs. These two
 adjustments were made using the \texttt{ReduceLROnPlateau} and
 \texttt{EarlyStopping} callbacks in Tensorflow 2 \cite{tensorflow} respectively.
 The training and validation loss curves for both the CNN-i and CNN-i+q models
@@ -1202,7 +1202,7 @@ can be invoked using the \texttt{make dl-integrated-gradients} command.
 To generate bundle profiles, reconstruction was performed using the
 \emph{QSIprep} 0.12.1 preconfigured reconstruction workflow
 \texttt{mrtrix\_multishell\_msmt}, modified to generate two million streamlines
-rather than the default ten million.  Multi-tissue fiber response functions were
+rather than the default ten million. Multi-tissue fiber response functions were
 estimated using the dhollander algorithm. FODs were estimated via constrained
 spherical deconvolution (CSD, \cite{originalcsd, tournier2008csd}) using an
 unsupervised multi-tissue method \cite{dhollander2019response,
@@ -1211,7 +1211,7 @@ dhollander2016unsupervised}. Reconstruction was done using MRtrix3
 \cite{mtnormalize}.
 
 These tractograms were then used as input to the Python Automated Fiber
-Quantification toolbox (pyAFQ) \cite{kruper2021evaluating}.  Twenty-four major
+Quantification toolbox (pyAFQ) \cite{kruper2021evaluating}. Twenty-four major
 tracts, which are enumerated in \ref{fig:qc-profiles:md}, were identified using
 multiple criteria: streamlines are selected as candidates for inclusion in a
 bundle of streamlines that represents a tract if they pass through known
@@ -1247,7 +1247,7 @@ Cognitive Development Study (ABCD) \cite{nielson2018detecting}. We rely on the
 \emph{neurocombat\_sklearn} library \cite{neurocombat-sklearn}, to apply ComBat in
 before plotting bundle profiles in Figure \ref{fig:qc-profiles:md} using
 plotting functions from the AFQ-Insight package
-\cite{richie-halford2019insight}.  The bundle profile analysis can be replicated
+\cite{richie-halford2019insight}. The bundle profile analysis can be replicated
 using the \texttt{make bundle-profiles} command in the HBN-POD2 GitHub
 repository.
 
@@ -1269,7 +1269,7 @@ five folds and five repeats. Note that the practice of whole dataset imputation
 before cross-validation permits the possibility of dataset leakage between train
 and test splits. Similarly, sequential hand-tuning of hyperparameters can lead
 to unexpected overfitting \cite{hosseini2020itried}. A detailed study of aging
-and the white matter would need to correct for these transgressions.  For this
+and the white matter would need to correct for these transgressions. For this
 study we deemed the risk of overfitting acceptable for the less fraught
 demonstration of the effect of varying the QC cutoff.
 
