@@ -126,10 +126,11 @@ dataset that applies best practices in preprocessing in a robust and transparent
 way. Here, we used QSIPrep, an integrative platform for preprocessing and
 reconstructing diffusion MRI data, which implements these best practices
 \cite{cieslak2021-iq}. To find the relevant files within a dataset, QSIPrep
-relies on the Brain Imaging Data Specification standard \cite{gorgolewski2016},
-which describes a way to organize neuroimaging data for automated processing.
-That is, it is a BIDS App \cite{Gorgolewski2017-mb}. To reach full compliance
-with the BIDS standard, data in HBN had to first be curated.
+relies on the Brain Imaging Data Specification standard
+\cite{gorgolewski2016-lh}, which describes a way to organize neuroimaging data
+for automated processing. That is, it is a BIDS App \cite{Gorgolewski2017-mb}.
+To reach full compliance with the BIDS standard, data in HBN had to first be
+curated.
 \mctodo[inline]{maybe we need a couple more words here to say what that means?}
 
 Second, dMRI measurements are susceptible to a variety of artifacts that affect
@@ -1119,7 +1120,6 @@ using the \texttt{make community-qc} command in the HBN-POD2 GitHub repository.
         layer which drops 40\% of the input units. The final layer contains a
         single unit with a sigmoid activation function and outputs the
         probability of passing QC.
-        \arhtodo{This seems in contrast to the text below that suggests that the network predicts a continous QC score, not a probability of a binary score, which is what this text suggests}
         %
         \textbf{(b)} The CNN portion of the model passes the imaging input
         through four convolutional blocks. Each block consists of a 3D
@@ -1128,10 +1128,15 @@ using the \texttt{make community-qc} command in the HBN-POD2 GitHub repository.
         with Tensorflow's default parameters. The number of filters in the
         convolutional layers in each block are 64, 64, 128, and 256 respecively.
         The output of the final block is passed through a 3D global average
-        pooling layer with Tensorflow's default parameters.
-    }
+        pooling layer with Tensorflow's default parameters.}
     \label{fig:dl-architecture}
 \end{figure}
+
+\arhtodo{The text in the caption: "The final layer contains a single unit with a
+sigmoid activation function and outputs the probability of passing QC." seems in
+contrast to the text below that suggests that the network predicts a continous
+QC score, not a probability of a binary score, which is what this text suggests}
+
 
 The voting classifier's predictions were then used as targets to train a deep
 learning classifier to predict QC scores based on each subject's preprocessed
