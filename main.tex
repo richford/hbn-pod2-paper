@@ -100,8 +100,7 @@ symptoms of many mental health disorders tend to emerge \cite{Paus2008-gi}.
 Understanding individual differences in brain development and understanding the
 interplay between brain development and the development of these disorders
 requires measurements from many invidividuals \cite{Paus2010-qk, Fair2021-eg}.
-
-The Healthy Brain Network (HBN) is a landmark pediatric mental health study
+To address this requirement, the Healthy Brain Network (HBN) is a landmark pediatric mental health study
 collecting MRI images and clinical assessment data from \num{10000} New York
 City area children and adolescents \cite{alexander2017-yc}. The HBN dataset
 takes a transdiagnostic approach, measuring a broad range of phenotypic and
@@ -125,7 +124,7 @@ Thus, there is a need for an openly available preprocessed diffusion derivative
 dataset that applies best practices in preprocessing in a robust and transparent
 way. Here, we used \emph{QSIPrep}, an integrative platform for preprocessing and
 reconstructing diffusion MRI data, which implements these best practices
-\cite{cieslak2021-iq}. To find the relevant files within a dataset, QSIPrep
+\cite{cieslak2021-iq}. To find the relevant files within a dataset, \emph{QSIPrep}
 relies on the Brain Imaging Data Specification (BIDS) standard
 \cite{gorgolewski2016-lh}, which describes the way to organize neuroimaging data
 for automated processing. That is, it is a BIDS App \cite{Gorgolewski2017-mb}.
@@ -207,7 +206,21 @@ could not be curated to comply with the BIDS standard or that did not have dMRI
 data were excluded, resulting in \num{2136} subjects with preprocessed,
 BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
 
-\comment{AR: I wonder whether we want some kind of characterization of the data before we jump into the QC part. For example, distributions of the statistics displayed in Figure 2(a) across the full sample, to give a sense. Maybe their correlation with age? We come back to that later on, so this might be useful as a foreshadowing of the QC vs. age plot in Figure 4(b)}
+\subsection*{Health Brain Network Preprocessed Open Diffusion Derivatives}
+
+\mctodo[inline]{%
+    Matt, please describe the \emph{QSIPrep} output directory structure.
+    Maybe we include a \texttt{tree} output figure and then a description of
+    each output file.
+    Hint: Use \href{https://github.com/emad-elsaid/dirtree}{dirtree} to make a
+    nice figure of \texttt{tree} output.
+}
+
+\arhtodo[inline]{%
+    Describe the distributions of \emph{QSIPrep} automated QC metrics:
+    NDC, max rel translation, raw number outlier slices.
+    e.g. \texttt{sns.pairplot()} of these three, lower tri, colored by age.
+}
 
 \begin{figure}[ht]
     \centering
@@ -233,7 +246,7 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
         creating a ``gold standard'' QC subset. Community raters then assigned
         binary QC ratings to a superset of the gold standard containing
         \num{1653} participants. An image classification algorithm was trained
-        on a combination of automated QC metrics from QSIPrep and community
+        on a combination of automated QC metrics from \emph{QSIPrep} and community
         scientist reviews to ``extend'' the expert ratings to the community
         science subset. Finally, a deep learning QC model was trained on the
         community science subset to assign QC scores to the entire dataset and
@@ -244,6 +257,8 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
     }
     \label{fig:hbn-sankey}
 \end{figure}
+
+\subsection*{Quality Control}
 
 To achieve the QC aim of the project, we adopted a hybrid QC approach that
 combines expert rating, community science, and deep learning, drawing on the
@@ -263,7 +278,7 @@ MRI data \cite{keshavan2019-er}. This method
     predict expert decisions on the entire dataset.
 \end{enumerate*}
 
-\subsection*{Expert quality control}
+\subsubsection*{Expert quality control}
 
 To create a gold standard QC dataset, we first developed \emph{dmriprep-viewer},
 a dMRI data viewer and QC rating web application to display \emph{QSIPrep}
@@ -295,10 +310,12 @@ motion outlier slices reflect poor data quality and these metrics are inversely
 related to mean expert rating (Pearson CC: XXX and Pearson CC: XXX,
 respectively).
 
+\arhtodo[inline]{Fill in the XXX values in the paragraph above.}
+
 In addition to agreeing qualitatively with \emph{QSIPrep}'s automated QC metrics
 on average, the expert raters also tended to agree with each other. We assessed
-inter-rater reliability (IRR) using the pairwise Cohen's $\kappa$, which
-\cite{di-eugenio2004-bb} exceeds 0.52 in all cases, and with a mean value of
+inter-rater reliability (IRR) using the pairwise Cohen's $\kappa$
+\cite{di-eugenio2004-bb}, which exceeds 0.52 in all cases, and with a mean value of
 0.648. In addition to the pairwise Cohen's $\kappa$, we also computed the
 intra-class correlation (ICC) \cite{hallgren2012-ze} as a measure of IRR. ICC3k
 is the appropriate variant of the ICC to use when a fixed set of $k$ raters each
@@ -308,7 +325,6 @@ qualitatively considered an ``excellent'' level of IRR \cite{Cicchetti1994-fz}.
 The high IRR provides confidence that the average of the expert ratings for each
 image in the gold standard is an appropriate target to use for training a
 machine learning model that predicts the expert scores.
-
 
 \begin{figure}[ht]
     \begin{subfigure}{.5\textwidth}
@@ -343,9 +359,7 @@ machine learning model that predicts the expert scores.
     \label{fig:expert-qc}
 \end{figure}
 
-\subsection*{Community science quality control}
-
-\arhtodo{What is the number instead of XXX below?}
+\subsubsection*{Community science quality control}
 
 Although the expert raters achieved high IRR and yielded intuitive associations
 with \emph{QSIPrep}'s automated QC metrics, generating expert QC labels for the
@@ -354,7 +368,7 @@ image quality of the remaining subjects, we deployed \emph{Fibr}
 (\url{https://fibr.dev}), a community science web application in which users
 assign binary pass/fail labels assessing the quality of horizontal slice DEC-FA
 images overlaid on the $b=0$ image. That is, \emph{Fibr} users saw individual
-slices or an animated sequence of XXX slices taken from the entire DEC-FA volume
+slices or an animated sequence of ten slices taken from the entire DEC-FA volume
 that the expert raters saw. The \emph{Fibr} users therefore saw only a subset of
 the imaging data that the dMRI experts had access to for each subject, but they
 saw many more subjects. In total, \num{374} community scientists provided
@@ -384,7 +398,6 @@ science raters, we trained two additional gradient boosting models
     call XGB-q
     \item one trained on only the \emph{Fibr} ratings, which we call XGB-f.
 \end{enumerate*}
-
 XGB-f may be viewed as a data-driven weighting of community scientists' ratings,
 while XGB-q may be viewed as a generalization of QC metric exclusion criteria.
 XGB, combining information from both \emph{Fibr} ratings and \emph{QSIPrep} QC
@@ -443,7 +456,7 @@ network.
     \label{fig:fibr-qc}
 \end{figure}
 
-\subsection*{Automated quality control labelling through deep learning}
+\subsubsection*{Automated quality control labelling through deep learning}
 
 The XGB ``rater'' does a good job of extending QC ratings to the entire
 community science subset, but requires \emph{Fibr} scores. Without community
@@ -458,7 +471,7 @@ applied to the ImageCLEF Tuberculosis Severity Assessment 2019 benchmark
 \cite{dicente2019clef} to accept multichannel input generated from the
 preprocessed dMRI: the $b=0$ reference diffusion image, each of the three
 cardinal axis components of the DEC-FA image, and, optionally, automated QC
-metrics from QSIPrep. We trained this network on XGB scores and validated it
+metrics from \emph{QSIPrep}. We trained this network on XGB scores and validated it
 against the gold standard expert-scored dataset. We refer to the convolutional
 neural network model trained only on imaging data as CNN-i and the model that
 incorporates automated QC metrics as CNN-i+q. The two models performed nearly
@@ -525,7 +538,7 @@ participants \footnote{%
     ``male'' and ``female.''
 }.
 
-\subsection*{Attribution masks for the deep learning classifier}
+\subsubsection*{Attribution masks for the deep learning classifier}
 
 We generated post-hoc attribution maps that highlight regions of the input
 volume that are relevant for the QC score. The integrated gradient method
@@ -742,13 +755,15 @@ the data.  HBN-POD2 provides four separate QC scores alongside its large dataset
 of pediatric neuroimaging diffusion derivatives, paving the way for users of the
 dat to incorporate considerations of data quality into their analysis of the
 processed data. Unsurprisingly, QC scores are strongly directly correlated with
-age (Figure \ref{fig:dl-qc}). This accords with the negative association
+age (Figure~\ref{fig:dl-qc}). This accords with the negative association
 between head motion and age, which is well established both in general
 \cite{power2012spurious,satterthwaite2012impact,fair2012distinct,yendiki2014spurious}
-and specifically in the HBN dataset \cite{alexander2017-yc}.
+and specifically for resting-state fMRI in the HBN dataset \cite{alexander2017-yc}.
+
+\arhtodo[inline]{Change all \texttt{Figure \\ref} to \texttt{Figure~\\ref}}
 
 We demonstrate the impact of QC in a benchmark age prediction task
-(\label{fig:age-prediction}). In this case, the increase in model performance
+(Figure~\ref{fig:age-prediction}). In this case, the increase in model performance
 from imposing a QC cutoff is intuitive: we know from
 Figure~\ref{fig:qc-profiles:md} that participants with low QC scores have
 reduced MD, but MD also decreases as subjects mature
@@ -764,7 +779,12 @@ degrades predictive performance. Importantly, we do not expect the sensitivity
 analysis of an age prediction model to generalize to other analyses and
 recommend that researchers using HBN-POD2 conduct their own.
 
-\comment{We should read this article: https://doi.org/10.1016/S2589-7500(21)00208-9 and see if we should add nuance}
+\subsection*{Automated quality control: a tension between scalability and interpretability}
+
+\arhtodo[inline]{%
+    Consider adding this reference to the list of ``interpretability'' references
+    below: https://doi.org/10.1016/S2589-7500(21)00208-9
+}
 
 We provide four different scores in anticipation of end-user's reluctance to
 trust a QC score generated through deep learning \cite{lipton2017doctor,
@@ -773,13 +793,14 @@ us confidence that it could accurately classify unseen data, justifying its
 extension to the entire HBN-POD2 dataset and to future releases. However, it
 does not explain its decisions. As deep learning models have been increasingly
 applied to medical image analysis, there is an evolving interest in the
-transparency of these models \cite{salahuddin2022transparency}. While an
+interpretability of these models \cite{salahuddin2022transparency}. While an
 exhaustive interpretation of deep learning QC models is beyond the scope of this
 work, we provided a preliminary qualitative interpretation of the CNN-i model
 (\ref{fig:ig}) that demonstrates the intuitive nature of its decisions.
 
 Nevertheless, we recognize that some researchers may still be leery of the deep
-learning generated scores. We therefore provide
+learning generated scores. Therefore, in addition to the deep learning generated
+scores, we provide
 \begin{enumerate}
     \item the mean expert QC score for the 200 subjects in the gold standard
     dataset,
@@ -791,6 +812,7 @@ learning generated scores. We therefore provide
     output by \emph{QSIPrep}, and may therefore be viewed as more interpretable.
     These are available for all participants.
 \end{enumerate}
+\arhtodo[inline]{Make this list inline.}
 We view the XGB-q scores as a more interpretable fallback for users who are not
 comfortable basing study exclusion decisions on a deep learning model
 \cite{rudin2019stop}. The decision to use a more interpretable but slightly less
@@ -806,6 +828,12 @@ by QC score could spur them to exclude populations deserving of study, as when
 QC score is highly correlates with age or socio-economic status. We therefore
 caution researchers to examine interactions between the QC scores we provide and
 their phenotype of interest.
+
+\rokemtodo[inline]{%
+    Add discussion of limitations of expert QC. Here maybe we could discuss the
+    max vs mean displacement bias. Maybe also refer to the difference between
+    pairwise Cohen's $\kappa$ and ICC3k.
+}
 
 \subsection*{Fully transparent pipelines provide an extensible baseline for future methods development}
 
