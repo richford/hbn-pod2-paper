@@ -278,8 +278,7 @@ motion parameters through the DWI scan, and full 3D volumes depicting
     itemjoin={{, }},%
     itemjoin*={{ and }}]
     \item the brain mask and $b=0$ to T1w registration
-    \item a diffusion tensor imaging (DTI) tensor fractional anisotropy (FA)
-    model visualized over the $b=0$ volume.
+    \item a directionally encoded color FA (DEC-FA) image laid over the $b=0$ volume.
 \end{enumerate*}
 The experts rated subjects using a five-point scale with ratings of ``definitely
 fail,'' ``probably fail,'' ``unsure,'' ``probably pass,'' and ``definitely
@@ -353,17 +352,16 @@ with \emph{QSIPrep}'s automated QC metrics, generating expert QC labels for the
 entire HBN-POD2 dataset would be prohibitively time consuming. To assess the
 image quality of the remaining subjects, we deployed \emph{Fibr}
 (\url{https://fibr.dev}), a community science web application in which users
-assign binary pass/fail labels assessing the quality of horizontal slice DTI
-directionally encoded color FA (DEC-FA) images overlaid on the $b=0$ image. That
-is, \emph{Fibr} users saw individual slices or an animated sequence of XXX
-slices taken from the entire DEC-FA volume that the expert raters saw. The
-\emph{Fibr} users therefore saw only a subset of the imaging data that the dMRI
-experts had access to for each subject, but they saw many more subjects. In
-total, \num{374} community scientists provided \num{587778} ratings for a mean
-of $>50$ ratings per slice (or $>200$ ratings per subject) from \num{1653}
-subjects. Of the community scientists, \num{145} raters provided $>3,000$
-ratings each and are included in the Fibr Community Science Consortium as
-co-authors on this paper.
+assign binary pass/fail labels assessing the quality of horizontal slice DEC-FA
+images overlaid on the $b=0$ image. That is, \emph{Fibr} users saw individual
+slices or an animated sequence of XXX slices taken from the entire DEC-FA volume
+that the expert raters saw. The \emph{Fibr} users therefore saw only a subset of
+the imaging data that the dMRI experts had access to for each subject, but they
+saw many more subjects. In total, \num{374} community scientists provided
+\num{587778} ratings for a mean of $>50$ ratings per slice (or $>200$ ratings
+per subject) from \num{1653} subjects. Of the community scientists, \num{145}
+raters provided $>3,000$ ratings each and are included in the Fibr Community
+Science Consortium as co-authors on this paper.
 
 The unadjusted \emph{Fibr} ratings are overly optimistic; i.e., on average,
 community scientists are not as critical as the expert raters (Figure
@@ -405,7 +403,7 @@ that the average Cohen's $kappa$ between XGB and the expert raters is 0.74,
 which is higher than the average Cohen's $kappa$ between any of the other raters
 and their human peers (Figure~\ref{fig:expert-qc}). This is not suprising,
 given that the XGB model was fit to optimize this match, but further
-demonstrates the goodness of fit of this model
+demonstrates the goodness of fit of this model.
 
 Nevertheless, this provides confidence in using the XGB scores in the next step
 of analysis. When a subset of subjects is coded by multiple raters and the
