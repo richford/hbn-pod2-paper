@@ -518,25 +518,14 @@ can be easily calculated for new participants in future HBN releases and is more
 accurate than XGB-q. When we refer to a participant's QC score without
 specifying a generating model, the CNN-i score is assumed. Figure
 \ref{fig:dl-qc} depicts the distribution of these QC scores by age (Figure
-\ref{fig:dl-qc:joint}), sex, and scanning site (Figure \ref{fig:dl-qc:hist}).
-QC distributions are similar for each scan site and for male and female
+\ref{fig:dl-qc:joint}), sex, and scanning site (Figure \ref{fig:dl-qc:hist}). QC
+distributions are similar for each scan site and for male and female
 participants \footnote{%
     Responses for the sex variable in HBN phenotypic data are limited to
     ``male'' and ``female.''
-}. Unsurprisingly, the QC score is strongly directly correlated with age. This
-accords with the negative association between head motion and age, which is well
-established both in general \cite{power2012spurious,satterthwaite2012impact,fair2012distinct,yendiki2014spurious} and specifically in the HBN dataset \cite{alexander2017-yc}.
+}.
 
 \subsection*{Attribution masks for the deep learning classifier}
-
-The predictive performance of the CNN-i model (Figure \ref{fig:dl-qc:roc}) gives
-us confidence that it could accurately classify unseen data, justifying its
-extension to the entire HBN-POD2 dataset and to future releases. However, it
-does not explain its decisions. As deep learning models have been increasingly
-applied to medical image analysis, there is an evolving interest in the
-transparency of these models \cite{salahuddin2022transparency}. While an
-exhaustive interpretation of deep learning QC models is beyond the scope of this
-work, we provide a preliminary qualitative interpretation of the CNN-i model.
 
 We generated post-hoc attribution maps that highlight regions of the input
 volume that are relevant for the QC score. The integrated gradient method
@@ -694,21 +683,7 @@ performance. To demonstrate this, we select participant age as a representative
 phenotypic benchmark \cite{cole2019brain,richie-halford2021multidimensional} and
 observed the effect of varying QC cutoff on the predictive performance of an age
 prediction model. Cross-validated $R^2$ scores for an age prediction model
-varies depending on the QC cutoff (Figure~\ref{fig:age-prediction}). The
-increase in model performance from imposing a QC cutoff is intuitive: we know
-from Figure~\ref{fig:qc-profiles:md} that participants with low QC scores have
-reduced MD, but MD also decreases as subjects mature
-\cite{yeatman2014lifespan,richie-halford2021multidimensional}. Eliminating
-subjects with low QC therefore removes subjects who may look artificially older
-from the analysis, improving overall performance. The most noticeable
-improvement in performance comes after imposing the most modest cutoff of
-$0.05$, suggesting that researchers will benefit from \emph{any} QC screening.
-On the other hand, QC screening inherently introduces a tension between the
-desire for high quality data and the desire for a large sample size. In this
-case, after a QC cutoff of around $0.9$, the training set size is reduced such
-that it degrades predictive performance. We do not expect the sensitivity
-analysis of an age prediction model to generalize to other analyses and
-recommend that researchers using HBN-POD2 conduct their own.
+varies depending on the QC cutoff (Figure~\ref{fig:age-prediction}). An initial large improvement was achieved by excluding the 200 participants with the lowest QC scores, followed by a gradual increase in performance. Finally, when a large number of participants is excluded, performance deteriorated again.
 
 \begin{figure}[htbp]
     \centering
@@ -762,18 +737,52 @@ adversity and mental health. As such, this dataset will accelerate discovery at
 the nexus of structural connectivity and neurodevelopmental and learning
 disorders.
 
-In this kind of study, it is crucial to perform accurate and reliable QC of the
-data. We provide QC scores for the subjects that we have preprocessed, paving
-the way for others to incorporate considerations of data quality into their
-analysis of the processed data. Importantly, the deep learning network
-architecture for QC and parameters are also provided as part of this work,
-allowing application of this network to future releases of HBN data, and
-allowing other researchers to build upon and improve upon this work. Moreover,
-undertaking this processing and QC effort required construction and deployment
-of substantial informatics infrastructure, including tools for cloud computing,
-web applications for expert annotation and for community science rating and
-analysis software. All of these tools are provided openly, so that this approach
-can be adopted widely in other projects and in other scientific fields.
+In this kind of dataset, it is important to perform accurate and reliable QC of
+the data. We provide QC scores for the subjects that we have preprocessed,
+paving the way for others to incorporate considerations of data quality into
+their analysis of the processed data. Unsurprisingly, QC scores are strongly
+directly correlated with age (Figure \ref{fig:dl-qc}}). This accords with the
+negative association between head motion and age, which is well established both
+in general
+\cite{power2012spurious,satterthwaite2012impact,fair2012distinct,yendiki2014spurious}
+and specifically in the HBN dataset \cite{alexander2017-yc}.
+
+We demonstrate the impact of QC in a benchmark age prediction task
+(\label{fig:age-prediction}). In this case, the increase in model performance
+from imposing a QC cutoff is intuitive: we know from
+Figure~\ref{fig:qc-profiles:md} that participants with low QC scores have
+reduced MD, but MD also decreases as subjects mature
+\cite{yeatman2014lifespan,richie-halford2021multidimensional}. Eliminating
+subjects with low QC therefore removes subjects who may look artificially older
+from the analysis, improving overall performance. The most noticeable
+improvement in performance comes after imposing the most modest cutoff of
+$0.05$, suggesting that inferences may benefit from \emph{any} QC screening. On
+the other hand, QC screening inherently introduces a tension between the desire
+for high quality data and the desire for a large sample size. In this case,
+after a QC cutoff of around $0.9$, the training set size is reduced such that it
+degrades predictive performance. Importantly, we do not expect the sensitivity
+analysis of an age prediction model to generalize to other analyses and
+recommend that researchers using HBN-POD2 conduct their own.
+
+The predictive performance of the CNN-i model (Figure \ref{fig:dl-qc:roc}) gives
+us confidence that it could accurately classify unseen data, justifying its
+extension to the entire HBN-POD2 dataset and to future releases. However, it
+does not explain its decisions. As deep learning models have been increasingly
+applied to medical image analysis, there is an evolving interest in the
+transparency of these models \cite{salahuddin2022transparency}. While an
+exhaustive interpretation of deep learning QC models is beyond the scope of this
+work, we provided a preliminary qualitative interpretation of the CNN-i model
+(\ref{fig:ig}) that demonstrates the intuitive nature of its decisions.
+
+Importantly, the deep learning network architecture for QC and parameters are
+also provided as part of this work, allowing application of this network to
+future releases of HBN data, and allowing other researchers to build upon and
+improve upon this work. Moreover, undertaking this processing and QC effort
+required construction and deployment of substantial informatics infrastructure,
+including tools for cloud computing, web applications for expert annotation and
+for community science rating and analysis software. All of these tools are
+provided openly, so that this approach can be adopted widely in other projects
+and in other scientific fields.
 
 \subsection*{Fully transparent pipelines provide an extensible baseline for future methods development}
 
@@ -862,20 +871,20 @@ of T1-weighted data to the multi-volume dMRI.
 
 \subsection*{Future work and open problems}
 
-The HBN's plans to acquire imaging data for \num{10000} participants,
-necessitating future releases. Future releases of HBN will require future
-releases of HBN-POD2, plan for future releases is essential. This is a general
-issue affecting multi-year neuroimaging projects for which derivative data is
-being released before study completion. The use of \emph{QSIPrep},
+The HBN study plans to acquire imaging data for \num{10000} participants,
+necessitating future data releases. Future releases of HBN will require future
+releases of HBN-POD2, and a plan for these future releases is essential. This is
+a general issue affecting multi-year neuroimaging projects for which derivative
+data is being released before study completion. The use of \emph{QSIPrep},
 \emph{cloudknot} and the containerization of the QC score assignment process
 facilitate running the exact pipeline described in this paper on newly released
 subjects. However, this approach is somewhat unsatisfactory because it fails to
 anticipate improvements in preprocessing methodology. That is, what should we do
-when \emph{QSIPrep} is inevitably updated between HBN releases: enforce
+when \emph{QSIPrep} is inevitably updated between HBN releases? Enforce
 standardization by using an outdated pipeline or use state-of-the-art
 preprocessing at the expense of standardized processing between releases?
-Because the use of \emph{cloudknot} and AWS Spot Instances made preprocessing
-relatively inexpensive, we propose a third way: if improvements to the
+Because the use of \emph{cloudknot} and AWS Spot Instances renders preprocessing
+fast and relatively inexpensive, we propose a third way: if improvements to the
 preprocessing pipeline are available with a new HBN release, we plan to execute
 the improved pipeline on the entire HBN dataset, while preserving the previous
 baseline release in an archived BIDS derivative dataset.
