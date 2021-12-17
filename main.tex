@@ -281,37 +281,33 @@ motion parameters through the DWI scan, and full 3D volumes depicting
 \end{enumerate*}
 The experts rated subjects using a five-point scale with ratings of ``definitely
 fail,'' ``probably fail,'' ``unsure,'' ``probably pass,'' and ``definitely
-pass.'' Figure \ref{fig:expert-qc:scatter} shows the distribution of expert
-ratings and the relationship between the mean expert ratings and some of the
-automated QC metrics output by \emph{QSIPrep}: neighboring DWI correlation (NDC)
-\cite{yeh2019-kb}, maximum relative translation, and number of outlier slices.
-NDC characterizes the pairwise spatial correlation between pairs of DWI volumes
-that sample neighboring points in $q$-space. Since lower values indicate reduced
-data quality, it is reassuring that NDC correlates directly with expert rating.
-Conversely, high relative translation and a high number of motion outlier slices
-reflect poor data quality and so these metrics are inversely related to mean
-expert rating.
+pass.'' The distribution of scores given by the experts demonstrates that the
+gold standard dataset included a range of data quality. Mean expert ratings
+correlate with some of the automated QC metrics output by \emph{QSIPrep}:
+neighboring DWI correlation (NDC) \cite{yeh2019-kb}, maximum relative
+translation, and number of outlier slices (Pearson CC: XXX). NDC characterizes
+the pairwise spatial correlation between pairs of DWI volumes that sample
+neighboring points in $q$-space. Since lower values indicate reduced data
+quality, it is reassuring that NDC correlates directly with expert rating
+(Pearson CC: XXX). Conversely, high relative translation and a high number of
+motion outlier slices reflect poor data quality and these metrics are inversely
+related to mean expert rating (Pearson CC: XXX and Pearson CC: XXX,
+respectively).
 
-In addition to agreeing qualitatively with \emph{QSIPrep}'s automated QC
-metrics, the expert raters also agreed with each other. To demonstrate
-inter-rater reliability (IRR), in Figure \ref{fig:expert-qc:irr} we show the
-pairwise Cohen's $\kappa$ \cite{di-eugenio2004-bb} for each pair of expert
-raters as well as an additional XGB rater which we describe in the next
-subsection.
+In addition to agreeing qualitatively with \emph{QSIPrep}'s automated QC metrics
+on average, the expert raters also tended to agree with each other. We assessed
+inter-rater reliability (IRR) using the pairwise Cohen's $\kappa$, which
+\cite{di-eugenio2004-bb} exceeds 0.52 in all cases, and with a mean value of
+0.648. In addition to the pairwise Cohen's $\kappa$, we also computed the
+intra-class correlation (ICC) \cite{hallgren2012-ze} as a measure of IRR. ICC3k
+is the appropriate variant of the ICC to use when a fixed set of $k$ raters each
+code an identical set of subjects, as is the case here. ICC3k for inter-rater
+reliability among the experts was 0.930 (95\% CI: [0.91, 0.94]), which is
+qualitatively considered an ``excellent'' level of IRR \cite{Cicchetti1994-fz}.
+The high IRR provides confidence that the average of the expert ratings for each
+image in the gold standard is an appropriate target to use for training a
+machine learning model that predicts the expert scores.
 
-In addition to the pairwise $\kappa$, we also present the intra-class
-correlation (ICC) \cite{hallgren2012-ze} as a measure of IRR. ICC3 and ICC3k
-are appropriate variants of ICC when a fixed set of $k$ raters rate each subject
-(i.e. a fully crossed design), which is what we have for HBN-POD2. When all
-subjects are coded by multiple raters and the average of their ratings is used
-for hypothesis testing, ICC3k is appropriate. When a subset of subjects is
-coded by multiple raters and the reliability of their ratings is meant to
-generalize to other subjects rated by only one coder, the single-measure ICC3
-must be used. The high ICC3k value for each expert rater entitles us to use the
-mean expert rating as training data for the XGB algorithm. And the high ICC
-value after inclusion of the XGB model entitles us to treat XGB as a seventh
-rater, thereby extending the expert ratings to the entire community science
-subset.
 
 \begin{figure}[ht]
     \begin{subfigure}{.5\textwidth}
@@ -338,43 +334,45 @@ subset.
         the other two metrics are inversely correlated with expert rating.
         %
         \textbf{(b)} Experts agree with each other. Here we show the pairwise
-        Cohen's $\kappa$ measure of inter-rater reliability. One can also use
-        interclass correlation to demonstrate interrater reliability. The expert
-        raters achieved an $\textbf{ICC3k} = 0.930 (95\% CI: [0.91, 0.94])$,
-        $\textbf{ICC3} = 0.688 (95\% CI: [0.64, 0.74])$, $\langle \kappa \rangle
-        = 0.648$. We trained a gradient boosting model (XGB) to predict expert
-        ratings based on community science ratings and automated QC metrics,
-        obtaining a cross-validated ROC-AUC of $0.96 \pm 0.01$. Treating
-        XGB as a seventh expert rater, preserves inter-rater reliability:
-        $\textbf{ICC3k} = 0.945 (95\% CI: [0.93, 0.96])$, $\textbf{ICC3} = 0.709
-        (95\% CI: [0.66, 0.75])$. This entitles us to extend it's ratings to
-        the community science dataset.
+        Cohen's $\kappa$ measure of inter-rater reliability (see text for ICC
+        calculations). The XGB model has an inter-rater reliability (quantified
+        here as Cohen's $\kappa$) that is indistinguishable from the other
+        raters
     }
     \label{fig:expert-qc}
 \end{figure}
 
 \subsection*{Community science quality control}
 
-Although the expert raters achieved an acceptable inter-rater reliability and
-yielded intuitive associations with \emph{QSIPrep}'s automated QC metrics,
-generating expert QC labels for the entire HBN-POD2 dataset would be
-prohibitively time consuming. To assess the image quality of the remaining
-subjects, we released \emph{Fibr} (\url{https://fibr.dev}), a community science
-web application in which users assign binary pass/fail labels assessing the
-quality of horizonal slice tensor FA images. That is, \emph{Fibr} users saw
-individual slices or an animated sequence of slices taken from the entire tensor
-FA volume that the expert raters saw. The \emph{Fibr} users therefore saw only a
-subset of the imaging data that the dMRI experts had access to. In total,
-\num{374} community scientists provided \num{587778} ratings for a mean of $>50$
-ratings per slice (or $>200$ ratings per subject). Of these, \num{145} raters
-provided $>3,000$ votes each and are included in the Fibr Community Science
-Consortium as co-authors on this paper.
+Although the expert raters achieved high IRR and yielded intuitive associations
+with \emph{QSIPrep}'s automated QC metrics, generating expert QC labels for the
+entire HBN-POD2 dataset would be prohibitively time consuming. To assess the
+image quality of the remaining subjects, we deployed \emph{Fibr}
+(\url{https://fibr.dev}), a community science web application in which users
+assign binary pass/fail labels assessing the quality of horizontal slice DTI
+directionally encoded color FA (DEC-FA) images overlaid on the $b=0$ image. That
+is, \emph{Fibr} users saw individual slices or an animated sequence of XXX
+slices taken from the entire DEC-FA volume that the expert raters saw. The
+\emph{Fibr} users therefore saw only a subset of the imaging data that the dMRI
+experts had access to for each subject, but they saw many more subjects. In
+total, \num{374} community scientists provided \num{587778} ratings for a mean
+of $>50$ ratings per slice (or $>200$ ratings per subject) from \num{1653}
+subjects. Of the community scientists, \num{145} raters provided $>3,000$
+ratings each and are included in the Fibr Community Science Consortium as
+co-authors on this paper.
 
-We then trained a gradient boosting model \cite{chen2016-eb} to predict expert
-scores based on a combination of community science ratings and automated \emph{QSIPrep}
-QC metrics. We refer to this model as XGB. To clarify the contributions of the
-automated QC metrics and the community science raters, we trained two additional
-gradient boosting models
+The unadjusted \emph{Fibr} ratings are overly optimistic; i.e., on average,
+community scientists are not as critical as the expert raters (Figure
+\ref{fig:fibr-qc:scatter}a). In addition, different community scientists
+probably provide data of differing accuracy. In addition, additional information
+about quality is provided in the \emph{QSIPrep} QC metrics. To account for this
+variability, and take advantage of the information provided by \emph{QSIPrep},
+we trained a gradient boosting model \cite{chen2016-eb} to predict expert scores
+based on a combination of community science ratings and automated \emph{QSIPrep}
+QC metrics. We refer to this model as XGB.
+
+To clarify the contributions of the automated QC metrics and the community
+science raters, we trained two additional gradient boosting models
 \begin{enumerate*}[%
     label=(\roman*),%
     before=\unskip{: },%
