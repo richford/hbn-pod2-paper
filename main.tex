@@ -712,7 +712,7 @@ contributions of this work, starting from the potential impact of the range of
 resources we have created and ending with implications for processing and
 quality control of other large-scale datasets.
 
-\subsection*{Standardized preprocessing and QC increases the impact of openly-available data}
+\subsection*{Standardized preprocessing and quality control increase the impact of openly-available data}
 
 The most immediate contribution of this work is a large analysis-ready dMRI
 dataset, openly accessible to the public. In the past decade, projects such as
@@ -738,12 +738,12 @@ the nexus of structural connectivity and neurodevelopmental and learning
 disorders.
 
 In this kind of dataset, it is important to perform accurate and reliable QC of
-the data. We provide QC scores for the subjects that we have preprocessed,
-paving the way for others to incorporate considerations of data quality into
-their analysis of the processed data. Unsurprisingly, QC scores are strongly
-directly correlated with age (Figure \ref{fig:dl-qc}}). This accords with the
-negative association between head motion and age, which is well established both
-in general
+the data.  HBN-POD2 provides four separate QC scores alongside its large dataset
+of pediatric neuroimaging diffusion derivatives, paving the way for users of the
+dat to incorporate considerations of data quality into their analysis of the
+processed data. Unsurprisingly, QC scores are strongly directly correlated with
+age (Figure \ref{fig:dl-qc}}). This accords with the negative association
+between head motion and age, which is well established both in general
 \cite{power2012spurious,satterthwaite2012impact,fair2012distinct,yendiki2014spurious}
 and specifically in the HBN dataset \cite{alexander2017-yc}.
 
@@ -764,7 +764,11 @@ degrades predictive performance. Importantly, we do not expect the sensitivity
 analysis of an age prediction model to generalize to other analyses and
 recommend that researchers using HBN-POD2 conduct their own.
 
-The predictive performance of the CNN-i model (Figure \ref{fig:dl-qc:roc}) gives
+\comment{We should read this article: https://doi.org/10.1016/S2589-7500(21)00208-9 and see if we should add nuance}
+
+We provide four different scores in anticipation of end-user's reluctance to
+trust a QC score generated through deep learning \cite{lipton2017doctor,
+salahuddin2022transparency, Zech2018-ki}. The predictive performance of the CNN-i model (Figure \ref{fig:dl-qc:roc}) gives
 us confidence that it could accurately classify unseen data, justifying its
 extension to the entire HBN-POD2 dataset and to future releases. However, it
 does not explain its decisions. As deep learning models have been increasingly
@@ -774,48 +778,8 @@ exhaustive interpretation of deep learning QC models is beyond the scope of this
 work, we provided a preliminary qualitative interpretation of the CNN-i model
 (\ref{fig:ig}) that demonstrates the intuitive nature of its decisions.
 
-Importantly, the deep learning network architecture for QC and parameters are
-also provided as part of this work, allowing application of this network to
-future releases of HBN data, and allowing other researchers to build upon and
-improve upon this work. Moreover, undertaking this processing and QC effort
-required construction and deployment of substantial informatics infrastructure,
-including tools for cloud computing, web applications for expert annotation and
-for community science rating and analysis software. All of these tools are
-provided openly, so that this approach can be adopted widely in other projects
-and in other scientific fields.
-
-\subsection*{Fully transparent pipelines provide an extensible baseline for future methods development}
-
-While the primary audience of HBN-POD2 is researchers in neurodevelopment who
-will use the dMRI derivatives in their studies, other researchers may use
-HBN-POD2 to develop new preprocessing algorithms or quality control methods. In
-this respect, HBN-POD2 follows Avesani et al.~\cite{avesani2019-ey}, who
-recognized the diverse interests that different scientific communities have in
-reusing neuroimaging data and coined the term \emph{data upcycling} to promote
-multiple-use data sharing for purposes secondary to those of the original
-project. Complementing the open diffusion data derivatives in Avesani et al.'s
-work, which provided a small number of subjects preprocessed with many
-pipelines, HBN-POD2 contains many subjects, all processed with a single state of
-the art pipeline, \emph{QSIPrep}. For researchers developing new preprocessing
-algorithms, HBN-POD2 provides a large, open baseline to which to compare their
-results.
-
-Similarly, HBN-POD2 will serve as a baseline for quality control methods.
-HBN-POD2 provides four separate QC scores alongside its large dataset of
-pediatric neuroimaging diffusion derivatives. Including these scores will help
-pediatric mental health researchers improve inferences derived from the imaging
-data, as suggested by the improvements in age prediction shown in Figure
-\ref{fig:age-prediction}. In addition, neuroimaging QC methods developers will
-benefit from a large benchmark dataset with which to pilot new QC methods.
-
-\arhtodo[inline]{Add XGB-q QC scores to the participants.tsv on FCP-INDI}
-
-We provide four different scores in anticipation of end-user's reluctance to
-trust a QC score generated through deep learning \cite{lipton2017doctor,
-salahuddin2022transparency, Zech2018-ki}. We addressed these concerns through
-example-based explanations of the scores, with attribution maps calculated using
-integrated gradients. However, we recognize that some researchers may still be
-leery of the deep learning generated scores. We therefore provide
+Nevertheless, we recognize that some researchers may still be leery of the deep
+learning generated scores. We therefore provide
 \begin{enumerate}
     \item the mean expert QC score for the 200 subjects in the gold standard
     dataset,
@@ -843,6 +807,31 @@ QC score is highly correlates with age or socio-economic status. We therefore
 caution researchers to examine interactions between the QC scores we provide and
 their phenotype of interest.
 
+\subsection*{Fully transparent pipelines provide an extensible baseline for future methods development}
+
+While the primary audience of HBN-POD2 is researchers in neurodevelopment who
+will use the dMRI derivatives in their studies, other researchers may use
+HBN-POD2 to develop new preprocessing algorithms or quality control methods. In
+this respect, HBN-POD2 follows Avesani et al.~\cite{avesani2019-ey}, who
+recognized the diverse interests that different scientific communities have in
+reusing neuroimaging data and coined the term \emph{data upcycling} to promote
+multiple-use data sharing for purposes secondary to those of the original
+project. Complementing the approach taken in Avesani et al.'s work, which
+provided dMRI from a small number of subjects preprocessed with many pipelines,
+HBN-POD2 contains many subjects, all processed with a single state of the art
+pipeline, \emph{QSIPrep}. For researchers developing new preprocessing
+algorithms, HBN-POD2 provides a large, openly available baseline to which they
+can compare their results.
+
+Similarly, neuroimaging QC methods developers will benefit from a large
+benchmark dataset of expert, community science and automated QC, with which to
+pilot new QC methods. Importantly, the deep learning network architecture for QC
+and parameters are also provided as part of this work, allowing application of
+this network to future releases of HBN data, and allowing other researchers to
+build upon and improve upon this work.
+
+\arhtodo[inline]{Add XGB-q QC scores to the participants.tsv on FCP-INDI}
+
 \subsection*{Generalizing the hybrid QC approach to dMRI}
 
 In this work, we have generalized our previous work on what we now call ``hybrid
@@ -852,8 +841,15 @@ set of community scientist-labeled data and two steps of machine learning: the
 first to match between the community scientists and the experts, and the second
 to match between the images and the augmented community scientist labels.
 
-This approach was generalized in several respects: first, from a single volume
-of T1-weighted data to the multi-volume dMRI.
+Here, this approach was generalized in several respects: first, from a single
+volume of T1-weighted data to the multi-volume dMRI.
+
+Undertaking this processing and QC effort required construction and deployment
+of substantial informatics infrastructure, including tools for cloud computing,
+web applications for expert annotation and for community science rating and
+analysis software. All of these tools are provided openly, so that this approach
+can be generalized even more widely in other projects and in other scientific
+fields.
 
 \arhtodo[inline]{%
     Add some text about the benefit of generalizing the hybrid approach to
