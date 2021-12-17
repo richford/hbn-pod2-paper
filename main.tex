@@ -16,7 +16,7 @@
 \newcommandx{\comment}[2][1=]{\todo[author=Comment,linecolor=lime,backgroundcolor=lime!25,bordercolor=lime,#1]{#2}}
 \newcommandx{\arhtodo}[2][1=]{\todo[author=Adam,linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
 
-\title{A preprocessed open diffusion derivatives dataset from the Healthy Brain Network}
+\title{A preprocessed open diffusion derivatives dataset for child and adolescent neuroimaging}
 
 \author[1,*$\dagger$]{Adam Richie-Halford}
 \author[2,$\dagger$]{Matthew Cieslak}
@@ -727,50 +727,52 @@ analyses and recommend that researchers using HBN-POD2 conduct their own.
 
 \section*{Discussion}
 
-We present HBN-POD2, one of the largest youth diffusion imaging datasets with
-derived measures currently available. It is openly available and complies with
-the current draft of the BIDS diffusion derivative specification. It will grow
-continuously as the HBN study acquires more data, eventually reaching its
-\num{10000} subject goal. Here we summarize the contributions of this work,
-starting from the potential impact of the dataset itself and ending with
-implications for quality control of other large-scale neuroimaging datasets.
+We present HBN-POD2, one of the largest child and adolescent diffusion imaging
+datasets with derived measures that is currently openly available. The dataset
+was designed to comply with the best practices of the field. For example, it
+complies with the current draft of the BIDS diffusion derivative specification.
+It will grow continuously as the HBN study acquires more data, eventually
+reaching its \num{10000} subject goal. Here we summarize the contributions of
+this work, starting from the potential impact of the range of resources we have
+created and ending with implications for processing and quality control of other
+large-scale neuroimaging datasets.
 
 \subsection*{Standardized preprocessing and QC increases the impact of openly-available data}
 
 The most immediate contribution of this work is a large analysis-ready dMRI
 dataset, openly accessible to the public. In the past decade, projects such as
-the HBN, Human Connectome Project (HCP) \cite{van-essen2013-oi}, UK Biobank
+the Human Connectome Project (HCP) \cite{van-essen2013-oi}, UK Biobank
 \cite{miller2016-mq}, ABCD \cite{jernigan2018-my}, and CamCAN
-\cite{taylor2017-or,shafto2014-ld} have ushered a culture of data sharing in
-open big-data neuroscience. The adoption and reuse of these datasets reduces or
-eliminates the data collection burden on downstream researchers. Some projects,
-such as the HCP \cite{glasser2013-lo}, provide preprocessed diffusion
-derivatives, further reducing researchers' burden and extending the benefits of
-data-sharing from data collection to preprocessing and secondary analysis.
-Following the example of the HCP, HBN-POD2 provides analysis-ready dMRI
-derivatives. This avoids duplication of preprocessing effort while also ensuring
-a minimum standard of data quality for HBN researchers. The data is amenable to
-many different analyses, including tractometry \cite{yeatman2012-rc}, graph
-theoretical analysis \cite{yeh2020-nu}, and combinations with functional data
-for the same subjects. The availability of standardized preprocessed diffusion
-data will allow researchers to create and test hypotheses on the white matter
-properties underlying behavior and disease, from reading and math acquisition to
-childhood adversity and mental health. As such, this dataset will accelerate
-discovery at the nexus of structural connectivity and neurodevelopmental and
-learning disorders.
+\cite{taylor2017-or,shafto2014-ld} and of course FCP-INDI (which includeds HBN)
+\cite{Mennes2013-eu} have ushered a culture of data sharing in open big-data
+neuroscience. The adoption and reuse of these datasets reduces or eliminates the
+data collection burden on downstream researchers. Some projects, such as the HCP
+\cite{glasser2013-lo}, also provide preprocessed derivatives, further reducing
+researchers' burden and extending the benefits of data-sharing from data
+collection to preprocessing and secondary analysis. Following the example of the
+HCP, HBN-POD2 provides analysis-ready dMRI derivatives. This avoids duplication
+of preprocessing effort while also ensuring a minimum standard of data quality
+for HBN researchers. The data is amenable to many different analyses, including
+tractometry \cite{yeatman2012-rc}, graph theoretical analysis \cite{yeh2020-nu},
+and combinations with functional data for the same subjects. The availability of
+standardized preprocessed diffusion data will allow researchers to create and
+test hypotheses on the white matter properties underlying behavior and disease,
+from reading and math acquisition to childhood adversity and mental health. As
+such, this dataset will accelerate discovery at the nexus of structural
+connectivity and neurodevelopmental and learning disorders.
 
-In this kind of study, it is crucial to do accurate and reliable QC of the data.
-We provide QC scores for the subjects that we have preprocessed, paving the way
-for others to incorporate considerations of data quality into their analysis of
-the processed data. Importantly, the deep learning network architecture for QC
-and parameters are also provided as part of this work, allowing application of
-this network to future releases of HBN data, and allowing other researchers to
-build upon and improve upon this work. Moreover, undertaking this processing and
-QC effort required construction and deployment of substantial informatics
-infrastructure, including tools for cloud computing, web applications for expert
-annotation and for community science rating and analysis software. All of these
-tools are provided openly, so that this approach can be adopted widely in other
-projects and in other scientific fields.
+In this kind of study, it is crucial to perform accurate and reliable QC of the
+data. We provide QC scores for the subjects that we have preprocessed, paving
+the way for others to incorporate considerations of data quality into their
+analysis of the processed data. Importantly, the deep learning network
+architecture for QC and parameters are also provided as part of this work,
+allowing application of this network to future releases of HBN data, and
+allowing other researchers to build upon and improve upon this work. Moreover,
+undertaking this processing and QC effort required construction and deployment
+of substantial informatics infrastructure, including tools for cloud computing,
+web applications for expert annotation and for community science rating and
+analysis software. All of these tools are provided openly, so that this approach
+can be adopted widely in other projects and in other scientific fields.
 
 \subsection*{Fully transparent pipelines provide an extensible baseline for future methods development}
 
