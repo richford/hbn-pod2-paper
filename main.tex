@@ -382,34 +382,37 @@ science raters, we trained two additional gradient boosting models
     call XGB-q
     \item one trained on only the \emph{Fibr} ratings, which we call XGB-f.
 \end{enumerate*}
+
 XGB-f may be viewed as a data-driven weighting of community scientists' ratings,
 while XGB-q may be viewed as a generalization of QC metric exclusion criteria.
-In Figure \ref{fig:fibr-qc:scatter}, we show the associations between the mean
-expert rating and both the mean \emph{Fibr} rating and the XGB predictions. The
-unadjusted \emph{Fibr} ratings are overly optimistic; on average, community
-scientists are not as critical as the expert raters. The XGB predictions remedy
-this by
-\begin{enumerate*}[%
-    label=(\roman*),%
-    before={{ }},%
-    itemjoin={{, }},%
-    itemjoin*={{ and }}]
-    \item incorporating automated QC metrics from \emph{QSIPrep}
-    \item weighting the contribution of \emph{Fibr} raters who agree more with
-    the experts on the training set.
-\end{enumerate*}
-Figure \ref{fig:fibr-qc:roc} depicts the ROC curves for the XGB, XGB-q, and
-XGB-f models.
-XGB attains a cross validated area under the receiver operating curve (ROC-AUC) of
-$0.96 \pm 0.01$ on the ``gold standard,'' where the $\pm$ indicates the standard
-deviation of scores from repeated $k$-fold cross-validation.
-In contrast, XGB-q attained an ROC-AUC of $0.91 \pm 0.03$ and XGB-f achieved an
-ROC-AUC of $0.84 \pm 0.04$.
-The enhanced performance of XGB-q over XGB-f shows that community scientists
-alone are not as good as automated metrics at predicting expert ratings. And
-yet, the increased performance of XGB over XGB-q demonstrates that there is
-additional image quality information to be gained by visual inspecting dMRI
-data.
+XGB, combining information from both \emph{Fibr} ratings and \emph{QSIPrep} QC
+metric attained a cross-validated area under the receiver operating curve
+(ROC-AUC) of $0.96 \pm 0.01$ on the ``gold standard,'' where the $\pm$ indicates
+the standard deviation of scores from repeated $k$-fold cross-validation
+((Figure \ref{fig:fibr-qc:scatter}a)). In contrast, XGB-q attained an ROC-AUC of
+$0.91 \pm 0.03$ and XGB-f achieved an ROC-AUC of $0.84 \pm 0.04$. The enhanced
+performance of XGB-q over XGB-f shows that community scientists alone are not as
+accurate as automated QC metrics are at predicting expert ratings. And yet, the
+increased performance of XGB over XGB-q demonstrates that there is additional
+image quality information to be gained by incorporating community scientist input.
+
+As a way of evaluating the quality of the XGB predictions, consider the fact
+that the average Cohen's $kappa$ between XGB and the expert raters is 0.74,
+which is higher than the average Cohen's $kappa$ between any of the other raters
+and their human peers (Figure~\ref{fig:expert-qc} ). This is not suprising,
+given that the XGB model was fit to optimize this match, but further
+demonstrates the goodness of fit.
+
+Nevertheless, this provides confidence in using the XGB scores in the next step
+of analysis. When a subset of subjects is coded by multiple raters and the
+reliability of their ratings is meant to generalize to other subjects rated by
+only one coder, the single-measure ICC3 must be used. When adding XGB to the
+existing expert raters as a seventh expert, $\textbf{ICC3} = 0.709 (95\% CI:
+[0.66, 0.75])$. This high ICC3 value after inclusion of the XGB model justifies
+using the XGB scores as the target for training an image-based deep learning
+network.
+
+\arhtodo{Each figure caption should explain what the error bars mean. In particular, in Figure 3b}
 
 \begin{figure}[tbp]
     \begin{subfigure}{.55\textwidth}
@@ -442,27 +445,27 @@ data.
 
 The XGB ``rater'' does a good job of extending QC ratings to the entire
 community science subset, but requires \emph{Fibr} scores. Without community
-science ratings, it would fall back on the suboptimal XGB-q prediction. Instead,
-we would like a fully automated QC approach that can be readily applied to new
-data releases from HBN. We therefore trained a deep convolution neural network
-to predict the XGB ratings from \emph{QSIPrep} outputs alone. We modified an
-existing 3D convolutional neural network (CNN) architecture \cite{zunair2020-bs},
-previously applied to the ImageCLEF Tuberculosis Severity Assessment 2019
-benchmark \cite{dicente2019clef} to accept multichannel input containing the
-B=0 reference diffusion image, a tensor fractional isotropy (FA) image, and,
-optionally, automated QC metrics from QSIPrep. We trained this network on the
-XGB ``rater's'' predictions and validated it against the gold standard dataset.
-Figure \ref{fig:dl-qc:roc} depicts the ROC curves for two deep learning models,
-one trained with additional automated QC metrics from QSIPrep and one trained
-without. We refer to the convolutional neural network model training only on
-imaging as CNN-i and the model that incorporates automated QC metrics as
-CNN-i+q. The two models perform nearly identically and achieve and ROC-AUC of
-$0.947$. The identical performance suggests that QSIPrep's automated QC metrics
-provide information that is redundant to the lower-level imaging data.
-Both CNN-i and CNN-i+q are outperform the XGB-q, which was trained only on
-automated QC metrics. While CNN-i and CNN-i+q underperform the full XGB model,
-they do not require the additional \emph{Fibr} scores and the associated
-logistical burden of collecting community science ratings.
+science ratings, we would have to fall back on the less accurate XGB-q
+prediction. Instead, we would like a fully automated QC approach that can be
+readily applied to new data releases from HBN.
+
+We therefore trained a deep convolutional neural network to predict the XGB
+ratings directly from \emph{QSIPrep} outputs. We modified an existing 3D
+convolutional neural network (CNN) architecture \cite{zunair2020-bs}, previously
+applied to the ImageCLEF Tuberculosis Severity Assessment 2019 benchmark
+\cite{dicente2019clef} to accept multichannel input generated from the
+preprocessed dMRI: the $b=0$ reference diffusion image, each of the three
+cardinal axis components of the DEC-FA image, and, optionally, automated QC
+metrics from QSIPrep. We trained this network on XGB scores and validated it
+against the gold standard expert-scored dataset. We refer to the convolutional
+neural network model training only on imaging data as CNN-i and the model that
+incorporates automated QC metrics as CNN-i+q. The two models performed nearly
+identically and achieved an ROC-AUC of $0.947$ (Figure \ref{fig:dl-qc:roc}). The
+near-identical performance suggests that \emph{QSIPrep}'s automated QC metrics
+provide information that is redundant with information available in imaging
+data. Both CNN-i and CNN-i+q outperformed XGB-q, which was trained only on
+automated QC metrics, but both underperformed relative to the full XGB model,
+that uses community science scores in addition to the \emph{QSIPrep} QC scores.
 
 \begin{figure}[htbp]
     \begin{subfigure}{.25\textwidth}
