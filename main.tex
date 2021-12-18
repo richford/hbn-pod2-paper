@@ -206,7 +206,7 @@ could not be curated to comply with the BIDS standard or that did not have dMRI
 data were excluded, resulting in \num{2136} subjects with preprocessed,
 BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
 
-\subsection*{Health Brain Network Preprocessed Open Diffusion Derivatives}
+\subsection*{Healthy Brain Network Preprocessed Open Diffusion Derivatives}
 
 \mctodo[inline]{%
     Matt, please describe the \emph{QSIPrep} output directory structure.
@@ -301,7 +301,7 @@ pass.'' The distribution of scores given by the experts demonstrates that the
 gold standard dataset included a range of data quality. Mean expert ratings
 correlate with some of the automated QC metrics output by \emph{QSIPrep}:
 neighboring DWI correlation (NDC) \cite{yeh2019-kb}, maximum relative
-translation, and number of outlier slices (Pearson CC: XXX). NDC characterizes
+translation, and number of outlier slices. NDC characterizes
 the pairwise spatial correlation between pairs of DWI volumes that sample
 neighboring points in $q$-space. Since lower values indicate reduced data
 quality, it is reassuring that NDC correlates directly with expert rating
@@ -817,8 +817,10 @@ We view the XGB-q scores as a more interpretable fallback for users who are not
 comfortable basing study exclusion decisions on a deep learning model
 \cite{rudin2019stop}. The decision to use a more interpretable but slightly less
 performant method of generating QC scores was also advocated by Tobe et
-al.~\cite{tobe2021longitudinal}, who noted that the Euler number can reliably
-predict braindr scores in the NKI-Rockland dataset.
+al.~\cite{tobe2021longitudinal}, who noted that the Euler number of T1-weighed
+images in the NKI-Rockland dataset can reliably predict scores generated with
+\emph{Braindr}, the community science application developed in our previous work
+\cite{keshavan2019-er}.
 
 We also note that the issue of algorithmic impact in choosing a QC method is not
 exclusive to the deep learning model. We have chosen models that most reliably
@@ -829,11 +831,15 @@ QC score is highly correlates with age or socio-economic status. We therefore
 caution researchers to examine interactions between the QC scores we provide and
 their phenotype of interest.
 
-\rokemtodo[inline]{%
-    Add discussion of limitations of expert QC. Here maybe we could discuss the
-    max vs mean displacement bias. Maybe also refer to the difference between
-    pairwise Cohen's $\kappa$ and ICC3k.
-}
+More generally, QC in the dataset that we have produced is fundamentally
+anchored to the decisions made by the expert observers. While Cohen's $\kappa$
+between some pairs of experts can be as low as 0.52, IRR quantified across all
+of the experts with ICC3k is excellent. Nevertheless, it is possible that
+improvements to the final QC scores could be obtained through improvements to
+IRR, or by designing a more extensive expert QC protocol. The tradeoff between
+more extensive QC for each subject and more superifcial QC on more subjects was
+not explored in this study, but could also be the target for future research.
+
 
 \subsection*{Fully transparent pipelines provide an extensible baseline for future methods development}
 
@@ -856,28 +862,47 @@ benchmark dataset of expert, community science and automated QC, with which to
 pilot new QC methods. Importantly, the deep learning network architecture for QC
 and parameters are also provided as part of this work, allowing application of
 this network to future releases of HBN data, and allowing other researchers to
-build upon and improve upon this work.
+build upon and improve upon this work. Indeed, in this work, we have extended
+our previous work on what we now call ``hybrid QC''. This approach, which we
+originally applied to the HBN T1-weighted data \cite{keshavan2019-er} (using the
+\emph{Braindr} web app: \url{https://braindr.us}) was extended here in several
+respects:
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before=\unskip{: },%
+    itemjoin={{, }},%
+    itemjoin*={{, and }}]
+
+    \item The \emph{Braindr} study used a smaller dataset of approximately 700
+    subjects, while we extended this approach to more than \num{2000} subjects
+    here.
+    \item \emph{Braindr} relied on approximately \num{80000} ratings from 261 users.
+    Here, we received more than \num{500000} ratings from \num{374} community
+    scientists. As our understanding of the role of community scientist
+    contributions has evolved, we decided that we would include as collective
+    co-authors community scientists who contributed more than \num{3000} ratings
+    \cite{Ward-Fear2020-zq}
+    \item \emph{Braindr} used data from only a single-site. Here, multi-site data was used. This opens up multiple possibities for deeper exploration of between-site quality differences, and also for harmonization of QC across sites
+    \item  The most challenging extension of hybrid QC from \emph{Braindr} to
+    this study entailed developing an approach that would encompass multi-volume
+    dMRI data. On the one hand, this meant that the task performed by the expert
+    observers was more challenging, because it required examination of the full
+    dMRI time-series for every scan. On the other hand, it also meant that the
+    4D data had to be summarized into 2D data to be displayed in the \emph{Fibr}
+    web application. This was achieved by summarizing the entire time-series as
+    a DEC-FA + $b=0$ image and presenting community scientists with animated
+    sections of these images that showed how the data extended over several
+    horizontal slices. In addition, the extension to 4D data required developing
+    new deep learning architectures for analysis of 4D images, including
+    upstream contributions to nobrainer, a community-developed software library
+    for deep learning in neuroimaging data \cite{nobrainer}.
+\end{enumerate*}
+These extensions demonstrate that the hybrid QC approach generalizes very well
+to a variety of different circumstances. Future applications of this approach
+could generalize to functional MRI data, as well as other large datasets from
+other kinds of measurements and other research domains.
 
 \arhtodo[inline]{Add XGB-q QC scores to the participants.tsv on FCP-INDI}
-
-\subsection*{Generalizing the hybrid QC approach to dMRI}
-
-In this work, we have generalized our previous work on what we now call ``hybrid
-QC''. This approach, originally applied to the HBN T1-weighted data
-\cite{keshavan2019-er} makes use of a small expert-labeled data set, a larger
-set of community scientist-labeled data and two steps of machine learning: the
-first to match between the community scientists and the experts, and the second
-to match between the images and the augmented community scientist labels.
-
-Here, this approach was generalized in several respects: first, from a single
-volume of T1-weighted data to the multi-volume dMRI.
-
-Undertaking this processing and QC effort required construction and deployment
-of substantial informatics infrastructure, including tools for cloud computing,
-web applications for expert annotation and for community science rating and
-analysis software. All of these tools are provided openly, so that this approach
-can be generalized even more widely in other projects and in other scientific
-fields.
 
 \arhtodo[inline]{%
     Add some text about the benefit of generalizing the hybrid approach to
@@ -886,11 +911,6 @@ fields.
     inter-rater reliability was *a lot* higher for T1-weighted. This is
     potentially a problem, but also highlights how important it is to have an
     automated, "objective" approach.
-}
-
-\rokemtodo[inline]{%
-    Add some text about the benefit of generalizing the hybrid approach to
-    multisite and multi-modality data.
 }
 
 \subsection*{Future work and open problems}
@@ -912,6 +932,13 @@ fast and relatively inexpensive, we propose a third way: if improvements to the
 preprocessing pipeline are available with a new HBN release, we plan to execute
 the improved pipeline on the entire HBN dataset, while preserving the previous
 baseline release in an archived BIDS derivative dataset.
+
+Undertaking the processing and QC effort to generate HBN-POD2 required
+construction and deployment of substantial informatics infrastructure, including
+tools for cloud computing, web applications for expert annotation and for
+community science rating and analysis software. All of these tools are provided
+openly, so that this approach can be generalized even more widely in other
+projects and in other scientific fields.
 
 \rokemtodo[inline]{%
     After we run the site generalization experiments, speculate about
