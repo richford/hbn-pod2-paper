@@ -197,7 +197,6 @@ The aims of this study were fourfold
     \item provide unrestricted public release of the outputs from each of these
     steps.
 \end{enumerate*}
-
 Starting with MRI data from \num{2747} HBN participants available on FCP-INDI,
 we curated these data for compliance with the Brain Imaging Data Structure
 (BIDS) specification \cite{gorgolewski2016-lh} and preprocessed the structural
@@ -378,8 +377,8 @@ raters provided $>3,000$ ratings each and are included in the Fibr Community
 Science Consortium as co-authors on this paper.
 
 The unadjusted \emph{Fibr} ratings are overly optimistic; i.e., on average,
-community scientists are not as critical as the expert raters (Figure
-\ref{fig:fibr-qc:scatter}a). In addition, different community scientists
+community scientists are not as critical as the expert raters
+(Figure~\ref{fig:fibr-qc:scatter}a). In addition, different community scientists
 probably provide data of differing accuracy. In addition, additional information
 about quality is provided in the \emph{QSIPrep} QC metrics. To account for this
 variability, and take advantage of the information provided by \emph{QSIPrep},
@@ -404,7 +403,7 @@ XGB, combining information from both \emph{Fibr} ratings and \emph{QSIPrep} QC
 metric attained a cross-validated area under the receiver operating curve
 (ROC-AUC) of $0.96 \pm 0.01$ on the ``gold standard,'' where the $\pm$ indicates
 the standard deviation of scores from repeated $k$-fold cross-validation
-((Figure \ref{fig:fibr-qc:scatter}a)). In contrast, XGB-q attained an ROC-AUC of
+(Figure~\ref{fig:fibr-qc:scatter}a). In contrast, XGB-q attained an ROC-AUC of
 $0.91 \pm 0.03$ and XGB-f achieved an ROC-AUC of $0.84 \pm 0.04$. The enhanced
 performance of XGB-q over XGB-f shows that community scientists alone are not as
 accurate as automated QC metrics are at predicting expert ratings. And yet, the
@@ -426,8 +425,6 @@ existing expert raters as a seventh expert, $\textbf{ICC3} = 0.709 (95\% CI:
 [0.66, 0.75])$. This high ICC3 value after inclusion of the XGB model justifies
 using the XGB scores as the target for training an image-based deep learning
 network.
-
-\arhtodo{Each figure caption should explain what the error bars mean. In particular, in Figure 3b}
 
 \begin{figure}[tbp]
     \begin{subfigure}{.55\textwidth}
@@ -452,6 +449,8 @@ network.
         \emph{Fibr} raters.
         %
         \textbf{(b)} ROC curves for the XGB, XGB-q, and XGB-f models.
+        Transluscent bands represent one standard deviation from the mean
+        of the cross-validation splits.
     }
     \label{fig:fibr-qc}
 \end{figure}
@@ -475,7 +474,7 @@ metrics from \emph{QSIPrep}. We trained this network on XGB scores and validated
 against the gold standard expert-scored dataset. We refer to the convolutional
 neural network model trained only on imaging data as CNN-i and the model that
 incorporates automated QC metrics as CNN-i+q. The two models performed nearly
-identically and achieved an ROC-AUC of $0.947$ (Figure \ref{fig:dl-qc:roc}). The
+identically and achieved an ROC-AUC of $0.947$ (Figure~\ref{fig:dl-qc:roc}). The
 near-identical performance suggests that \emph{QSIPrep}'s automated QC metrics
 provide information that is redundant with information available in the imaging
 data. Both CNN-i and CNN-i+q outperformed XGB-q, which was trained only on
@@ -510,11 +509,17 @@ that uses \emph{Fibr} scores in addition to the \emph{QSIPrep} QC scores.
         the imaging. Both outperformed the XGB-q predictions, indicating the
         added value of the diffusion weighted images. However, both models
         underperformed the XGB predictions, which also incoporate
-        information from \emph{Fibr} ratings for each scan.
+        information from \emph{Fibr} ratings for each scan. The error bands
+        represent one standard deviation from the mean of the cross-validation
+        splits.
         %
         \textbf{(b)} Joint distributions showing a strong direct association
         between age and QC score. This likely reflects the well-known negative
         association between age and head motion in pediatric neuroimaging.
+        The dots encode the mean QC score for each year of age with error bands
+        representing a bootstrapped 95\% confidence interval. The line depicts
+        a linear regression relating age and QC score with transluscent bands
+        encoding a bootstrapped 95\% confidence interval.
         %
         \textbf{(c)}
         Histograms showing the relationship between participants QC scores and
@@ -529,11 +534,11 @@ XGB predicted scores, as well as the CNN-i predicted score, we treat the CNN-i
 score as the definitive QC score because it is available for all participants,
 can be easily calculated for new participants in future HBN releases and is more
 accurate than XGB-q. When we refer to a participant's QC score without
-specifying a generating model, the CNN-i score is assumed. Figure
-\ref{fig:dl-qc} depicts the distribution of these QC scores by age (Figure
-\ref{fig:dl-qc:joint}), sex, and scanning site (Figure \ref{fig:dl-qc:hist}). QC
-distributions are similar for each scan site and for male and female
-participants \footnote{%
+specifying a generating model, the CNN-i score is assumed.
+Figure~\ref{fig:dl-qc} depicts the distribution of these QC scores by age
+(Figure~\ref{fig:dl-qc:joint}), sex, and scanning site
+(Figure~\ref{fig:dl-qc:hist}). QC distributions are similar for each scan site
+and for male and female participants \footnote{%
     Responses for the sex variable in HBN phenotypic data are limited to
     ``male'' and ``female.''
 }.
@@ -552,20 +557,20 @@ as well as in multiple sclerosis prediction from brain MRI
 CNN-i model is looking at the same features that an expert rater would look at,
 thereby bolstering the decision to apply it to new data.
 
-Figure \ref{fig:ig} shows attribution maps for example participants from each
+Figure~\ref{fig:ig} shows attribution maps for example participants from each
 confusion class: true positive, true negative, false positive, and false
 negative. The columns correspond to the different channels of the deep learning
 input volume: the $b=0$ reference image and the DEC-FA in the $x$, $y$, and $z$
 directions. The true positive map indicates that the network is looking at the
-entire brain rather than focusing on any one anatomical region (Figure
-\ref{fig:ig:true-pos}). Moreover, the model identifies white matter fascicles
-that travel along the direction of the input channel: lateral for $x$,
+entire brain rather than focusing on any one anatomical region
+(Figure~\ref{fig:ig:true-pos}). Moreover, the model identifies white matter
+fascicles that travel along the direction of the input channel: lateral for $x$,
 anterior-posterior for $y$, and superior-inferior for $z$. The true negative
-attribution map (Figure \ref{fig:ig:true-neg}) reveals that when the reference
+attribution map (Figure~\ref{fig:ig:true-neg}) reveals that when the reference
 $b=0$ volume contains motion artifacts, such as banding, the network ignores the
 otherwise positive attributions for the clearly identifiable white matter tracts
-in the DEC-FA channels. The false positive map (Figure \ref{fig:ig:false-pos})
-and the false negative map (Figure \ref{fig:ig:false-neg}) should be interpreted
+in the DEC-FA channels. The false positive map (Figure~\ref{fig:ig:false-pos})
+and the false negative map (Figure~\ref{fig:ig:false-neg}) should be interpreted
 differently since they come from low confidence predictions; the probability of
 passing hovered on either side of the pass/fail threshold. For example, in the
 false positive case, the network is confused enough that it treats voxels that
@@ -643,14 +648,13 @@ kruper2021evaluating} is a subset of tractometry
 tractography to quantify properties of the white matter along major pathways.
 Tract-profiling retains the values of diffusion metrics along the trajectory of
 each bundle of tractography streamlines, rather than computing summary
-statistics summarized at the level of each bundle. In Figure
-\ref{fig:qc-profiles:md}, we plot mean diffusivity tract profiles grouped into
-four QC bins along the length of twenty-four bundles: While some bundles, such
-as the cingulum cingulate (CGC) and the inferior longitudinal fasciculus (ILF),
-appear insensitive to QC score, others, such as the uncinate (UNC) and the
-orbital portion of the corpus callosum, exhibit strong differences between QC
-bins. In most bundles, low QC scores tend to flatten the profile.
-
+statistics summarized at the level of each bundle. In
+Figure~\ref{fig:qc-profiles:md}, we plot mean diffusivity tract profiles grouped
+into four QC bins along the length of twenty-four bundles: While some bundles,
+such as the cingulum cingulate (CGC) and the inferior longitudinal fasciculus
+(ILF), appear insensitive to QC score, others, such as the uncinate (UNC) and
+the orbital portion of the corpus callosum, exhibit strong differences between
+QC bins. In most bundles, low QC scores tend to flatten the profile.
 
 \begin{figure}[tbp]
     \centering
@@ -660,9 +664,9 @@ bins. In most bundles, low QC scores tend to flatten the profile.
         MD profiles binned by QC score in twenty-four major while matter
         bundles. The left and right uncinate bundles are the most sensitive
         to QC score. Generally, QC score tends to flatten bundle profiles.
-        Error bands represent 95\% confidence intervals. Bundle abbreviations
-        for lateralized bundles contain a trailing ``L'' or ``R'' indicating the
-        hemisphere. Bundle abbreviations:
+        Error bands represent bootstrapped 95\% confidence intervals. Bundle
+        abbreviations for lateralized bundles contain a trailing ``L'' or ``R''
+        indicating the hemisphere. Bundle abbreviations:
         inferior fronto-occipital fasciculus (IFO),
         uncinate (UNC),
         thalamic radiation (ATR),
@@ -686,6 +690,9 @@ bins. In most bundles, low QC scores tend to flatten the profile.
 \arhtodo[inline]{
     The tract profile plot needs improvement. Specifically, the axes text
     takes up a lot of room so it's hard to see the plots.
+
+    In fact, all of the plots could be improved to use the same font and fontsize
+    as the text.
 }
 
 The effect of QC score on white matter bundle profiles suggests that researchers
@@ -708,7 +715,8 @@ varies depending on the QC cutoff (Figure~\ref{fig:age-prediction}). An initial 
         the most dramatic increase in $R^2$ after imposing even the lowest
         cutoff of $0.05$. Thereafter, the $R^2$ scores trend upward until a
         cutoff of $\sim 0.95$, where the training set size (right axis, orange
-        line) becomes too small to sustain model performance.
+        line) becomes too small to sustain model performance. The error bands
+        represent a bootstrapped 95\% confidence interval.
     }
     \label{fig:age-prediction}
 \end{figure}
@@ -760,8 +768,6 @@ between head motion and age, which is well established both in general
 \cite{power2012spurious,satterthwaite2012impact,fair2012distinct,yendiki2014spurious}
 and specifically for resting-state fMRI in the HBN dataset \cite{alexander2017-yc}.
 
-\arhtodo[inline]{Change all \texttt{Figure \\ref} to \texttt{Figure~\\ref}}
-
 We demonstrate the impact of QC in a benchmark age prediction task
 (Figure~\ref{fig:age-prediction}). In this case, the increase in model performance
 from imposing a QC cutoff is intuitive: we know from
@@ -781,14 +787,10 @@ recommend that researchers using HBN-POD2 conduct their own.
 
 \subsection*{Automated quality control: a tension between scalability and interpretability}
 
-\arhtodo[inline]{%
-    Consider adding this reference to the list of ``interpretability'' references
-    below: https://doi.org/10.1016/S2589-7500(21)00208-9
-}
-
 We provide four different scores in anticipation of end-user's reluctance to
 trust a QC score generated through deep learning \cite{lipton2017doctor,
-salahuddin2022transparency, Zech2018-ki}. The predictive performance of the CNN-i model (Figure \ref{fig:dl-qc:roc}) gives
+Zech2018-ki, Ghassemi2021-zg, salahuddin2022transparency}. The predictive
+performance of the CNN-i model (Figure~\ref{fig:dl-qc:roc}) gives
 us confidence that it could accurately classify unseen data, justifying its
 extension to the entire HBN-POD2 dataset and to future releases. However, it
 does not explain its decisions. As deep learning models have been increasingly
@@ -796,24 +798,26 @@ applied to medical image analysis, there is an evolving interest in the
 interpretability of these models \cite{salahuddin2022transparency}. While an
 exhaustive interpretation of deep learning QC models is beyond the scope of this
 work, we provided a preliminary qualitative interpretation of the CNN-i model
-(\ref{fig:ig}) that demonstrates the intuitive nature of its decisions.
+(Figure~\ref{fig:ig}) that demonstrates the intuitive nature of its decisions.
 
 Nevertheless, we recognize that some researchers may still be leery of the deep
 learning generated scores. Therefore, in addition to the deep learning generated
 scores, we provide
-\begin{enumerate}
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before=\unskip{ },%
+    itemjoin={{, }},%
+    itemjoin*={{ and }}]
     \item the mean expert QC score for the 200 subjects in the gold standard
-    dataset,
+    dataset
     \item the scores predicted by the XGB model, which outperformed all other models
     when evaluated against the gold standard ratings, but which are only available
-    for participants that have community science scores,
+    for participants that have community science scores
     \item the scores predicted by the XGB-q model, which underperformed the deep
     learning generated scores, but which rely only on the automated QC metrics
-    output by \emph{QSIPrep}, and may therefore be viewed as more interpretable.
-    These are available for all participants.
-\end{enumerate}
-\arhtodo[inline]{Make this list inline.}
-We view the XGB-q scores as a more interpretable fallback for users who are not
+    output by \emph{QSIPrep}.
+\end{enumerate*}
+We view the XGB-q scores, which are available for all participants, as a more interpretable fallback for users who are not
 comfortable basing study exclusion decisions on a deep learning model
 \cite{rudin2019stop}. The decision to use a more interpretable but slightly less
 performant method of generating QC scores was also advocated by Tobe et
@@ -840,7 +844,6 @@ IRR, or by designing a more extensive expert QC protocol. The tradeoff between
 more extensive QC for each subject and more superifcial QC on more subjects was
 not explored in this study, but could also be the target for future research.
 
-
 \subsection*{Fully transparent pipelines provide an extensible baseline for future methods development}
 
 While the primary audience of HBN-POD2 is researchers in neurodevelopment who
@@ -866,24 +869,26 @@ build upon and improve upon this work. Indeed, in this work, we have extended
 our previous work on what we now call ``hybrid QC''. This approach, which we
 originally applied to the HBN T1-weighted data \cite{keshavan2019-er} (using the
 \emph{Braindr} web app: \url{https://braindr.us}) was extended here in several
-respects:
+respects
 \begin{enumerate*}[%
     label=(\roman*),%
     before=\unskip{: },%
-    itemjoin={{, }},%
-    itemjoin*={{, and }}]
-
+    itemjoin={{ }},%
+    itemjoin*={{ }}]
     \item The \emph{Braindr} study used a smaller dataset of approximately 700
     subjects, while we extended this approach to more than \num{2000} subjects
     here.
-    \item \emph{Braindr} relied on approximately \num{80000} ratings from 261 users.
-    Here, we received more than \num{500000} ratings from \num{374} community
-    scientists. As our understanding of the role of community scientist
-    contributions has evolved, we decided that we would include as collective
-    co-authors community scientists who contributed more than \num{3000} ratings
-    \cite{Ward-Fear2020-zq}
-    \item \emph{Braindr} used data from only a single-site. Here, multi-site data was used. This opens up multiple possibities for deeper exploration of between-site quality differences, and also for harmonization of QC across sites
-    \item  The most challenging extension of hybrid QC from \emph{Braindr} to
+    \item \emph{Braindr} relied on approximately \num{80000} ratings from
+    \num{261} users. Here, we received more than \num{500000} ratings from
+    \num{374} community scientists. As our understanding of the role of
+    community scientist contributions has evolved, we decided that we would
+    include as collective co-authors community scientists who contributed more
+    than \num{3000} ratings \cite{Ward-Fear2020-zq}.
+    \item \emph{Braindr} used data from only a single site. Here, multi-site
+    data was used. This opens up multiple possibities for deeper exploration of
+    between-site quality differences, and also for harmonization of QC across
+    sites.
+    \item The most challenging extension of hybrid QC from \emph{Braindr} to
     this study entailed developing an approach that would encompass multi-volume
     dMRI data. On the one hand, this meant that the task performed by the expert
     observers was more challenging, because it required examination of the full
@@ -894,15 +899,18 @@ respects:
     sections of these images that showed how the data extended over several
     horizontal slices. In addition, the extension to 4D data required developing
     new deep learning architectures for analysis of 4D images, including
-    upstream contributions to nobrainer, a community-developed software library
-    for deep learning in neuroimaging data \cite{nobrainer}.
+    upstream contributions to \emph{Nobrainer}, a community-developed software
+    library for deep learning in neuroimaging data \cite{nobrainer}.
 \end{enumerate*}
 These extensions demonstrate that the hybrid QC approach generalizes very well
 to a variety of different circumstances. Future applications of this approach
 could generalize to functional MRI data, as well as other large datasets from
 other kinds of measurements and other research domains.
 
-\arhtodo[inline]{Add XGB-q QC scores to the participants.tsv on FCP-INDI}
+\arhtodo[inline]{%
+    Add XGB-q QC scores to the \texttt{participants.tsv} on FCP-INDI in the
+    ``xgb\_qsiprep\_qc\_score'' column.
+}
 
 \arhtodo[inline]{%
     Add some text about the benefit of generalizing the hybrid approach to
@@ -910,7 +918,7 @@ other kinds of measurements and other research domains.
     previous T1-weighted work. One thing to discuss there is that expert
     inter-rater reliability was *a lot* higher for T1-weighted. This is
     potentially a problem, but also highlights how important it is to have an
-    automated, "objective" approach.
+    automated, ``objective'' approach.
 }
 
 \subsection*{Future work and open problems}
@@ -1111,12 +1119,14 @@ subject and saved their scores and sent them to the lead author for compilation.
     are witheld from this paper.
 }
 
-To compute the pairwise Cohen's $\kappa$ scores in \ref{fig:expert-qc:irr}, we
+To compute the pairwise Cohen's $\kappa$ scores in Figure~\ref{fig:expert-qc:irr}, we
 used the \emph{scikit-learn} \cite{scikit-learn} \texttt{cohen\_kappa\_score}
 function with quadratic weights. To compute intraclass correlation, we used the
 \emph{pingouin} statistical package \cite{vallat2018pingouin}
 \texttt{intraclass\_corr} function. The expert rating analysis can be replicated
 using the \texttt{make expert-qc} command in the HBN-POD2 GitHub repository.
+The mean expert ratings, scaled to the range $[0, 1]$ are available in the
+``expert\_qc\_score'' column of the \texttt{participants.tsv} file on FCP-INDI.
 
 \subsection*{Community scientist quality control}
 
@@ -1135,7 +1145,10 @@ to the HBN-POD2 OSF project.
 
 The \emph{Fibr} ratings were then combined with automated \emph{QSIPrep} QC
 metrics to train the gradient boosted trees models XGB, XGB-f, and XGB-q. These
-models were implemented using the XGBoost library \cite{xgboost}. Using repeated
+models were implemented as binary classifiers using the XGBoost library
+\cite{xgboost}. The targets for these classifiers were the mean expert ratings
+in the gold standard dataset, rescaled to the range $[0, 1]$ and binarized with
+a threshold of $0.5$. Using repeated
 stratified K-fold cross-validation, with three splits and two repeats, we
 evaluated the models' performance in predicting the gold standard ratings. In
 each fold, the best model hyperparameters were chosen using the scikit-optimize
@@ -1150,6 +1163,10 @@ out-of-sample ROC AUC. This was implemented using scikit-learn's
 ``expert'' rater, we reassessed the pairwise Cohen's $\kappa$ and ICC scores as
 in the expert QC subsection. The community ratings analysis can be replicated
 using the \texttt{make community-qc} command in the HBN-POD2 GitHub repository.
+The XGB model's positive class probabilities are available in the
+``xgb\_qc\_score'' column of the \texttt{participants.tsv} file on FCP-INDI, while
+the XGB-q model's positive class probabilities are available in the
+``xgb\_qsiprep\_qc\_score'' column.
 
 \subsection*{Deep learning to predict quality control}
 
@@ -1191,14 +1208,8 @@ using the \texttt{make community-qc} command in the HBN-POD2 GitHub repository.
     \label{fig:dl-architecture}
 \end{figure}
 
-\arhtodo{The text in the caption: "The final layer contains a single unit with a
-sigmoid activation function and outputs the probability of passing QC." seems in
-contrast to the text below that suggests that the network predicts a continous
-QC score, not a probability of a binary score, which is what this text suggests}
-
-
-The voting classifier's predictions were then used as targets to train a deep
-learning classifier to predict QC scores based on each subject's preprocessed
+The binarized voting classifier's predictions were then used as targets to train a deep
+learning binary classifier to predict QC scores based on each subject's preprocessed
 dMRI data. We trained two different model architectures
 \begin{enumerate*}[%
     label=(\roman*),%
@@ -1218,19 +1229,20 @@ identical for both models: a modification of an existing 3D CNN
     before=\unskip{: },%
     itemjoin={{, }},%
     itemjoin*={{ and }}]
-    \item the B=0 reference volume
+    \item the $b=0$ reference volume
     \item DEC-FA in the $x$-direction
     \item DEC-FA in the $y$-direction
     \item DEC-FA in the $z$-direction.
 \end{enumerate*}
 The \emph{QSIPrep}'s automated QC metrics were included as an additional fifth
-channel. The CNN-i+q model architecture is summarized in Figure
-\ref{fig:dl-architecture}. Upon input, the CNN-i+q model extracts the imaging
-channels and passes them through the CNN architecture. The remaining QC metric
-channel is flattened and passed ``around'' the CNN architecture and concatenated
-with the output of the convolutional layers. This concatenated output is then
-passed through a fully-connected layer to produce a single output, the
-probability of passing QC. This architecture has 1,438,783 trainable parameters.
+channel. The CNN-i+q model architecture is summarized in
+Figure~\ref{fig:dl-architecture}. Upon input, the CNN-i+q model extracts the
+imaging channels and passes them through the CNN architecture. The remaining QC
+metric channel is flattened and passed ``around'' the CNN architecture and
+concatenated with the output of the convolutional layers. This concatenated
+output is then passed through a fully-connected layer to produce a single
+output, the probability of passing QC. This architecture has \num{1438783} trainable
+parameters.
 
 We used \emph{DIPY} \cite{dipy} and \emph{cloudknot} \cite{cloudknot} to
 generate these multichannel volumes for each subject and save them as NIfTI-1
@@ -1238,7 +1250,7 @@ files \cite{nifti}. These NIfTI files were then converted to the Tensorflow
 TFRecord format using the \emph{Nobrainer} deep learning framework
 \cite{nobrainer}.
 \arhtodo[inline]{%
-    Before submission, ask the nobrainer folks to cut a new release that
+    Before submission, ask the \emph{Nobrainer} folks to cut a new release that
     contains Adam's contributions so that we are referencing the correct
     version. This cites a previous version that will not accept multichannel
     volumes.
@@ -1263,9 +1275,11 @@ failed to improve by more than 0.001 for twenty consecutive epochs. These two
 adjustments were made using the \texttt{ReduceLROnPlateau} and
 \texttt{EarlyStopping} callbacks in Tensorflow 2 \cite{tensorflow} respectively.
 The training and validation loss curves for both the CNN-i and CNN-i+q models
-are depicted in Figure \ref{fig:dl-loss}. While the CNN-i+q model achieved
+are depicted in Figure~\ref{fig:dl-loss}. While the CNN-i+q model achieved
 better validation loss, it did not outperform the CNN-i model on the held out
-gold standard dataset.
+gold standard dataset. The CNN-i+q model's positive class probabilities are
+available in the ``dl\_qc\_score'' column of the \texttt{participants.tsv} file on
+FCP-INDI.
 
 \begin{figure}[tbp]
     \begin{subfigure}[t]{0.5\textwidth}
@@ -1286,6 +1300,7 @@ gold standard dataset.
         (bottom) for the CNN-i model (left) and the CNN-i+q model (right). Model
         performance typically plateaued after twenty epochs but was allowed
         continue until meeting the early stopping criterion.
+        The error bands represent a bootstrapped 95\% confidence interval.
     }
     \label{fig:dl-loss}
 \end{figure}
@@ -1312,7 +1327,7 @@ dhollander2016unsupervised}. Reconstruction was done using MRtrix3
 
 These tractograms were then used as input to the Python Automated Fiber
 Quantification toolbox (pyAFQ) \cite{kruper2021evaluating}. Twenty-four major
-tracts, which are enumerated in \ref{fig:qc-profiles:md}, were identified using
+tracts, which are enumerated in Figure~\ref{fig:qc-profiles:md}, were identified using
 multiple criteria: streamlines are selected as candidates for inclusion in a
 bundle of streamlines that represents a tract if they pass through known
 inclusion ROIs and do not pass through exclusion ROIs \cite{Wakana2007-nw}. In
@@ -1346,7 +1361,7 @@ multi-site cortical thickness measurements \cite{fortin2018-hk}, multi-site DTI
 studies \cite{fortin2017-be}, and functional MRI data in the Adolescent Brain
 Cognitive Development Study (ABCD) \cite{nielson2018detecting}. We rely on the
 \emph{neurocombat\_sklearn} library \cite{neurocombat-sklearn}, to apply ComBat in
-before plotting bundle profiles in Figure \ref{fig:qc-profiles:md} using
+before plotting bundle profiles in Figure~\ref{fig:qc-profiles:md} using
 plotting functions from the AFQ-Insight package
 \cite{richie-halford2019insight}. The bundle profile analysis can be replicated
 using the \texttt{make bundle-profiles} command in the HBN-POD2 GitHub
