@@ -1,8 +1,17 @@
-\documentclass[fleqn,10pt]{wlscirep}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% HBN-POD2 ELIFE SUBMISSION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PREAMBLE 
+\documentclass[9pt,lineno]{elife}
+% Use the onehalfspacing option for 1.5 line spacing
+% Use the doublespacing option for 2.0 line spacing
+% Please note that these options may affect formatting.
+% Additionally, the use of the \newcommand function should be limited.
+
+% \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{siunitx}
+\usepackage[export]{adjustbox}
 \usepackage{subcaption}
 \usepackage{xargs}  % Use more than one optional parameter in a new commands
 \usepackage[colorinlistoftodos,prependcaption]{todonotes}
@@ -13,13 +22,16 @@
 \newcommandx{\alltodo}[2][1=]{\todo[author=Everyone,linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 \newcommandx{\mctodo}[2][1=]{\todo[author=Matt,linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
 \newcommandx{\rokemtodo}[2][1=]{\todo[author=Ariel,linecolor=green,backgroundcolor=green!25,bordercolor=green,#1]{#2}}
-\newcommandx{\comment}[2][1=]{\todo[author=Comment,linecolor=lime,backgroundcolor=lime!25,bordercolor=lime,#1]{#2}}
 \newcommandx{\arhtodo}[2][1=]{\todo[author=Adam,linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ARTICLE SETUP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{A preprocessed open diffusion derivatives dataset for child and adolescent neuroimaging}
 
-\author[1,*$\dagger$]{Adam Richie-Halford}
-\author[2,$\dagger$]{Matthew Cieslak}
+\author[1\authfn{1}*]{Adam Richie-Halford}
+\author[2\authfn{1}*]{Matthew Cieslak}
 \author[4]{Lei Ai}
 \author[5]{Sendy Caffarra}
 \author[4]{Alexandre R. Franco}
@@ -32,8 +44,11 @@
 \author[5]{Jason Yeatman}
 \author[6]{The Fibr Community Science Consortium}
 % \input{fibr_authors.tex}
-\author[2,$\ddagger$]{Theodore D. Satterthwaite}
-\author[3,1,$\ddagger$]{Ariel Rokem}
+\author[2\authfn{2}]{Theodore D. Satterthwaite}
+\author[3,1\authfn{2}]{Ariel Rokem}
+
+\corr{richiehalford@gmail.com}{ARH}
+\corr{matthew.cieslak@pennmedicine.upenn.edu}{MC}
 
 \affil[1]{University of Washington, eScience Institute, Seattle, Washington, 98195, USA}
 \affil[2]{University of Pennsylvania, Department of Psychiatry, Philadelphia, Pennsylvania, 19104, USA}
@@ -42,11 +57,19 @@
 \affil[5]{Stanford University, Graduate School of Education and Division of Developmental and Behavioral Pediatrics, Stanford, California, 94305, USA}
 \affil[6]{The Fibr Community Science Consortium}
 
-\affil[*]{richford@uw.edu}
-\affil[$\dagger$]{these authors contributed equally to this work}
-\affil[$\ddagger$]{these authors contributed equally to this work}
+\contrib[\authfn{1}]{These authors contributed equally to this work}
+\contrib[\authfn{2}]{These authors also contributed equally to this work}
 
-%\keywords{Keyword1, Keyword2, Keyword3}
+% \presentadd[\authfn{3}]{Department, Institute, Country}
+% \presentadd[\authfn{4}]{Department, Institute, Country}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ARTICLE START
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
 
 \begin{abstract}
 The Healthy Brain Network (HBN) is a landmark pediatric mental health study.
@@ -65,12 +88,6 @@ has implications for subsequent analysis of this data. We openly released the
 processed derivatives and QC scores for use by the scientific community.
 \end{abstract}
 
-\begin{document}
-
-\flushbottom
-\maketitle
-\thispagestyle{empty}
-
 \todo[inline]{%
     Note to editing authors:
 
@@ -84,15 +101,15 @@ processed derivatives and QC scores for use by the scientific community.
     \texttt{\textbackslash{}mctodo} command, a task for Ariel with the
     \texttt{\textbackslash{}rokemtodo} command, a task for all reviewing authors
     with the \texttt{\textbackslash{}alltodo} command, and a general comment
-    with the \texttt{\textbackslash{}comment} command.
+    with the generic \texttt{\textbackslash{}todo} command.
 }
-\comment[inline]{Comments look like this.}
+\todo[inline]{Comments look like this.}
 \arhtodo[inline]{Tasks for Adam look like this.}
 \rokemtodo[inline]{Tasks for Ariel look like this.}
 \mctodo[inline]{Tasks for Matt look like this.}
 \alltodo[inline]{Tasks for all reviewing authors look like this.}
 
-\section*{Introduction}
+\section{Introduction}
 
 Childhood and adolescence are marked by rapid dynamic change to human brain
 structure and function \cite{Lebel2018-oy}. It is also a time during which the
@@ -183,7 +200,7 @@ that they need in order to start applying a large variety of analysis approaches
 to these HBN Preprocessed Open Diffusion Derivatives (HBN-POD2), and answer the
 questions that this data was collected to answer.
 
-\section*{Results}
+\section{Results}
 
 The aims of this study were fourfold
 \begin{enumerate*}[%
@@ -205,7 +222,7 @@ could not be curated to comply with the BIDS standard or that did not have dMRI
 data were excluded, resulting in \num{2136} subjects with preprocessed,
 BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
 
-\subsection*{Healthy Brain Network Preprocessed Open Diffusion Derivatives}
+\subsection{Healthy Brain Network Preprocessed Open Diffusion Derivatives}
 
 \mctodo[inline]{%
     Matt, please describe the \emph{QSIPrep} output directory structure.
@@ -257,7 +274,7 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
     \label{fig:hbn-sankey}
 \end{figure}
 
-\subsection*{Quality Control}
+\subsection{Quality Control}
 
 To achieve the QC aim of the project, we adopted a hybrid QC approach that
 combines expert rating, community science, and deep learning, drawing on the
@@ -277,7 +294,7 @@ MRI data \cite{keshavan2019-er}. This method
     predict expert decisions on the entire dataset.
 \end{enumerate*}
 
-\subsubsection*{Expert quality control}
+\subsubsection{Expert quality control}
 
 To create a gold standard QC dataset, we first developed \emph{dmriprep-viewer},
 a dMRI data viewer and QC rating web application to display \emph{QSIPrep}
@@ -326,39 +343,40 @@ image in the gold standard is an appropriate target to use for training a
 machine learning model that predicts the expert scores.
 
 \begin{figure}[ht]
-    \begin{subfigure}{.5\textwidth}
+\begin{fullwidth}
+    \begin{subfigure}{.6\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{community-qc/expert-qsiprep-pairplot-top.pdf}
-    \includegraphics[width=\linewidth]{community-qc/expert-qsiprep-pairplot-bottom.pdf}
-    \caption{}
+    \includegraphics[width=\linewidth]{community-qc/expert-qsiprep-pairplot.pdf}
     \label{fig:expert-qc:scatter}
     \end{subfigure}
-    \begin{subfigure}{.5\textwidth}
+    \begin{subfigure}{.4\linewidth}
     \centering
     \includegraphics[width=\linewidth]{community-qc/expert-raters-cohens-kappa.pdf}
-    \caption{}
     \label{fig:expert-qc:irr}
     \end{subfigure}
     \caption{%
         {\bf Expert QC results}:
-        Six dMRI experts rated a subset of \num{200} subjects.
-        \textbf{(a)} Experts agree with \emph{QSIPrep}'s automated QC metrics.
-        Here we show associations between the expert QC rating and the
-        \emph{QSIPrep} metrics neighboring diffusion-weighted imaging
-        correlation (NDC) \cite{yeh2019-kb}, maximum relative translation, and
-        number of outlier slices. As expected, NDC is directly correlated with expert rating while
-        the other two metrics are inversely correlated with expert rating.
+        Six dMRI experts rated a subset of \num{200} subjects.  Experts agree
+        with \emph{QSIPrep}'s automated QC metrics.  Here we show the
+        distribution of mean expert QC ratings \textbf{(a)} and associations
+        between the mean expert QC rating and the \emph{QSIPrep} metrics
+        \textbf{(b)} neighboring diffusion-weighted imaging correlation (NDC)
+        \cite{yeh2019-kb}, \textbf{(c)} maximum relative translation, and
+        \textbf{(d)} number of outlier slices. As expected, NDC is directly
+        correlated with expert rating while the other two metrics are inversely
+        correlated with expert rating.
         %
-        \textbf{(b)} Experts agree with each other. Here we show the pairwise
+        \textbf{(e)} Experts agree with each other. Here we show the pairwise
         Cohen's $\kappa$ measure of inter-rater reliability (see text for ICC
         calculations). The XGB model has an inter-rater reliability (quantified
         here as Cohen's $\kappa$) that is indistinguishable from the other
         raters
     }
     \label{fig:expert-qc}
+\end{fullwidth}
 \end{figure}
 
-\subsubsection*{Community science quality control}
+\subsubsection{Community science quality control}
 
 Although the expert raters achieved high IRR and yielded intuitive associations
 with \emph{QSIPrep}'s automated QC metrics, generating expert QC labels for the
@@ -427,35 +445,35 @@ using the XGB scores as the target for training an image-based deep learning
 network.
 
 \begin{figure}[tbp]
-    \begin{subfigure}{.55\textwidth}
+\begin{fullwidth}
+    \begin{subfigure}{.666\linewidth}
     \centering
     \includegraphics[width=\linewidth]{community-qc/fibr-rating-scatter-plot.pdf}
-    \caption{}
     \label{fig:fibr-qc:scatter}
     \end{subfigure}
-    \begin{subfigure}{.45\textwidth}
+    \begin{subfigure}{.333\linewidth}
     \centering
     \includegraphics[width=\linewidth]{community-qc/xgb-roc-curve.pdf}
-    \caption{}
     \label{fig:fibr-qc:roc}
     \end{subfigure}
     \caption{%
         {\bf Community science predictions of the expert ratings}:
-        \textbf{(a)} Scatterplots showing the relationship between mean expert
-        rating and both mean \emph{Fibr} rating (left) and XGB prediction
-        (right). \emph{Fibr} raters overestimate the quality of images compared
-        to expert raters. But the XGB prediction compensates for this by
-        incorporating automated QC metrics and weighting more valuable
+        Scatterplots showing the relationship between mean expert rating and
+        both mean \emph{Fibr} rating \textbf{(a)} and XGB prediction
+        \textbf{(b)}. \emph{Fibr} raters overestimate the quality of images
+        compared to expert raters. But the XGB prediction compensates for this
+        by incorporating automated QC metrics and weighting more valuable
         \emph{Fibr} raters.
         %
-        \textbf{(b)} ROC curves for the XGB, XGB-q, and XGB-f models.
+        \textbf{(c)} ROC curves for the XGB, XGB-q, and XGB-f models.
         Transluscent bands represent one standard deviation from the mean
         of the cross-validation splits.
     }
     \label{fig:fibr-qc}
+\end{fullwidth} 
 \end{figure}
 
-\subsubsection*{Automated quality control labelling through deep learning}
+\subsubsection{Automated quality control labelling through deep learning}
 
 The XGB ``rater'' does a good job of extending QC ratings to the entire
 community science subset, but requires \emph{Fibr} scores. Without community
@@ -481,23 +499,20 @@ data. Both CNN-i and CNN-i+q outperformed XGB-q, which was trained only on
 automated QC metrics, but both underperformed relative to the full XGB model,
 that uses \emph{Fibr} scores in addition to the \emph{QSIPrep} QC scores.
 
-\begin{figure}[htbp]
-    \begin{subfigure}{.25\textwidth}
+\begin{figure}[tbp]
+    \begin{subfigure}{.25\linewidth}
     \centering
     \includegraphics[width=\linewidth]{deep-learning-qc/dl_roc_auc_curve.pdf}
-    \caption{}
     \label{fig:dl-qc:roc}
     \end{subfigure}
-    \begin{subfigure}{.25\textwidth}
+    \begin{subfigure}{.25\linewidth}
     \centering
     \includegraphics[width=\linewidth]{bundle-profiles/qc-age-jointplot.pdf}
-    \caption{}
     \label{fig:dl-qc:joint}
     \end{subfigure}
-    \begin{subfigure}{.5\textwidth}
+    \begin{subfigure}{.5\linewidth}
     \centering
     \includegraphics[width=\linewidth]{bundle-profiles/qc-hist.pdf}
-    \caption{}
     \label{fig:dl-qc:hist}
     \end{subfigure}
     \caption{%
@@ -543,7 +558,7 @@ and for male and female participants \footnote{%
     ``male'' and ``female.''
 }.
 
-\subsubsection*{Attribution masks for the deep learning classifier}
+\subsubsection{Attribution masks for the deep learning classifier}
 
 We generated post-hoc attribution maps that highlight regions of the input
 volume that are relevant for the QC score. The integrated gradient method
@@ -578,30 +593,27 @@ are outside of the brain as informative as voxels in the major white matter
 bundles.
 
 \begin{figure}[tbp]
+\begin{fullwidth}
     \centering
-    \begin{subfigure}{\textwidth}
+    \adjustbox{minipage=3em}{\subcaption{true positive}\label{fig:ig:true-pos}}%
+    \begin{subfigure}{\dimexpr\linewidth-3em\relax}
     \centering
-    \includegraphics[width=0.9\linewidth]{deep-learning-qc/attribution-maps-true-pos.pdf}
-    \caption{true positive}
-    \label{fig:ig:true-pos}
+    \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-true-pos.pdf}
     \end{subfigure}
-    \begin{subfigure}{\textwidth}
+    \adjustbox{minipage=3em}{\subcaption{true negative}\label{fig:ig:true-neg}}%
+    \begin{subfigure}{\dimexpr\linewidth-3em\relax}
     \centering
-    \includegraphics[width=0.9\linewidth]{deep-learning-qc/attribution-maps-true-neg.pdf}
-    \caption{true negative}
-    \label{fig:ig:true-neg}
+    \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-true-neg.pdf}
     \end{subfigure}
-    \begin{subfigure}{\textwidth}
+    \adjustbox{minipage=3em}{\subcaption{false positive}\label{fig:ig:false-pos}}%
+    \begin{subfigure}{\dimexpr\linewidth-3em\relax}
     \centering
-    \includegraphics[width=0.9\linewidth]{deep-learning-qc/attribution-maps-false-pos.pdf}
-    \caption{false positive}
-    \label{fig:ig:false-pos}
+    \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-false-pos.pdf}
     \end{subfigure}
-    \begin{subfigure}{\textwidth}
+    \adjustbox{minipage=3em}{\subcaption{false negative}\label{fig:ig:false-neg}}%
+    \begin{subfigure}{\dimexpr\linewidth-3em\relax}
     \centering
-    \includegraphics[width=0.9\linewidth]{deep-learning-qc/attribution-maps-false-neg.pdf}
-    \caption{false negative}
-    \label{fig:ig:false-neg}
+    \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-false-neg.pdf}
     \end{subfigure}
     \caption{%
         {\bf Integrated gradients attribution maps for the deep learning classifier}:
@@ -636,9 +648,10 @@ bundles.
         left-right symmetry in the DEC-FA channels and assigns negative
         attribution to asymmetrical features. }
     \label{fig:ig}
+\end{fullwidth}
 \end{figure}
 
-\subsection*{Quality control improves inference}
+\subsection{Quality control improves inference}
 
 To demonstrate the effect that quality control has on inference, we analyzed
 tract profile data derived from HBN-POD2 data. Tract profiling
@@ -657,6 +670,7 @@ the orbital portion of the corpus callosum, exhibit strong differences between
 QC bins. In most bundles, low QC scores tend to flatten the profile.
 
 \begin{figure}[tbp]
+\begin{fullwidth}
     \centering
     \includegraphics[width=\linewidth]{bundle-profiles/qc-bins-dki-md.pdf}
     \caption{%
@@ -685,6 +699,7 @@ QC bins. In most bundles, low QC scores tend to flatten the profile.
         occipital corpus callosum (Occipital).
     }
     \label{fig:qc-profiles:md}
+\end{fullwidth}
 \end{figure}
 
 \arhtodo[inline]{
@@ -721,7 +736,7 @@ varies depending on the QC cutoff (Figure~\ref{fig:age-prediction}). An initial 
     \label{fig:age-prediction}
 \end{figure}
 
-\section*{Discussion}
+\section{Discussion}
 
 We present HBN-POD2, one of the largest child and adolescent diffusion imaging
 datasets with derived measures that is currently openly available. The dataset
@@ -733,7 +748,7 @@ contributions of this work, starting from the potential impact of the range of
 resources we have created and ending with implications for processing and
 quality control of other large-scale datasets.
 
-\subsection*{Standardized preprocessing and quality control increase the impact of openly-available data}
+\subsection{Standardized preprocessing and quality control increase the impact of openly-available data}
 
 The most immediate contribution of this work is a large analysis-ready dMRI
 dataset, openly accessible to the public. In the past decade, projects such as
@@ -785,7 +800,7 @@ degrades predictive performance. Importantly, we do not expect the sensitivity
 analysis of an age prediction model to generalize to other analyses and
 recommend that researchers using HBN-POD2 conduct their own.
 
-\subsection*{Automated quality control: a tension between scalability and interpretability}
+\subsection{Automated quality control: a tension between scalability and interpretability}
 
 We provide four different scores in anticipation of end-user's reluctance to
 trust a QC score generated through deep learning \cite{lipton2017doctor,
@@ -844,7 +859,7 @@ IRR, or by designing a more extensive expert QC protocol. The tradeoff between
 more extensive QC for each subject and more superifcial QC on more subjects was
 not explored in this study, but could also be the target for future research.
 
-\subsection*{Fully transparent pipelines provide an extensible baseline for future methods development}
+\subsection{Fully transparent pipelines provide an extensible baseline for future methods development}
 
 While the primary audience of HBN-POD2 is researchers in neurodevelopment who
 will use the dMRI derivatives in their studies, other researchers may use
@@ -921,7 +936,7 @@ other kinds of measurements and other research domains.
     automated, ``objective'' approach.
 }
 
-\subsection*{Future work and open problems}
+\subsection{Future work and open problems}
 
 The HBN study plans to acquire imaging data for \num{10000} participants,
 necessitating future data releases. Future releases of HBN will require future
@@ -956,7 +971,19 @@ projects and in other scientific fields.
     generalization experiments.
 }
 
-\section*{Methods}
+\subsection{Ideas and Speculation}
+
+\alltodo[inline]{%
+    We are targetting eLife for first submission and eLife now allows an
+    \href{https://elifesciences.org/inside-elife/e3e52a93/elife-latest-including-ideas-and-speculation-in-elife-papers}{Ideas
+    and Speculation} subsection within the discussion section. This is a spot
+    for authors to ``freely speculate about the meaning and implications of
+    their data.'' It is reviewed but only for ``factual inaccuracies, clarity
+    and speculation not germane to the paper.'' We should take advantage of this
+    opportunity.  Insert your speculations here.
+}
+
+\section{Methods and Materials}
 
 To facilitate replicability, Jupyter notebooks \cite{kluyver2016jupyter} and
 Dockerfiles \cite{merkel2014docker} necessary to reproduce the methods described
@@ -989,7 +1016,7 @@ resolution was \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} wi
 directions measured for each of $b=1000$ \unit{\second \per \mm^{2}} and
 $b=2000$ \unit{\second \per \mm^{2}}.
 
-\subsection*{BIDS curation}
+\subsection{BIDS curation}
 
 We curated the imaging metadata for \num{2615} of the \num{2747} currently
 available HBN subjects. Using dcm2bids and custom scripts, we conformed the data
@@ -999,7 +1026,7 @@ accessed via AWS S3 at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/}.
 
 \mctodo[inline]{Add more BIDS curation information}
 
-\subsection*{Preprocessing}
+\subsection{Preprocessing}
 
 We performed dMRI preprocessing on \num{2136} subjects, using \emph{QSIPrep}
 \cite{cieslak2021-iq} 0.12.1, which is based on \emph{Nipype} 1.5.1
@@ -1075,7 +1102,7 @@ of the pipeline, see
 \href{https://qsiprep.readthedocs.io/en/latest/workflows.html}{the section
 corresponding to workflows in \emph{QSIPrep}'s documentation}.
 
-\subsection*{Cloud-based distributed preprocessing}
+\subsection{Cloud-based distributed preprocessing}
 
 The containerization of \emph{QSIPrep} provided a consistent preprocessing
 pipeline for each subject but the number of subjects made serial processing of
@@ -1090,7 +1117,7 @@ interface and is provided in a jupyter notebook in the HBN-POD2 GitHub
 repository in the ``notebooks'' directory. Using \emph{cloudknot} and AWS Batch
 Spot Instances, the preprocessing cost less than \textdollar1.00 per subject.
 
-\subsection*{Expert quality control}
+\subsection{Expert quality control}
 
 The expert QC ``gold standard'' subset was created by randomly selecting 200
 subjects from the preprocessed dataset, sampled such that the proportional site
@@ -1113,7 +1140,7 @@ subject. To standardize rater expectations before rating, expert raters watched
 a tutorial video (which is available in the OSF project). They then rated each
 subject and saved their scores and sent them to the lead author for compilation.
 
-\comment[inline]{%
+\todo[inline]{%
     The new viewer will be called NIRV, the neuroimaging report viewer and we'll
     write another paper about that. So lots of details about the implementation
     are witheld from this paper.
@@ -1128,7 +1155,7 @@ using the \texttt{make expert-qc} command in the HBN-POD2 GitHub repository.
 The mean expert ratings, scaled to the range $[0, 1]$ are available in the
 ``expert\_qc\_score'' column of the \texttt{participants.tsv} file on FCP-INDI.
 
-\subsection*{Community scientist quality control}
+\subsection{Community scientist quality control}
 
 The community science web application is based on the SwipesForScience framework
 \url{https://swipesforscience.org/}, which generates a web application for
@@ -1168,16 +1195,17 @@ The XGB model's positive class probabilities are available in the
 the XGB-q model's positive class probabilities are available in the
 ``xgb\_qsiprep\_qc\_score'' column.
 
-\subsection*{Deep learning to predict quality control}
+\subsection{Deep learning to predict quality control}
 
 \begin{figure}[tbp]
-    \begin{subfigure}[t]{0.6\textwidth}
+\begin{fullwidth}
+    \begin{subfigure}[t]{0.6\linewidth}
     \centering
     \includegraphics[width=\linewidth]{deep-learning-qc/model.pdf}
     \caption{Slicing and combining the input channels}
     \label{fig:dl-architecture:complete}
     \end{subfigure}
-    \begin{subfigure}[t]{0.4\textwidth}
+    \begin{subfigure}[t]{0.4\linewidth}
     \centering
     \includegraphics[width=\linewidth]{deep-learning-qc/image_model.pdf}
     \caption{CNN architecture}
@@ -1206,6 +1234,7 @@ the XGB-q model's positive class probabilities are available in the
         The output of the final block is passed through a 3D global average
         pooling layer with Tensorflow's default parameters.}
     \label{fig:dl-architecture}
+\end{fullwidth}
 \end{figure}
 
 The binarized voting classifier's predictions were then used as targets to train a deep
@@ -1282,13 +1311,13 @@ available in the ``dl\_qc\_score'' column of the \texttt{participants.tsv} file 
 FCP-INDI.
 
 \begin{figure}[tbp]
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.5\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{deep-learning-qc/dl_learning_curve_with_qc.pdf}
     \caption{CNN-i+q}
     \label{fig:dl-loss:both}
     \end{subfigure}
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.5\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{deep-learning-qc/dl_learning_curve_without_qc.pdf}
     \caption{CNN-i}
@@ -1312,7 +1341,7 @@ tutorial \cite{integrated-gradients-tutorial} with a black baseline image and
 service to compute integrated gradient attribution maps on Google Cloud, which
 can be invoked using the \texttt{make dl-integrated-gradients} command.
 
-\subsection*{QC bundle profiles}
+\subsection{QC bundle profiles}
 
 To generate bundle profiles, reconstruction was performed using the
 \emph{QSIprep} 0.12.1 preconfigured reconstruction workflow
@@ -1367,7 +1396,7 @@ plotting functions from the AFQ-Insight package
 using the \texttt{make bundle-profiles} command in the HBN-POD2 GitHub
 repository.
 
-\subsection*{Brain age prediction}
+\subsection{Brain age prediction}
 
 We evaluated the effect of varying the QC cutoff on model performance by
 observing cross-validated $R^2$ values of gradient boosted trees models
@@ -1389,26 +1418,12 @@ and the white matter would need to correct for these transgressions. For this
 study we deemed the risk of overfitting acceptable for the less fraught
 demonstration of the effect of varying the QC cutoff.
 
-\bibliography{hbn-pod2}
+\section{Author contributions statement}
 
-\section*{Acknowledgements}
-
-We would like to thank Anisha Keshavan for useful discussions of community
-science and web-based quality control and for her work on SwipesForScience. This
-manuscript was prepared using a limited access dataset obtained from the Child
-Mind Institute Biobank, The Healthy Brain Network dataset. This manuscript
-reflects the views of the authors and does not necessarily reflect the opinions
-or views of the Child Mind Institute. This work was supported via BRAIN Initiative grant 1RF1MH121868-01 from the National Institutes of Mental Health.
-
-\alltodo[inline]{Add grant numbers.}
-
-\section*{Author contributions statement}
-
-The first author named is the corresponding author. The last two authors named
-share senior authorship. The first two authors named share lead authorship. The
-remaining authors are listed in alphabetical order, with the exception of
-the Fibr Community Science Consortium, whose members provided community science
-QC ratings.
+The last two authors named share senior authorship. The first two authors named
+share lead authorship. The remaining authors are listed in alphabetical order,
+with the exception of the Fibr Community Science Consortium, whose members
+provided community science QC ratings.
 
 \alltodo[inline]{Please add your initials here as appropriate}
 
@@ -1430,16 +1445,46 @@ We describe contributions to the paper using the CRediT taxonomy \cite{brand2015
     \item Funding Acquisition: A.R. and T.S.
 \end{itemize}
 
-\section*{Additional information}
+\section{Acknowledgments}
 
-To include, in this order: \textbf{Accession codes} (where applicable);
-\textbf{Competing interests} (mandatory statement).
+We would like to thank Anisha Keshavan for useful discussions of community
+science and web-based quality control and for her work on SwipesForScience. This
+manuscript was prepared using a limited access dataset obtained from the Child
+Mind Institute Biobank, The Healthy Brain Network dataset. This manuscript
+reflects the views of the authors and does not necessarily reflect the opinions
+or views of the Child Mind Institute. This work was supported via BRAIN Initiative grant 1RF1MH121868-01 from the National Institutes of Mental Health.
 
-The corresponding author is responsible for submitting a
-\href{http://www.nature.com/srep/policies/index.html#competing}{competing
-interests statement} on behalf of all authors of the paper. This statement must
-be included in the submitted article file.
+\bibliography{hbn-pod2}
 
-\arhtodo[inline]{Add accession codes and competing interests statement.}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% APPENDICES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% \appendix
+% \begin{appendixbox}
+% \label{first:app}
+% \section{Firstly}
+% \lipsum[1]
+
+% %% Sadly, we can't use floats in the appendix boxes. So they don't "float", but use \captionof{figure}{...} and \captionof{table}{...} to get them properly caption.
+% \begin{center}
+% \includegraphics[width=\linewidth,height=7cm]{frog}
+% \captionof{figure}{This is a figure in the appendix}
+% \end{center}
+
+% \section{Secondly}
+
+% \lipsum[5-8]
+
+% \begin{center}
+% \includegraphics[width=\linewidth,height=7cm]{frog}
+% \captionof{figure}{This is a figure in the appendix}
+% \end{center}
+
+% \end{appendixbox}
+
+% \begin{appendixbox}
+% \includegraphics[width=\linewidth,height=7cm]{frog}
+% \captionof{figure}{This is a figure in the appendix}
+% \end{appendixbox}
 \end{document}
