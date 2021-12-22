@@ -678,8 +678,12 @@ QC bins. In most bundles, low QC scores tend to flatten the profile.
     \caption{%
         {\bf MD bundle profiles show large QC group differences}:
         MD profiles binned by QC score in twenty-four major while matter
-        bundles. The left and right uncinate bundles are the most sensitive
+        bundles.  The $x$-axis represents distance along the length of the fiber
+        bundle.
+        %
+        The left and right uncinate bundles are the most sensitive
         to QC score. Generally, QC score tends to flatten bundle profiles.
+        %
         Error bands represent bootstrapped 95\% confidence intervals. Bundle
         abbreviations for lateralized bundles contain a trailing ``L'' or ``R''
         indicating the hemisphere. Bundle abbreviations:
@@ -701,13 +705,17 @@ QC bins. In most bundles, low QC scores tend to flatten the profile.
         occipital corpus callosum (Occipital).
     }
     \label{fig:qc-profiles:md}
+    \figsupp[FA bundle profiles]{%
+        {\bf FA bundle profiles binned by QC score}:
+        FA profiles binned by QC score in twenty-four major while matter
+        bundles. The $x$-axis represents distance along the length of the fiber
+        bundle. Error bands represent bootstrapped 95\% confidence intervals.
+        Bundle abbreviations are as in Figure~\ref{fig:qc-profiles:md}
+    }{%
+        \includegraphics[width=\linewidth]{bundle-profiles/qc-bins-dki-fa.pdf}
+    }\label{figsupp:qc-profiles:fa}
 \end{fullwidth}
 \end{figure}
-
-\arhtodo[inline]{
-    The tract profile plot needs improvement. Specifically, the axes text
-    takes up a lot of room so it's hard to see the plots.
-}
 
 \begin{wrapfigure}{r}{.5\textwidth}
     \includegraphics[width=\hsize]{age-prediction/qc_sweep.pdf}
@@ -1237,9 +1245,11 @@ the XGB-q model's positive class probabilities are available in the
         allowed continue until meeting the early stopping criterion. The error
         bands represent a bootstrapped 95\% confidence interval.
     }{%
+        \hfill
         \includegraphics[width=0.45\linewidth]{deep-learning-qc/dl_learning_curve_with_qc.pdf}
         \hfill
         \includegraphics[width=0.45\linewidth]{deep-learning-qc/dl_learning_curve_without_qc.pdf}
+        \hfill
     }\label{figsupp:dl-loss}
 \end{fullwidth}
 \end{figure}
