@@ -321,12 +321,10 @@ translation, and number of outlier slices. NDC characterizes
 the pairwise spatial correlation between pairs of DWI volumes that sample
 neighboring points in $q$-space. Since lower values indicate reduced data
 quality, it is reassuring that NDC correlates directly with expert rating
-(Pearson CC: XXX). Conversely, high relative translation and a high number of
+(Pearson CC: $0.797$). Conversely, high relative translation and a high number of
 motion outlier slices reflect poor data quality and these metrics are inversely
-related to mean expert rating (Pearson CC: XXX and Pearson CC: XXX,
+related to mean expert rating (Pearson CC: $-0.692$ and Pearson CC: $-0.695$,
 respectively).
-
-\arhtodo[inline]{Fill in the XXX values in the paragraph above.}
 
 In addition to agreeing qualitatively with \emph{QSIPrep}'s automated QC metrics
 on average, the expert raters also tended to agree with each other. We assessed
@@ -344,10 +342,13 @@ machine learning model that predicts the expert scores.
 
 \begin{figure}[ht]
 \begin{fullwidth}
+    {\phantomsubcaption\label{fig:expert-qc:scatter:hist}}
+    {\phantomsubcaption\label{fig:expert-qc:scatter:ndc}}
+    {\phantomsubcaption\label{fig:expert-qc:scatter:translation}}
+    {\phantomsubcaption\label{fig:expert-qc:scatter:outliers}}
     \begin{subfigure}{.6\linewidth}
     \centering
     \includegraphics[width=\linewidth]{community-qc/expert-qsiprep-pairplot.pdf}
-    \label{fig:expert-qc:scatter}
     \end{subfigure}
     \begin{subfigure}{.4\linewidth}
     \centering
@@ -396,7 +397,7 @@ Science Consortium as co-authors on this paper.
 
 The unadjusted \emph{Fibr} ratings are overly optimistic; i.e., on average,
 community scientists are not as critical as the expert raters
-(Figure~\ref{fig:fibr-qc:scatter}a). In addition, different community scientists
+(Figure~\ref{fig:fibr-qc:scatter:fibr}). In addition, different community scientists
 probably provide data of differing accuracy. In addition, additional information
 about quality is provided in the \emph{QSIPrep} QC metrics. To account for this
 variability, and take advantage of the information provided by \emph{QSIPrep},
@@ -421,7 +422,7 @@ XGB, combining information from both \emph{Fibr} ratings and \emph{QSIPrep} QC
 metric attained a cross-validated area under the receiver operating curve
 (ROC-AUC) of $0.96 \pm 0.01$ on the ``gold standard,'' where the $\pm$ indicates
 the standard deviation of scores from repeated $k$-fold cross-validation
-(Figure~\ref{fig:fibr-qc:scatter}a). In contrast, XGB-q attained an ROC-AUC of
+(Figure~\ref{fig:fibr-qc:scatter:xgb}). In contrast, XGB-q attained an ROC-AUC of
 $0.91 \pm 0.03$ and XGB-f achieved an ROC-AUC of $0.84 \pm 0.04$. The enhanced
 performance of XGB-q over XGB-f shows that community scientists alone are not as
 accurate as automated QC metrics are at predicting expert ratings. And yet, the
@@ -429,8 +430,8 @@ increased performance of XGB over XGB-q demonstrates that there is additional
 image quality information to be gained by incorporating community scientist input.
 
 As a way of evaluating the quality of the XGB predictions, consider the fact
-that the average Cohen's $kappa$ between XGB and the expert raters is 0.74,
-which is higher than the average Cohen's $kappa$ between any of the other raters
+that the average Cohen's $\kappa$ between XGB and the expert raters is 0.74,
+which is higher than the average Cohen's $\kappa$ between any of the other raters
 and their human peers (Figure~\ref{fig:expert-qc}). This is not suprising,
 given that the XGB model was fit to optimize this match, but further
 demonstrates the goodness of fit of this model.
@@ -449,7 +450,8 @@ network.
     \begin{subfigure}{.666\linewidth}
     \centering
     \includegraphics[width=\linewidth]{community-qc/fibr-rating-scatter-plot.pdf}
-    \label{fig:fibr-qc:scatter}
+    {\phantomsubcaption\label{fig:fibr-qc:scatter:fibr}}
+    {\phantomsubcaption\label{fig:fibr-qc:scatter:xgb}}
     \end{subfigure}
     \begin{subfigure}{.333\linewidth}
     \centering
@@ -500,6 +502,7 @@ automated QC metrics, but both underperformed relative to the full XGB model,
 that uses \emph{Fibr} scores in addition to the \emph{QSIPrep} QC scores.
 
 \begin{figure}[tbp]
+\begin{fullwidth}
     \begin{subfigure}{.25\linewidth}
     \centering
     \includegraphics[width=\linewidth]{deep-learning-qc/dl_roc_auc_curve.pdf}
@@ -513,7 +516,8 @@ that uses \emph{Fibr} scores in addition to the \emph{QSIPrep} QC scores.
     \begin{subfigure}{.5\linewidth}
     \centering
     \includegraphics[width=\linewidth]{bundle-profiles/qc-hist.pdf}
-    \label{fig:dl-qc:hist}
+    {\phantomsubcaption\label{fig:dl-qc:hist:sex}}
+    {\phantomsubcaption\label{fig:dl-qc:hist:site}}
     \end{subfigure}
     \caption{%
         {\bf Deep learning QC scores}:
@@ -536,12 +540,12 @@ that uses \emph{Fibr} scores in addition to the \emph{QSIPrep} QC scores.
         a linear regression relating age and QC score with transluscent bands
         encoding a bootstrapped 95\% confidence interval.
         %
-        \textbf{(c)}
         Histograms showing the relationship between participants QC scores and
-        their sex (left) and scan site (right). QC distributions are independent
+        their sex \textbf{(c)} and scan site \textbf{(d)}. QC distributions are independent
         of sex and scanning site
     }
     \label{fig:dl-qc}
+\end{fullwidth}
 \end{figure}
 
 While HBN-POD2 provides four QC ratings: the mean expert QC ratings, XGB-q and
@@ -551,8 +555,8 @@ can be easily calculated for new participants in future HBN releases and is more
 accurate than XGB-q. When we refer to a participant's QC score without
 specifying a generating model, the CNN-i score is assumed.
 Figure~\ref{fig:dl-qc} depicts the distribution of these QC scores by age
-(Figure~\ref{fig:dl-qc:joint}), sex, and scanning site
-(Figure~\ref{fig:dl-qc:hist}). QC distributions are similar for each scan site
+(Figure~\ref{fig:dl-qc:joint}), sex (Figure~\ref{fig:dl-qc:hist:sex}), and scanning site
+(Figure~\ref{fig:dl-qc:hist:site}). QC distributions are similar for each scan site
 and for male and female participants \footnote{%
     Responses for the sex variable in HBN phenotypic data are limited to
     ``male'' and ``female.''
@@ -595,23 +599,23 @@ bundles.
 \begin{figure}[tbp]
 \begin{fullwidth}
     \centering
-    \adjustbox{minipage=3em}{\subcaption{true positive}\label{fig:ig:true-pos}}%
-    \begin{subfigure}{\dimexpr\linewidth-3em\relax}
+    \adjustbox{minipage=3.5em}{\subcaption{true positive}\label{fig:ig:true-pos}}%
+    \begin{subfigure}{\dimexpr\linewidth-3.5em\relax}
     \centering
     \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-true-pos.pdf}
     \end{subfigure}
-    \adjustbox{minipage=3em}{\subcaption{true negative}\label{fig:ig:true-neg}}%
-    \begin{subfigure}{\dimexpr\linewidth-3em\relax}
+    \adjustbox{minipage=3.5em}{\subcaption{true negative}\label{fig:ig:true-neg}}%
+    \begin{subfigure}{\dimexpr\linewidth-3.5em\relax}
     \centering
     \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-true-neg.pdf}
     \end{subfigure}
-    \adjustbox{minipage=3em}{\subcaption{false positive}\label{fig:ig:false-pos}}%
-    \begin{subfigure}{\dimexpr\linewidth-3em\relax}
+    \adjustbox{minipage=3.5em}{\subcaption{false positive}\label{fig:ig:false-pos}}%
+    \begin{subfigure}{\dimexpr\linewidth-3.5em\relax}
     \centering
     \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-false-pos.pdf}
     \end{subfigure}
-    \adjustbox{minipage=3em}{\subcaption{false negative}\label{fig:ig:false-neg}}%
-    \begin{subfigure}{\dimexpr\linewidth-3em\relax}
+    \adjustbox{minipage=3.5em}{\subcaption{false negative}\label{fig:ig:false-neg}}%
+    \begin{subfigure}{\dimexpr\linewidth-3.5em\relax}
     \centering
     \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-false-neg.pdf}
     \end{subfigure}
@@ -1313,14 +1317,12 @@ FCP-INDI.
 \begin{figure}[tbp]
     \begin{subfigure}[t]{0.5\linewidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{deep-learning-qc/dl_learning_curve_with_qc.pdf}
-    \caption{CNN-i+q}
+    \includegraphics[width=\linewidth]{deep-learning-qc/dl_learning_curve_with_qc.pdf}
     \label{fig:dl-loss:both}
     \end{subfigure}
     \begin{subfigure}[t]{0.5\linewidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{deep-learning-qc/dl_learning_curve_without_qc.pdf}
-    \caption{CNN-i}
+    \includegraphics[width=\linewidth]{deep-learning-qc/dl_learning_curve_without_qc.pdf}
     \label{fig:dl-loss:imaging}
     \end{subfigure}
     \caption{%
