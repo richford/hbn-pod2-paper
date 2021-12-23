@@ -222,23 +222,7 @@ could not be curated to comply with the BIDS standard or that did not have dMRI
 data were excluded, resulting in \num{2136} subjects with preprocessed,
 BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
 
-\subsection{Healthy Brain Network Preprocessed Open Diffusion Derivatives}
-
-\mctodo[inline]{%
-    Matt, please describe the \emph{QSIPrep} output directory structure.
-    Maybe we include a \texttt{tree} output figure and then a description of
-    each output file.
-    Hint: Use \href{https://github.com/emad-elsaid/dirtree}{dirtree} to make a
-    nice figure of \texttt{tree} output.
-}
-
-\arhtodo[inline]{%
-    Describe the distributions of \emph{QSIPrep} automated QC metrics:
-    NDC, max rel translation, raw number outlier slices.
-    e.g. \texttt{sns.pairplot()} of these three, lower tri, colored by age.
-}
-
-\begin{figure}[ht]
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=0.75\linewidth]{hbn-pod2-sankey.png}
     \caption{%
@@ -272,6 +256,47 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
         FCP-INDI.
     }
     \label{fig:hbn-sankey}
+\end{figure}
+
+\subsection{Healthy Brain Network Preprocessed Open Diffusion Derivatives}
+
+\mctodo[inline]{%
+    Matt, please describe the \emph{QSIPrep} output directory structure.  Maybe
+    we include a \texttt{tree} output figure and then a description of each
+    output file.  Hint: Use
+    \href{https://github.com/emad-elsaid/dirtree}{dirtree} to make a nice figure
+    of \texttt{tree} output. Direct readers to FCP-INDI for both the
+    BIDS-curated data and the \texttt{qsiprep} derivative dataset. Can you also
+    please discribe the three \emph{QSIPrep} metrics plotted in
+    Figure~\ref{fig:metric-dist}, and write some text to refer to that figure?
+}
+
+\begin{figure}[tbp]
+    {\phantomsubcaption\label{fig:metric-dist:age}}
+    {\phantomsubcaption\label{fig:metric-dist:ndc-slices}}
+    {\phantomsubcaption\label{fig:metric-dist:ndc-translation}}
+    {\phantomsubcaption\label{fig:metric-dist:slices-translation}}
+    \centering
+    \includegraphics[width=\linewidth]{bundle-profiles/qsiprep-metric-distributions.pdf}
+    \caption{%
+        {\bf Demographic and \emph{QSIPrep} metric distributions}:
+        \textbf{(a)} HBN age distributions by sex for each scanning site. Dashed lines
+        indicate age quartiles.
+        %
+        The remaining plots show associations between \textbf{(b)} neighboring
+        diffusion-weighted imaging correlation (NDC) \citep{yeh2019-kb} and the
+        number of outlier slices, \textbf{(c)} NDC and maximum relative
+        translation, and \textbf{(d)} the number of outlier slices and maximum
+        relative translation.
+        %
+        The number of outlier slices is positively associated with the maximum
+        relative translation, while NDC is negatively associated with the other
+        two metrics.
+        %
+        These plots are colored by age, and reveal that older participants
+        generally have higher quality data.
+    }
+    \label{fig:metric-dist}
 \end{figure}
 
 \subsection{Quality Control}
@@ -340,7 +365,7 @@ The high IRR provides confidence that the average of the expert ratings for each
 image in the gold standard is an appropriate target to use for training a
 machine learning model that predicts the expert scores.
 
-\begin{figure}[ht]
+\begin{figure}[tbp]
 \begin{fullwidth}
     {\phantomsubcaption\label{fig:expert-qc:scatter:hist}}
     {\phantomsubcaption\label{fig:expert-qc:scatter:ndc}}
