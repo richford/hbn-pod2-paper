@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% HBN-POD2 ELIFE SUBMISSION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% PREAMBLE 
+%%% PREAMBLE
 \documentclass[9pt,lineno]{elife}
 % Use the onehalfspacing option for 1.5 line spacing
 % Use the doublespacing option for 2.0 line spacing
@@ -72,20 +72,21 @@
 \maketitle
 
 \begin{abstract}
-The Healthy Brain Network (HBN) is a landmark pediatric mental health study.
-Among other data, the HBN collects diffusion MRI (dMRI) from its participants,
-used to make inferences about brain connections. We curated the
-currently-available dMRI data from \num{2747} HBN subjects into the widely
-accepted Brain Imaging Data Structure (BIDS) format, we processed the data
-through a series of standard steps, to denoise the data and correct it for
-motion and eddy current effects. To perform quality control (QC) on this large
-dataset, we deployed a community science app. Together with a small subset of
-expert QC data, community science QC scores provided the information needed to
-train an artificial neural network that scores the data for quality in a manner
-that highly agrees with expert QC. We demonstrate that the neural network uses
-sensible features of the data and also demonstrate that accurate quality control
-has implications for subsequent analysis of this data. We openly released the
-processed derivatives and QC scores for use by the scientific community.
+
+We created resources to enable research on the role of brain connections in
+development of mental health disorders, based on openly-available diffusion MRI
+(dMRI) data from the Healthy Brain Network (HBN). We curated the
+currently-available HBN dMRI (N=\num{2747}) into the Brain Imaging Data
+Structure (BIDS) and processed it acccording to established best-practices, to
+denoise it and correct it for effects of motion, susceptibility-related
+distortions, and eddy currents. Analysis of these data requires considerations
+of varying data quality. To scale quality control (QC) to these large data, we
+trained a convolutional neural network through combination of a small data
+subset scored by experts, and a larger set scored through a web app by community
+scientists. The network performs QC that highly agrees with expert QC on a left
+out set. Taken together, the openly-available QC scores and processed data
+provide a starting point for many analysis approaches.
+
 \end{abstract}
 
 \todo[inline]{%
@@ -497,7 +498,7 @@ network.
         of the cross-validation splits.
     }
     \label{fig:fibr-qc}
-\end{fullwidth} 
+\end{fullwidth}
 \end{figure}
 
 \subsubsection{Automated quality control labelling through deep learning}
