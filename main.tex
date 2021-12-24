@@ -1315,15 +1315,8 @@ We used \emph{DIPY} \citep{dipy} and \emph{cloudknot} \citep{cloudknot} to
 generate these multichannel volumes for each subject and save them as NIfTI-1
 files \citep{nifti}. These NIfTI files were then converted to the Tensorflow
 TFRecord format using the \emph{Nobrainer} deep learning framework
-\citep{nobrainer}.
-\arhtodo[inline]{%
-    Before submission, ask the \emph{Nobrainer} folks to cut a new release that
-    contains Adam's contributions so that we are referencing the correct
-    version. This cites a previous version that will not accept multichannel
-    volumes.
-}
-The Jupyter notebooks used to create these NIfTI and TFRecord files are
-available in the ``notebooks'' directory of the \emph{Fibr} GitHub
+\citep{nobrainer}. The Jupyter notebooks used to create these NIfTI and TFRecord
+files are available in the ``notebooks'' directory of the \emph{Fibr} GitHub
 repository.
 
 We trained each model using the Google Cloud AI Platform Training service and
