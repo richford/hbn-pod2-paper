@@ -269,7 +269,7 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
     \href{https://github.com/emad-elsaid/dirtree}{dirtree} to make a nice figure
     of \texttt{tree} output. Direct readers to FCP-INDI for both the
     BIDS-curated data and the \texttt{qsiprep} derivative dataset. Can you also
-    please discribe the three \emph{QSIPrep} metrics plotted in
+    please describe the three \emph{QSIPrep} metrics plotted in
     Figure~\ref{fig:metric-dist}, and write some text to refer to that figure?
 }
 
@@ -459,7 +459,7 @@ image quality information to be gained by incorporating community scientist inpu
 As a way of evaluating the quality of the XGB predictions, consider the fact
 that the average Cohen's $\kappa$ between XGB and the expert raters is 0.74,
 which is higher than the average Cohen's $\kappa$ between any of the other raters
-and their human peers (Figure~\ref{fig:expert-qc}). This is not suprising,
+and their human peers (Figure~\ref{fig:expert-qc}). This is not surprising,
 given that the XGB model was fit to optimize this match, but further
 demonstrates the goodness of fit of this model.
 
@@ -487,7 +487,7 @@ network.
     \end{subfigure}
     \caption{%
         {\bf Community science predictions of the expert ratings}:
-        Scatterplots showing the relationship between mean expert rating and
+        Scatter plots showing the relationship between mean expert rating and
         both mean \emph{Fibr} rating \textbf{(a)} and XGB prediction
         \textbf{(b)}. \emph{Fibr} raters overestimate the quality of images
         compared to expert raters. But the XGB prediction compensates for this
@@ -495,7 +495,7 @@ network.
         \emph{Fibr} raters.
         %
         \textbf{(c)} ROC curves for the XGB, XGB-q, and XGB-f models.
-        Transluscent bands represent one standard deviation from the mean
+        Translucent bands represent one standard deviation from the mean
         of the cross-validation splits.
     }
     \label{fig:fibr-qc}
@@ -567,7 +567,7 @@ and for male and female participants \footnote{%
         indicating the the QC metrics provide information that is redundant to
         the imaging. Both outperformed the XGB-q predictions, indicating the
         added value of the diffusion weighted images. However, both models
-        underperformed the XGB predictions, which also incoporate
+        underperformed the XGB predictions, which also incorporate
         information from \emph{Fibr} ratings for each scan. The error bands
         represent one standard deviation from the mean of the cross-validation
         splits.
@@ -577,7 +577,7 @@ and for male and female participants \footnote{%
         association between age and head motion in pediatric neuroimaging.
         The dots encode the mean QC score for each year of age with error bands
         representing a bootstrapped 95\% confidence interval. The line depicts
-        a linear regression relating age and QC score with transluscent bands
+        a linear regression relating age and QC score with translucent bands
         encoding a bootstrapped 95\% confidence interval.
         %
         Histograms showing the relationship between participants QC scores and
@@ -787,7 +787,7 @@ The most immediate contribution of this work is a large analysis-ready dMRI
 dataset, openly accessible to the public. In the past decade, projects such as
 the Human Connectome Project (HCP) \citep{van-essen2013-oi}, UK Biobank
 \citep{miller2016-mq}, ABCD \citep{jernigan2018-my}, and CamCAN
-\citep{taylor2017-or,shafto2014-ld} and of course FCP-INDI (which includeds HBN)
+\citep{taylor2017-or,shafto2014-ld} and of course FCP-INDI (which includes HBN)
 \citep{Mennes2013-eu} have ushered a culture of data sharing in open big-data
 neuroscience. The adoption and reuse of these datasets reduces or eliminates the
 data collection burden on downstream researchers. Some projects, such as the HCP
@@ -889,7 +889,7 @@ between some pairs of experts can be as low as 0.52, IRR quantified across all
 of the experts with ICC3k is excellent. Nevertheless, it is possible that
 improvements to the final QC scores could be obtained through improvements to
 IRR, or by designing a more extensive expert QC protocol. The tradeoff between
-more extensive QC for each subject and more superifcial QC on more subjects was
+more extensive QC for each subject and more superficial QC on more subjects was
 not explored in this study, but could also be the target for future research.
 
 \subsection{Transparent pipelines provide an extensible baseline for future methods development}
@@ -933,7 +933,7 @@ T1-weighted data \citep{keshavan2019-er} (using the \emph{Braindr} web app:
     include as collective co-authors community scientists who contributed more
     than \num{3000} ratings \citep{Ward-Fear2020-zq}.
     \item \emph{Braindr} used data from only a single site. Here, multi-site
-    data was used. This opens up multiple possibities for deeper exploration of
+    data was used. This opens up multiple possibilities for deeper exploration of
     between-site quality differences, and also for harmonization of QC across
     sites.
     \item The most challenging extension of hybrid QC from \emph{Braindr} to
@@ -998,7 +998,7 @@ projects and in other scientific fields.
 \subsection{Ideas and Speculation}
 
 \alltodo[inline]{%
-    We are targetting eLife for first submission and eLife now allows an
+    We are targeting eLife for first submission and eLife now allows an
     \href{https://elifesciences.org/inside-elife/e3e52a93/elife-latest-including-ideas-and-speculation-in-elife-papers}{Ideas
     and Speculation} subsection within the discussion section. This is a spot
     for authors to ``freely speculate about the meaning and implications of
@@ -1088,7 +1088,7 @@ as a $b=0$ image. MP-PCA denoising as implemented in MRtrix3's
 MP-PCA, B1 field inhomogeneity was corrected using \texttt{dwibiascorrect} from
 MRtrix3 with the N4 algorithm \citep{n4}. After B1 bias correction, the mean
 intensity of the DWI series was adjusted so all the mean intensity of the $b=0$
-images matched across eachseparate DWI scanning sequence.
+images matched across each separate DWI scanning sequence.
 
 FSL (version 6.0.3:b862cdd5)'s eddy was used for head motion correction
 and Eddy current correction \citep{anderssoneddy}. Eddy was configured
@@ -1130,7 +1130,7 @@ corresponding to workflows in \emph{QSIPrep}'s documentation}.
 
 The containerization of \emph{QSIPrep} provided a consistent preprocessing
 pipeline for each subject but the number of subjects made serial processing of
-each particpant prohibitive on a single machine. We used \emph{cloudknot}, a
+each participant prohibitive on a single machine. We used \emph{cloudknot}, a
 previously developed cloud-computing library \citep{cloudknot} to
 parallelize the preprocessing over individual subjects on spot instances in the
 Amazon Web Services Batch service. \emph{Cloudknot} takes as input a
@@ -1167,12 +1167,12 @@ subject and saved their scores and sent them to the lead author for compilation.
 \todo[inline]{%
     The new viewer will be called NIRV, the neuroimaging report viewer and we'll
     write another paper about that. So lots of details about the implementation
-    are witheld from this paper.
+    are withheld from this paper.
 }
 
 To compute the pairwise Cohen's $\kappa$ scores in Figure~\ref{fig:expert-qc:irr}, we
 used the \emph{scikit-learn} \citep{scikit-learn} \texttt{cohen\_kappa\_score}
-function with quadratic weights. To compute intraclass correlation, we used the
+function with quadratic weights. To compute intra-class correlation, we used the
 \emph{pingouin} statistical package \citep{vallat2018pingouin}
 \texttt{intraclass\_corr} function. The expert rating analysis can be replicated
 using the \texttt{make expert-qc} command in the HBN-POD2 GitHub repository.
@@ -1254,7 +1254,7 @@ the XGB-q model's positive class probabilities are available in the
         convolutional layer with a kernel size of 3 and a ReLu activation, a 3D
         max pooling layer with a pool size of 2, and a batch normalization layer
         with Tensorflow's default parameters. The number of filters in the
-        convolutional layers in each block are 64, 64, 128, and 256 respecively.
+        convolutional layers in each block are 64, 64, 128, and 256 respectively.
         The output of the final block is passed through a 3D global average
         pooling layer with Tensorflow's default parameters.
     }
@@ -1386,7 +1386,7 @@ bundle profile, relative to streamlines that are on the edge of the tract.
 These processes create bundle profiles, in which diffusion measures are
 quantified and averaged along twenty-four major fiber tracts. We retain only the
 mean diffusivity (MD) and the fractional anisotropy (FA) from a diffusion
-kurtosis imagin (DKI) model \citep{jensen2005-ta}, and impute missing bundles
+kurtosis imaging (DKI) model \citep{jensen2005-ta}, and impute missing bundles
 using median imputation as implemented by \emph{scikit-learn}'s
 \texttt{SimpleImputer} class. Because the HBN-POD2 bundle
 profiles exhibit strong site effects \citep{richie-halford2021multidimensional},
