@@ -34,15 +34,15 @@
 \author[2\authfn{1}*]{Matthew Cieslak}
 \author[4]{Lei Ai}
 \author[5]{Sendy Caffarra}
-\author[4]{Alexandre R. Franco}
-\author[5]{Iliana Karipidis}
+\author[4,5]{Alexandre R. Franco}
+\author[6]{Iliana Karipidis}
 \author[3]{John Kruper}
-\author[4]{Michael Milham}
-\author[5]{Barbara Avelar Pereira}
-\author[5]{Ethan Roy}
+\author[4,5]{Michael Milham}
+\author[6]{Barbara Avelar Pereira}
+\author[6]{Ethan Roy}
 \author[2]{Valerie J. Sydnor}
-\author[5]{Jason Yeatman}
-\author[6]{The Fibr Community Science Consortium}
+\author[6]{Jason Yeatman}
+\author[7]{The Fibr Community Science Consortium}
 % \input{fibr_authors.tex}
 \author[2\authfn{2}]{Theodore D. Satterthwaite}
 \author[3,1\authfn{2}]{Ariel Rokem}
@@ -53,9 +53,10 @@
 \affil[1]{University of Washington, eScience Institute, Seattle, Washington, 98195, USA}
 \affil[2]{University of Pennsylvania, Department of Psychiatry, Philadelphia, Pennsylvania, 19104, USA}
 \affil[3]{University of Washington, Department of Psychology, Seattle, Washington, 98195, USA}
-\affil[4]{Child Mind Institute, New York City, 10022, USA}
-\affil[5]{Stanford University, Graduate School of Education and Division of Developmental and Behavioral Pediatrics, Stanford, California, 94305, USA}
-\affil[6]{The Fibr Community Science Consortium}
+\affil[4]{Child Mind Institute, Center for the Developing Brain, New York City, New York, 10022, USA}
+\affil[5]{Nathan Kline Institute for Psychiatric Research, Center for Biomedical Imaging and Neuromodulation, Orangeburg, New York, 10962, USA}
+\affil[6]{Stanford University, Graduate School of Education and Division of Developmental and Behavioral Pediatrics, Stanford, California, 94305, USA}
+\affil[7]{The Fibr Community Science Consortium}
 
 \contrib[\authfn{1}]{These authors contributed equally to this work}
 \contrib[\authfn{2}]{These authors also contributed equally to this work}
@@ -72,19 +73,19 @@
 \maketitle
 
 \begin{abstract}
-
+\todo[inline]{Comment ARF: I'm not a big fan of the word "derivatives" in the title. If you want to keep it, maybe place in another place? How about: "An open preprocessed and derivatives generated diffusion dataset for child and adolescent neuroimaging". Additionally, much of the work presented in the paper is regarding QC. Shouldn't that also be part of the title?  Please ignore if that doesn't make sense. }
 We created resources to enable research on the role of brain connections in
 development of mental health disorders, based on openly-available diffusion MRI
 (dMRI) data from the Healthy Brain Network (HBN). We curated the
 HBN dMRI (N=\num{2747}) into the Brain Imaging Data
-Structure (BIDS) and processed it according to best-practices, to
-denoise it and correct for motion effects, susceptibility-related
-distortions, and eddy currents. Analysis of these data requires considerations
-of data quality. To scale quality control (QC) to these large data, we
+Structure (BIDS) and preprocessed it according to best-practices, including denoising and correcting for motion effects, susceptibility-related
+distortions, and eddy currents. 
+\todo[inline]{Comment ARF: A sentence (or two) describing diffusion derivatives is missing in the abstract}
+Data quality plays a key role in the analysis of these derivatives and relate them to development scores. To scale quality control (QC) to this large dataset, we
 trained a convolutional neural network through combination of a small data
 subset scored by experts and a larger set scored by web-based community
 scientists. The network performs QC that highly agrees with expert QC on a left
-out set.
+out set (HOW MUCH AGREEMENT?, CAN PUT SOME RESULTS HERE).
 The dataset both (a) delivers a resource for transdiagnostic
 research in brain connectivity and pediatric mental health and (b) serves as a paradigm
 for automated QC of large datasets.
@@ -115,37 +116,34 @@ for automated QC of large datasets.
 
 Childhood and adolescence are marked by rapid dynamic change to human brain
 structure and function \citep{Lebel2018-oy}. It is also a time during which the
-symptoms of many mental health disorders tend to emerge \citep{Paus2008-gi}.
-Understanding individual differences in brain development and understanding the
-interplay between brain development and the development of these disorders
-requires measurements from many individuals \citep{Paus2010-qk, Fair2021-eg}.
-To address this requirement, the Healthy Brain Network (HBN) is a landmark pediatric mental health study
-collecting MRI images and clinical assessment data from \num{10000} New York
+symptoms of many mental health disorders emerge \citep{Paus2008-gi}.
+Understanding how individual differences in brain development relate to the onset and progression of psychopathology inevitably requires large datasets  \citep{Paus2010-qk, Fair2021-eg}.
+The Healthy Brain Network (HBN) is a landmark pediatric mental health study
+that is projected to include MRI images along with detailed clinical and cognitive phentoyping from \num{10000} New York
 City area children and adolescents \citep{alexander2017-yc}. The HBN dataset
 takes a trans-diagnostic approach, measuring a broad range of phenotypic and
-imaging data in each individual. One of the brain imaging measurements conducted
-in every individual is diffusion MRI (dMRI), which allows for analysis of the
-physical properties of developing white matter \citep{wandell2016-qt}. The dMRI
+imaging data in each individual. One of the brain imaging measurements acquired 
+is diffusion MRI (dMRI), which is the dominant technology for describing the
+physical properties of white matter \citep{wandell2016-qt}. The dMRI
 data is openly available in its raw form through the Functional Connectomes
 Project and the International Neuroimaging Data-Sharing Initiative (FCP-INDI),
-spurring collaboration on open big-data reproducible science
-\citep{avesani2019-ey}. However, even with the data publicly available, several
-steps need to be completed before the data can be fruitfully analyzed.
+spurring collaboration on open and reproducible science
+\citep{avesani2019-ey}. \todo[inline]{ARF: Reference also this paper: Making data sharing work: The FCP/INDI experience, Mennes 2013, Neuroimage.} However, this raw, publicly available data requires extensive processing and quality assurance before it can be fruitfully analyzed.
 
 First, analysis of dMRI data must start with a pipeline of critical
 preprocessing steps, such as eddy current correction, motion correction, and
 adjustment of the gradient directions. Because of the complexity of some of
 these steps, investigators may neglect to perform some preprocessing steps or
 may make errors that can induce bias in their subsequent interpretation of the
-data \citep{jones2010-ps}. Furthermore, once preprocessing is done correctly and
-transparently once, there is little need for researchers to repeat this step.
+data \citep{jones2010-ps}. Once preprocessing is completed correctly and
+transparently, there is little need for researchers to repeat these steps. 
 Thus, there is a need for an openly available preprocessed diffusion derivative
 dataset that applies best practices in preprocessing in a robust and transparent
 way. Here, we used \emph{QSIPrep}, an integrative platform for preprocessing and
 reconstructing diffusion MRI data, which implements these best practices
 \citep{cieslak2021-iq}. To find the relevant files within a dataset, \emph{QSIPrep}
 relies on the Brain Imaging Data Specification (BIDS) standard
-\citep{gorgolewski2016-lh}, which describes the way to organize neuroimaging data
+\citep{gorgolewski2016-lh}, which describes an organizational structure of neuroimaging data
 for automated processing. That is, it is a BIDS App \citep{Gorgolewski2017-mb}.
 To reach full compliance with the BIDS standard, data in HBN had to first be
 curated.
@@ -156,8 +154,8 @@ Second, dMRI measurements are susceptible to a variety of artifacts that affect
 the quality of the signals and the ability to make accurate inferences from
 them. In small studies, with few participants, it is common to thoroughly
 examine the data from every participant as part of a quality control (QC)
-process. Expert examination is time consuming and is prohibitive in large
-datasets, such as HBN. This difficulty could be ameliorated through the
+process. However, expert examination is time consuming and is prohibitive in large
+datasets such as HBN. This difficulty could be ameliorated through the
 automation of QC. Thanks to their success in many other visual recognition
 tasks, machine learning and computer vision methods, such as convolutional deep
 artificial neural networks, or ``deep learning'' \citep{lecun2015deep} are
@@ -260,6 +258,7 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
     \label{fig:hbn-sankey}
 \end{figure}
 
+ 
 \subsection{Healthy Brain Network Preprocessed Open Diffusion Derivatives}
 
 \mctodo[inline]{%
