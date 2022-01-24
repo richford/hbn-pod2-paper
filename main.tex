@@ -13,6 +13,7 @@
 \usepackage{siunitx}
 \usepackage[export]{adjustbox}
 \usepackage{subcaption}
+\usepackage{longtable}
 \usepackage{xargs}  % Use more than one optional parameter in a new commands
 \usepackage[colorinlistoftodos,prependcaption]{todonotes}
 
@@ -276,7 +277,7 @@ site. The specific variant of each session is provided as a column in the partic
 
 \arhtodo[inline]{Reference variant info in participants.tsv.}
 
-\todo{inline}[In discussion, mention the variant annotation and allow end users to decide what they want to do.]
+\todo[inline]{In discussion, mention the variant annotation and allow end users to decide what they want to do.}
 
 The processed diffusion derivatives are \href{
 https://qsiprep.readthedocs.io/en/latest/preprocessing.html#outputs-of-qsiprep}{
@@ -1510,31 +1511,223 @@ or views of the Child Mind Institute. This work was supported via BRAIN Initiati
 %%% APPENDICES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \appendix
-% \begin{appendixbox}
-% \label{first:app}
-% \section{Firstly}
-% \lipsum[1]
+\appendix
+\begin{appendixbox}
+\label{feature-importance:app}
+\section{XGB feature importances}
 
-% %% Sadly, we can't use floats in the appendix boxes. So they don't "float", but use \captionof{figure}{...} and \captionof{table}{...} to get them properly caption.
-% \begin{center}
-% \includegraphics[width=\linewidth,height=7cm]{frog}
-% \captionof{figure}{This is a figure in the appendix}
-% \end{center}
+\begin{longtable}{lr}
+\toprule
+{} &  mean-absolute-shap-value \\
+feature                    &                           \\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
 
-% \section{Secondly}
+\bottomrule
+\endlastfoot
+raw\_neighbor\_corr          &                  0.666429 \\
+max\_rel\_translation        &                  0.348662 \\
+Gabriel Gonzalez-Escamilla &                  0.331149 \\
+raw\_num\_bad\_slices         &                  0.288937 \\
+t1\_neighbor\_corr           &                  0.282198 \\
+raw\_incoherence\_index      &                  0.229733 \\
+wanderinggrace             &                  0.186580 \\
+RaeYuan                    &                  0.168585 \\
+SimonMB                    &                  0.166023 \\
+raw\_coherence\_index        &                  0.162103 \\
+bc1115                     &                  0.135548 \\
+bld58                      &                  0.134424 \\
+max\_rel\_rotation           &                  0.118963 \\
+mean\_fd                    &                  0.116457 \\
+bhaggerty                  &                  0.115996 \\
+max\_fd                     &                  0.099359 \\
+harman                     &                  0.089879 \\
+mustafagok                 &                  0.085540 \\
+faskybrain                 &                  0.081696 \\
+clh64                      &                  0.080118 \\
+max\_rotation               &                  0.078774 \\
+benjamindeleener           &                  0.078474 \\
+li                         &                  0.078338 \\
+AmjadSamara                &                  0.077687 \\
+earoy                      &                  0.075802 \\
+jms290                     &                  0.071394 \\
+fsayed                     &                  0.065041 \\
+patriciaschm               &                  0.064422 \\
+likeajumprope              &                  0.059018 \\
+mkp                        &                  0.058214 \\
+yhahn1819                  &                  0.055446 \\
+floundersmw                &                  0.054750 \\
+Siko                       &                  0.048797 \\
+katielavigne               &                  0.047829 \\
+gurayerus                  &                  0.045792 \\
+amelie                     &                  0.044680 \\
+n00bmaster69               &                  0.044315 \\
+roschkoenig                &                  0.043191 \\
+ti                         &                  0.042313 \\
+sadieneuro                 &                  0.040770 \\
+Lshaffe6                   &                  0.038908 \\
+cMadan                     &                  0.038577 \\
+Li                         &                  0.038300 \\
+JodyFinch11                &                  0.037982 \\
+lindenmp                   &                  0.037123 \\
+AkiNikolaidis              &                  0.036303 \\
+t1\_coherence\_index         &                  0.035553 \\
+droediger                  &                  0.035406 \\
+t1\_dice\_distance           &                  0.034510 \\
+averigiudicessi            &                  0.034432 \\
+pkirk                      &                  0.033622 \\
+max\_translation            &                  0.032323 \\
+Dustin                     &                  0.032112 \\
+berwe48                    &                  0.030626 \\
+t1\_incoherence\_index       &                  0.030225 \\
+Kobrien                    &                  0.029733 \\
+Gaga                       &                  0.029325 \\
+iliazaharov                &                  0.029093 \\
+aojha7                     &                  0.028730 \\
+Hilarym                    &                  0.027851 \\
+zsheff                     &                  0.027433 \\
+aiwiesman                  &                  0.023283 \\
+jbourque                   &                  0.022759 \\
+VincentBottom              &                  0.022725 \\
+Token Tech Chick           &                  0.022203 \\
+ncolenbi                   &                  0.020550 \\
+Leanna5231                 &                  0.019205 \\
+llotter                    &                  0.018765 \\
+ecoffey                    &                  0.017005 \\
+bennewman                  &                  0.016904 \\
+mhettwer                   &                  0.015565 \\
+scientist626               &                  0.015440 \\
+utooley1                   &                  0.015284 \\
+vtrip                      &                  0.015075 \\
+meet10may                  &                  0.014824 \\
+Nabbott                    &                  0.014717 \\
+smarek                     &                  0.014409 \\
+aclements                  &                  0.014167 \\
+Nevena                     &                  0.013259 \\
+wangsm204                  &                  0.013183 \\
+kurtzoner                  &                  0.011734 \\
+mjl0062                    &                  0.010560 \\
+jlurp20                    &                  0.009544 \\
+albie                      &                  0.008202 \\
+elorenc                    &                  0.007338 \\
+anjaue                     &                  0.007331 \\
+HamidTurker                &                  0.007304 \\
+LeonF                      &                  0.006310 \\
+mpeter55                   &                  0.005619 \\
+jjfc                       &                  0.005398 \\
+AnthonyJa                  &                  0.005315 \\
+guillaume                  &                  0.004986 \\
+MaryLena                   &                  0.004584 \\
+arielleered                &                  0.004550 \\
+BrunoHeblingVieira         &                  0.004539 \\
+adam                       &                  0.004418 \\
+kat\_sh                     &                  0.004377 \\
+Mark Wiesman               &                  0.004147 \\
+ckw84                      &                  0.004040 \\
+dcg2153                    &                  0.003997 \\
+aren4                      &                  0.003874 \\
+Jacobjcrouse               &                  0.003633 \\
+cbajada                    &                  0.003406 \\
+mattwall                   &                  0.003320 \\
+Jul\_dugre                  &                  0.003259 \\
+amandamcgow                &                  0.003138 \\
+holoships                  &                  0.002946 \\
+Christian                  &                  0.002845 \\
+Ryguy                      &                  0.002830 \\
+valeriejill                &                  0.002781 \\
+jlhanson5                  &                  0.002768 \\
+mackenzie                  &                  0.002667 \\
+matthew2                   &                  0.002516 \\
+czaj                       &                  0.002513 \\
+Lysiad                     &                  0.002318 \\
+360\_0\_0                    &                  0.002287 \\
+ctw                        &                  0.002207 \\
+JonathanTSchneider         &                  0.002191 \\
+itsyuchao                  &                  0.002059 \\
+skyesinc                   &                  0.002021 \\
+svijay                     &                  0.001937 \\
+adrian\_neurosci            &                  0.001805 \\
+aomary                     &                  0.001697 \\
+Deagaric                   &                  0.001542 \\
+summerf                    &                  0.001526 \\
+MeganHimes                 &                  0.001441 \\
+GuiomarNiso                &                  0.001304 \\
+sofie                      &                  0.001251 \\
+ben                        &                  0.001204 \\
+akeshavan                  &                  0.001015 \\
+richford                   &                  0.000951 \\
+ShaoshiZ                   &                  0.000886 \\
+ikahhale                   &                  0.000868 \\
+SimranJuneja               &                  0.000864 \\
+Alex                       &                  0.000758 \\
+SHKohl                     &                  0.000754 \\
+margh                      &                  0.000736 \\
+akoz                       &                  0.000660 \\
+lexlosia                   &                  0.000625 \\
+ehhall                     &                  0.000444 \\
+tuf72977                   &                  0.000430 \\
+Gutiérrez-Tobal            &                  0.000398 \\
+askeller                   &                  0.000342 \\
+carljshi                   &                  0.000306 \\
+mabdallah                  &                  0.000279 \\
+Dykaba                     &                  0.000277 \\
+roryboyle                  &                  0.000188 \\
+hyruuk                     &                  0.000177 \\
+\end{longtable}
+\captionof{table}{Nonzero mean absolute shap values for the XGB model}
 
-% \lipsum[5-8]
+\begin{longtable}{lr}
+\toprule
+{} &  mean-absolute-shap-value \\
+feature               &                           \\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
 
-% \begin{center}
-% \includegraphics[width=\linewidth,height=7cm]{frog}
-% \captionof{figure}{This is a figure in the appendix}
-% \end{center}
+\bottomrule
+\endlastfoot
+raw\_neighbor\_corr     &                  0.767536 \\
+raw\_incoherence\_index &                  0.453897 \\
+raw\_num\_bad\_slices    &                  0.430422 \\
+t1\_coherence\_index    &                  0.382218 \\
+max\_rel\_translation   &                  0.363052 \\
+raw\_coherence\_index   &                  0.320438 \\
+t1\_neighbor\_corr      &                  0.250948 \\
+t1\_dice\_distance      &                  0.248104 \\
+t1\_incoherence\_index  &                  0.242348 \\
+max\_rel\_rotation      &                  0.135590 \\
+mean\_fd               &                  0.128642 \\
+max\_translation       &                  0.120815 \\
+max\_fd                &                  0.119739 \\
+max\_rotation          &                  0.101209 \\
+t1\_num\_bad\_slices     &                  0.007075 \\
+raw\_dimension\_y       &                  0.000000 \\
+raw\_dimension\_z       &                  0.000000 \\
+raw\_voxel\_size\_x      &                  0.000000 \\
+raw\_voxel\_size\_y      &                  0.000000 \\
+raw\_voxel\_size\_z      &                  0.000000 \\
+raw\_max\_b             &                  0.000000 \\
+t1\_voxel\_size\_x       &                  0.000000 \\
+raw\_num\_directions    &                  0.000000 \\
+t1\_dimension\_x        &                  0.000000 \\
+t1\_dimension\_y        &                  0.000000 \\
+t1\_dimension\_z        &                  0.000000 \\
+t1\_voxel\_size\_y       &                  0.000000 \\
+t1\_voxel\_size\_z       &                  0.000000 \\
+t1\_max\_b              &                  0.000000 \\
+t1\_num\_directions     &                  0.000000 \\
+raw\_dimension\_x       &                  0.000000 \\
+\end{longtable}
+\captionof{table}{Mean absolute shap values for the XGB-q model}
 
-% \end{appendixbox}
+\end{appendixbox}
 
-% \begin{appendixbox}
-% \includegraphics[width=\linewidth,height=7cm]{frog}
-% \captionof{figure}{This is a figure in the appendix}
-% \end{appendixbox}
+
 \end{document}
