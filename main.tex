@@ -13,7 +13,8 @@
 \usepackage{siunitx}
 \usepackage[export]{adjustbox}
 \usepackage{subcaption}
-\usepackage{longtable}
+% \usepackage{longtable}
+\usepackage{multicol}
 \usepackage{xargs}  % Use more than one optional parameter in a new commands
 \usepackage[colorinlistoftodos,prependcaption]{todonotes}
 
@@ -22,6 +23,7 @@
 
 \newcommandx{\alltodo}[2][1=]{\todo[author=Everyone,linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 \newcommandx{\mctodo}[2][1=]{\todo[author=Matt,linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\sctodo}[2][1=]{\todo[author=Sydney,linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 \newcommandx{\rokemtodo}[2][1=]{\todo[author=Ariel,linecolor=green,backgroundcolor=green!25,bordercolor=green,#1]{#2}}
 \newcommandx{\arhtodo}[2][1=]{\todo[author=Adam,linecolor=purple,backgroundcolor=purple!25,bordercolor=purple,#1]{#2}}
 
@@ -29,7 +31,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ARTICLE SETUP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{A preprocessed open diffusion derivatives dataset for child and adolescent neuroimaging}
+\title{An open, analysis-ready, and quality controlled resource for pediatric brain white matter research}
 
 \author[1,2\authfn{1}*]{Adam Richie-Halford}
 \author[3,4\authfn{1}*]{Matthew Cieslak}
@@ -79,15 +81,15 @@
 \maketitle
 
 \begin{abstract}
-\todo[inline]{Comment ARF: I'm not a big fan of the word "derivatives" in the title. If you want to keep it, maybe place in another place? How about: "An open preprocessed and derivatives generated diffusion dataset for child and adolescent neuroimaging". Additionally, much of the work presented in the paper is regarding QC. Shouldn't that also be part of the title?  Please ignore if that doesn't make sense. }
 We created resources to facilitate research on the role of brain microstructure in the
 development of mental health disorders, based on openly-available diffusion MRI
-(dMRI) data from the Healthy Brain Network (HBN). For this, we curated the
+(dMRI) data from the Healthy Brain Network (HBN). First, we curated the
 HBN dMRI data (N=\num{2747}) into the Brain Imaging Data
 Structure (BIDS) and preprocessed it according to best-practices, including denoising and correcting for motion effects, susceptibility-related
 distortions, and eddy currents. 
 \todo[inline]{Comment ARF: A sentence (or two) describing diffusion derivatives is missing in the abstract}
-Data quality plays a key role in the analysis of these derivatives and relate them to development scores. To scale quality control (QC) to this large dataset, we
+Data quality plays a key role in the analysis of dMRI. Analysis of these data requires considerations
+of data quality. To scale quality control (QC) to this large dataset, we
 trained a convolutional neural network through the combination of a small data
 subset scored by experts and a larger set scored by web-based community
 scientists. The network performs QC highly concordant with that of an expert (how much?) on a left
@@ -259,11 +261,14 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
  
 \subsection{Healthy Brain Network Preprocessed Open Diffusion Derivatives}
 
-Curated BIDS data and their corresponding \emph{QSIPrep} outputs are provided in the 
-FCP-INDI Amazon Web Services (AWS) S3 bucket. This public resource can be accessed by anyone using standard S3
+Curated BIDS data and their corresponding \emph{QSIPrep} outputs are provided in the  FCP-INDI Amazon Web Services (AWS) S3 bucket
+\footnote{%
+    Curated BIDS data is available at 
+    \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/}
+    and \emph{QSIPrep} outputs are available at
+    \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/derivatives/qsiprep/}.
+}. This public resource can be accessed by anyone using standard S3
 access tools.
-
-\arhtodo[inline]{First reference to S3 bucket hyperlink it.}
 
 Our curation process accounts for the acquisition variability inherent in large multi-site datasets
 by identifying unique \emph{variants} in the HBN 
@@ -275,7 +280,7 @@ site. The specific variant of each session is provided as a column in the partic
 
 \mctodo[inline]{Please add a table of variant names, descriptions, and participant counts. Like the one you shared on Slack. Hint: use \texttt{df.to\_latex()}}
 
-\arhtodo[inline]{Reference variant info in participants.tsv.}
+\arhtodo[inline]{Reference variant info in participants.tsv. And if this is the first time we're telling readers about participants.tsv, explain it.}
 
 \todo[inline]{In discussion, mention the variant annotation and allow end users to decide what they want to do.}
 
@@ -296,14 +301,16 @@ The spatial transform between the AC-PC T1w image and the MNI space brain is in 
 \texttt{ANTsBrainExtraction.sh} is included with the suffix \texttt{\_desc-brain\_mask.nii.gz}.
 
 \emph{Diffusion Data} The preprocessed dMRI scan and accompanying metadata are located in the 
-\texttt{dwi/} directory of each session. The fully-preprocessed dMRI data is named 
-\texttt{sub-X\_space-T1w\_desc-preproc\_dwi.nii.gz}. These images all have an isotropic voxel
+\texttt{dwi/} directory of each session. The fully-preprocessed dMRI data is named according to
+the file pattern \texttt{sub-X\_space-T1w\_desc-preproc\_dwi.nii.gz}. These images all have an isotropic voxel
 size of 1.7mm and are aligned in world coordinates with \texttt{anat/sub-X\_desc-preproc\_T1w.nii.gz}.
 Gradient information is provided in \texttt{bval/bvec} format compatible with DIPY and DSI Studio and
 the \texttt{.b} format compatible with MRtrix3. Volume-wise QC metrics including head motion parameters
 are included in the \texttt{confounds.tsv} file. QC measures for the entire image series are provided
 in the \texttt{ImageQC.csv} file, which includes the neighboring DWI Correlation, number of bad slices
-and head motion summary statistics. The \texttt{desc-brain\_mask} file is a dMRI-based brain mask that
+and head motion summary statistics.
+Figure \ref{fig:metric-dist} depicts the age distribution of study participants by sex and scan site as well as pairwise distributions for the three of these automated QC metrics that were most informative in QC models described later (see \ref{app:feature-importance} for further details).
+The \texttt{desc-brain\_mask} file is a dMRI-based brain mask that
 should only be used when the T1w-based brain mask is inappropriate (i.e. when no susceptibility distortion
 correction has been applied).
 
@@ -320,13 +327,13 @@ correction has been applied).
         indicate age quartiles.
         %
         The remaining plots show associations between \textbf{(b)} neighboring
-        diffusion-weighted imaging correlation (NDC) \citep{yeh2019-kb} and the
-        number of outlier slices, \textbf{(c)} NDC and maximum relative
+        diffusion-weighted imaging (DWI) correlation  \citep{yeh2019-kb} and the
+        number of outlier slices, \textbf{(c)} neighboring DWI correlation and maximum relative
         translation, and \textbf{(d)} the number of outlier slices and maximum
         relative translation.
         %
         The number of outlier slices is positively associated with the maximum
-        relative translation, while NDC is negatively associated with the other
+        relative translation, while neighboring DWI correlation is negatively associated with the other
         two metrics.
         %
         These plots are colored by age, and reveal that older participants
@@ -375,20 +382,20 @@ motion parameters throughout the DWI scan, and full 3D volumes depicting
 The experts rated participants using a five-point scale with ratings of ``definitely
 fail,'' ``probably fail,'' ``not sure,'' ``probably pass,'' and ``definitely
 pass.'' The distribution of scores given by the experts demonstrates that the
-gold standard dataset included a range of data quality. Mean expert ratings
-correlate with some of the automated QC metrics output by \emph{QSIPrep}:
-neighboring DWI correlation (NDC) \citep{yeh2019-kb}, maximum relative
-translation, and number of outlier slices. NDC characterizes
+gold standard dataset included a range of data quality (Figure \ref{fig:expert-qc:scatter:hist}. Mean expert ratings
+correlate with the three \emph{QSIPrep} automated QC metrics that were most informative for the XGB model described in the next section:
+neighboring DWI correlation \citep{yeh2019-kb} (Figure \ref{fig:expert-qc:scatter:ndc}), maximum relative
+translation (Figure \ref{fig:expert-qc:scatter:translation}), and number of outlier slices (Figure \ref{fig:expert-qc:scatter:outliers}). The neighboring DWI correlation characterizes
 the pairwise spatial correlation between pairs of DWI volumes that sample
 neighboring points in $q$-space. Since lower values indicate reduced data
-quality, it is reassuring that NDC correlates directly with expert rating
+quality, it is reassuring that the neighboring DWI correlation correlates directly with expert rating
 (Pearson CC: $0.797$). Conversely, high relative translation and a high number of
 motion outlier slices reflect poor data quality and these metrics are inversely
 related to mean expert rating (Pearson CC: $-0.692$ and Pearson CC: $-0.695$,
 respectively).
 
 In addition to agreeing qualitatively with \emph{QSIPrep}'s automated QC metrics
-on average, the expert raters also tended to agree with each other. We assessed
+on average, the expert raters also tended to agree with each other (Figure \ref{fig:expert-qc:irr}). We assessed
 inter-rater reliability (IRR) using the pairwise Cohen's $\kappa$
 \citep{di-eugenio2004-bb}, which exceeds 0.52 in all cases, and with a mean value of
 0.648. In addition to the pairwise Cohen's $\kappa$, we also computed the
@@ -422,9 +429,9 @@ machine learning model that predicts the expert scores.
         with \emph{QSIPrep}'s automated QC metrics.  Here we show the
         distribution of mean expert QC ratings \textbf{(a)} and associations
         between the mean expert QC rating and the \emph{QSIPrep} metrics
-        \textbf{(b)} neighboring diffusion-weighted imaging correlation (NDC)
+        \textbf{(b)} neighboring diffusion-weighted imaging (DWI) correlation 
         \citep{yeh2019-kb}, \textbf{(c)} maximum relative translation, and
-        \textbf{(d)} number of outlier slices. As expected, NDC is directly
+        \textbf{(d)} number of outlier slices. As expected, neighboring DWI correlation is directly
         correlated with expert rating while the other two metrics are inversely
         correlated with expert rating.
         %
@@ -717,6 +724,10 @@ bundles.
 \end{fullwidth}
 \end{figure}
 
+\subsection{QC prediction models generalize to new sites \ldots sometimes}
+
+\arhtodo[inline]{Add site generalization results}
+
 \subsection{Quality control improves inference}
 
 To demonstrate the effect that quality control has on inference, we analyzed
@@ -871,23 +882,25 @@ analysis of an age prediction model to generalize to other analyses and therefor
 recommend that researchers using HBN-POD2 choose the most appropriate QC cutoff for their research question.
 This recommendation also justifies the use of ROC-AUC to compare the XGB and CNN classifier families because ROC-AUC aggregates classifier performance across all possible thresholds.
 
+\subsection{Site generalization}
+
+\arhtodo[inline]{Add site generalization experiments.}
+
 \subsection{Automated quality control: a tension between scalability and interpretability}
 
-\todo[inline]{Reword justification for the number of different scores. Maybe don't talk about reluctance and instead focus on generalization.}
-We provide four different scores in anticipation of end-user's reluctance to
-trust a QC score generated through deep learning \citep{lipton2017doctor,
-Zech2018-ki, Ghassemi2021-zg, salahuddin2022transparency}. The predictive
+The predictive
 performance of the CNN-i model (Figure~\ref{fig:dl-qc:roc}) gives
 us confidence that it could accurately classify unseen data, justifying its
 extension to the entire HBN-POD2 dataset and to future releases. However, it
 does not explain its decisions. As deep learning models have been increasingly
 applied to medical image analysis, there is an evolving interest in the
-interpretability of these models \citep{salahuddin2022transparency}. While an
+interpretability of these models \citep{salahuddin2022transparency, lipton2017doctor,
+Zech2018-ki, Ghassemi2021-zg}. While an
 exhaustive interpretation of deep learning QC models is beyond the scope of this
 work, we provided a preliminary qualitative interpretation of the CNN-i model
 (Figure~\ref{fig:ig}) that demonstrates the intuitive nature of its decisions.
 
-Nevertheless, we recognize that decisions about QC inclusion must balance accuracy, interpretability, and generalization. We therefore provide three additional scores
+Nevertheless, we recognize that decisions about QC inclusion must balance accuracy, interpretability, generalization to new data, and scalability to ever larger datasets. We therefore provide three additional scores
 \begin{enumerate*}[%
     label=(\roman*),%
     before=\unskip{: },%
@@ -902,10 +915,8 @@ Nevertheless, we recognize that decisions about QC inclusion must balance accura
     learning generated scores, but which rely only on the automated QC metrics
     output by \emph{QSIPrep}.
 \end{enumerate*}
-We view the XGB-q scores, which are available for all participants, as a more interpretable fallback for users who are not
-comfortable basing study exclusion decisions on a deep learning model
-\citep{rudin2019stop}. 
-\todo[inline]{Same todo as above. Provide generalization as a possible motivation to use XGB-q over CNN-i.}
+We view the XGB-q scores, which are available for all participants, as a more interpretable and scalable fallback because the XGB-q model ingests \emph{QSIPrep} output without any further postprocessing.
+\arhtodo[inline]{Mention the XGB-q docker image and streamlit app.}
 The decision to use a more interpretable but slightly less
 performant method of generating QC scores was also advocated by
 \cite{tobe2021longitudinal}, who noted that the Euler number of T1-weighed
@@ -1018,10 +1029,7 @@ projects and in other scientific fields.
 
 \rokemtodo[inline]{%
     After we run the site generalization experiments, speculate about
-    generalization to other datasets. We should point out ABCD in particular
-    since the CUNY and CBIC sites are supposed to be harmonized with ABCD. This
-    discussion will hinge on the results of the remaining multi-site
-    generalization experiments.
+    generalization to other datasets.
 }
 
 \subsection{Ideas and Speculation}
@@ -1033,12 +1041,14 @@ projects and in other scientific fields.
     for authors to ``freely speculate about the meaning and implications of
     their data.'' It is reviewed but only for ``factual inaccuracies, clarity
     and speculation not germane to the paper.'' We should take advantage of this
-    opportunity.  Insert your speculations here.
+    opportunity. Insert your speculations here.
 }
 \todo[inline]{Comments from Sendy:
 Can we get these QC scores for other HBN datasets (e.g., fMRI, EEG, behavioral)?
 Would it make sense to have a global QC for each HBN participant that takes into account different techniques? How well can the QCs of one modality predict the QCs of a different modality on the same participants?
 Would it be possible to propose a new way to evaluate the reliability of a scientific finding based on its dependence on QC scores?}
+
+\rokemtodo[inline]{Speculate about multiverse analysis, garden of forking paths, etc.}
 
 \section{Methods and Materials}
 
@@ -1086,11 +1096,12 @@ accessed via AWS S3 at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/}.
 
 \todo[inline]{We mention dcm2bids and ``custom scripts.'' Ask Alex which version of dcm2bids and which custom scripts. Can we put them on GitHub?}
 
-\mctodo[inline]{Even though variants were identified after preprocessing, I think we still need to explain where they came from. Can you briefly describe CuBIDS and the identification of the variants here (and cite the Zenodo). If you want, you can do as we did for the viewer and say that a full technical description of CuBIDS is forthcoming. But a brief introduction would be nice.}
+\sctodo[inline]{Can you please add a citation for CuBIDS?}
+
+After conforming the data to BIDS, we used the ``Curation of BIDS'' (CuBIDS) \citep{sydney-covitz2022-cubids} package to identify unique combinations, or ``variants'' of imaging parameters in the curated dataset.
+CuBIDS is a Python-based software package that provides a sanity-preserving workflow to help users reproducibly parse, validate, curate, and understand heterogeneous BIDS imaging datasets. CuBIDS includes a robust implementation of the BIDS Validator that scales to large samples and incorporates DataLad \cite{halchenko2021datalad}, a distributed data management system, to ensure reproducibility and provenance tracking throughout the curation process. CuBIDS tools also employ agglomerative clustering to identify the aforementioned variants of imaging parameters. Users may then test BIDS-Apps on a subset of participants that represent the full range of acquisition parameters that are present. These variants are listed in the participants.tsv file in the BIDS-curated dataset.
 
 \subsection{Preprocessing}
-
-\mctodo[inline]{Matt: Please add information on edits to \emph{QSIPrep} to handle oblique acquisitions. There may be some redundancy with the QSIPrep paper but since the HBN data is what spurred that change, I think it's appropriate to mention here}
 
 We performed dMRI preprocessing on \num{2136} participants, using \emph{QSIPrep}
 \citep{cieslak2021-iq} 0.12.1, which is based on \emph{Nipype} 1.5.1
@@ -1156,8 +1167,9 @@ the \texttt{jac} method.
 Several confounding time-series were calculated based on the
 \emph{preprocessed DWI}: framewise displacement (FD) using the implementation
 in \emph{Nipype} following the definitions by \citep{power-fd-dvars}. The DWI
-time-series were resampled to ACPC, generating a \emph{preprocessed DWI run
-in ACPC space}.
+time-series were resampled to ACPC, and their corresponding gradient directions
+were rotated accordingly to generate a \emph{preprocessed DWI run
+in ACPC space}. 
 
 \end{itemize}
 
@@ -1390,6 +1402,10 @@ tutorial \citep{integrated-gradients-tutorial} with a black baseline image and
 service to compute integrated gradient attribution maps on Google Cloud, which
 can be invoked using the \texttt{make dl-integrated-gradients} command.
 
+\subsection{Site generalization experiments}
+
+\arhtodo[inline]{Add methods for site generalization}
+
 \subsection{QC bundle profiles}
 
 To generate bundle profiles, reconstruction was performed using the
@@ -1513,186 +1529,61 @@ or views of the Child Mind Institute. This work was supported via BRAIN Initiati
 
 \appendix
 \begin{appendixbox}
-\label{feature-importance:app}
-\section{XGB feature importances}
+\label{app:feature-importance}
+\section{XGB feature importance}
 
-\begin{longtable}{lr}
+SHAP is a method to explain individual predictions based on game theoretically optimal Shapley values \cite{lundberg2017unified}. To estimate global feature importance for the XGB and XGB-q models, we use the \texttt{shap} library's \texttt{TreeExplainer} \cite{lundberg2020local} and average the absolute Shapley value per feature across each individual prediction. Tables \ref{tab:xgb-shap} and \ref{tab:xgb-q-shap} list the \emph{QSIPrep} automated QC metric features in order of decreasing mean absolute shap value for the XGB and XGB-q models, respectively. We chose the top three metrics from Table \ref{tab:xgb-shap} to plot metric distributions in Figure \ref{fig:metric-dist} and correlations with the expert QC results in Figure \ref{fig:expert-qc}.
+
+\begin{multicols}{2}
+\begin{tabular}{lr|}
 \toprule
-{} &  mean-absolute-shap-value \\
-feature                    &                           \\
-\midrule
-\endhead
-\midrule
-\multicolumn{2}{r}{{Continued on next page}} \\
-\midrule
-\endfoot
-
-\bottomrule
-\endlastfoot
-raw\_neighbor\_corr          &                  0.666429 \\
-max\_rel\_translation        &                  0.348662 \\
-Gabriel Gonzalez-Escamilla &                  0.331149 \\
-raw\_num\_bad\_slices         &                  0.288937 \\
-t1\_neighbor\_corr           &                  0.282198 \\
-raw\_incoherence\_index      &                  0.229733 \\
-wanderinggrace             &                  0.186580 \\
-RaeYuan                    &                  0.168585 \\
-SimonMB                    &                  0.166023 \\
-raw\_coherence\_index        &                  0.162103 \\
-bc1115                     &                  0.135548 \\
-bld58                      &                  0.134424 \\
-max\_rel\_rotation           &                  0.118963 \\
-mean\_fd                    &                  0.116457 \\
-bhaggerty                  &                  0.115996 \\
-max\_fd                     &                  0.099359 \\
-harman                     &                  0.089879 \\
-mustafagok                 &                  0.085540 \\
-faskybrain                 &                  0.081696 \\
-clh64                      &                  0.080118 \\
-max\_rotation               &                  0.078774 \\
-benjamindeleener           &                  0.078474 \\
-li                         &                  0.078338 \\
-AmjadSamara                &                  0.077687 \\
-earoy                      &                  0.075802 \\
-jms290                     &                  0.071394 \\
-fsayed                     &                  0.065041 \\
-patriciaschm               &                  0.064422 \\
-likeajumprope              &                  0.059018 \\
-mkp                        &                  0.058214 \\
-yhahn1819                  &                  0.055446 \\
-floundersmw                &                  0.054750 \\
-Siko                       &                  0.048797 \\
-katielavigne               &                  0.047829 \\
-gurayerus                  &                  0.045792 \\
-amelie                     &                  0.044680 \\
-n00bmaster69               &                  0.044315 \\
-roschkoenig                &                  0.043191 \\
-ti                         &                  0.042313 \\
-sadieneuro                 &                  0.040770 \\
-Lshaffe6                   &                  0.038908 \\
-cMadan                     &                  0.038577 \\
-Li                         &                  0.038300 \\
-JodyFinch11                &                  0.037982 \\
-lindenmp                   &                  0.037123 \\
-AkiNikolaidis              &                  0.036303 \\
-t1\_coherence\_index         &                  0.035553 \\
-droediger                  &                  0.035406 \\
-t1\_dice\_distance           &                  0.034510 \\
-averigiudicessi            &                  0.034432 \\
-pkirk                      &                  0.033622 \\
-max\_translation            &                  0.032323 \\
-Dustin                     &                  0.032112 \\
-berwe48                    &                  0.030626 \\
-t1\_incoherence\_index       &                  0.030225 \\
-Kobrien                    &                  0.029733 \\
-Gaga                       &                  0.029325 \\
-iliazaharov                &                  0.029093 \\
-aojha7                     &                  0.028730 \\
-Hilarym                    &                  0.027851 \\
-zsheff                     &                  0.027433 \\
-aiwiesman                  &                  0.023283 \\
-jbourque                   &                  0.022759 \\
-VincentBottom              &                  0.022725 \\
-Token Tech Chick           &                  0.022203 \\
-ncolenbi                   &                  0.020550 \\
-Leanna5231                 &                  0.019205 \\
-llotter                    &                  0.018765 \\
-ecoffey                    &                  0.017005 \\
-bennewman                  &                  0.016904 \\
-mhettwer                   &                  0.015565 \\
-scientist626               &                  0.015440 \\
-utooley1                   &                  0.015284 \\
-vtrip                      &                  0.015075 \\
-meet10may                  &                  0.014824 \\
-Nabbott                    &                  0.014717 \\
-smarek                     &                  0.014409 \\
-aclements                  &                  0.014167 \\
-Nevena                     &                  0.013259 \\
-wangsm204                  &                  0.013183 \\
-kurtzoner                  &                  0.011734 \\
-mjl0062                    &                  0.010560 \\
-jlurp20                    &                  0.009544 \\
-albie                      &                  0.008202 \\
-elorenc                    &                  0.007338 \\
-anjaue                     &                  0.007331 \\
-HamidTurker                &                  0.007304 \\
-LeonF                      &                  0.006310 \\
-mpeter55                   &                  0.005619 \\
-jjfc                       &                  0.005398 \\
-AnthonyJa                  &                  0.005315 \\
-guillaume                  &                  0.004986 \\
-MaryLena                   &                  0.004584 \\
-arielleered                &                  0.004550 \\
-BrunoHeblingVieira         &                  0.004539 \\
-adam                       &                  0.004418 \\
-kat\_sh                     &                  0.004377 \\
-Mark Wiesman               &                  0.004147 \\
-ckw84                      &                  0.004040 \\
-dcg2153                    &                  0.003997 \\
-aren4                      &                  0.003874 \\
-Jacobjcrouse               &                  0.003633 \\
-cbajada                    &                  0.003406 \\
-mattwall                   &                  0.003320 \\
-Jul\_dugre                  &                  0.003259 \\
-amandamcgow                &                  0.003138 \\
-holoships                  &                  0.002946 \\
-Christian                  &                  0.002845 \\
-Ryguy                      &                  0.002830 \\
-valeriejill                &                  0.002781 \\
-jlhanson5                  &                  0.002768 \\
-mackenzie                  &                  0.002667 \\
-matthew2                   &                  0.002516 \\
-czaj                       &                  0.002513 \\
-Lysiad                     &                  0.002318 \\
-360\_0\_0                    &                  0.002287 \\
-ctw                        &                  0.002207 \\
-JonathanTSchneider         &                  0.002191 \\
-itsyuchao                  &                  0.002059 \\
-skyesinc                   &                  0.002021 \\
-svijay                     &                  0.001937 \\
-adrian\_neurosci            &                  0.001805 \\
-aomary                     &                  0.001697 \\
-Deagaric                   &                  0.001542 \\
-summerf                    &                  0.001526 \\
-MeganHimes                 &                  0.001441 \\
-GuiomarNiso                &                  0.001304 \\
-sofie                      &                  0.001251 \\
-ben                        &                  0.001204 \\
-akeshavan                  &                  0.001015 \\
-richford                   &                  0.000951 \\
-ShaoshiZ                   &                  0.000886 \\
-ikahhale                   &                  0.000868 \\
-SimranJuneja               &                  0.000864 \\
-Alex                       &                  0.000758 \\
-SHKohl                     &                  0.000754 \\
-margh                      &                  0.000736 \\
-akoz                       &                  0.000660 \\
-lexlosia                   &                  0.000625 \\
-ehhall                     &                  0.000444 \\
-tuf72977                   &                  0.000430 \\
-Gutiérrez-Tobal            &                  0.000398 \\
-askeller                   &                  0.000342 \\
-carljshi                   &                  0.000306 \\
-mabdallah                  &                  0.000279 \\
-Dykaba                     &                  0.000277 \\
-roryboyle                  &                  0.000188 \\
-hyruuk                     &                  0.000177 \\
-\end{longtable}
-\captionof{table}{Nonzero mean absolute shap values for the XGB model}
-
-\begin{longtable}{lr}
-\toprule
-{} &  mean-absolute-shap-value \\
+{} &  mean abs shap \\
 feature               &                           \\
 \midrule
-\endhead
-\midrule
-\multicolumn{2}{r}{{Continued on next page}} \\
-\midrule
-\endfoot
-
+raw\_neighbor\_corr     &                  0.666429 \\
+max\_rel\_translation   &                  0.348662 \\
+raw\_num\_bad\_slices    &                  0.288937 \\
+t1\_neighbor\_corr      &                  0.282198 \\
+raw\_incoherence\_index &                  0.229733 \\
+raw\_coherence\_index   &                  0.162103 \\
+max\_rel\_rotation      &                  0.118963 \\
+mean\_fd               &                  0.116457 \\
+max\_fd                &                  0.099359 \\
+max\_rotation          &                  0.078774 \\
+t1\_coherence\_index    &                  0.035553 \\
+t1\_dice\_distance      &                  0.034510 \\
+max\_translation       &                  0.032323 \\
+t1\_incoherence\_index  &                  0.030225 \\
+raw\_voxel\_size\_x      &                  0.000000 \\
+raw\_voxel\_size\_y      &                  0.000000 \\
+raw\_voxel\_size\_z      &                  0.000000 \\
+raw\_num\_directions    &                  0.000000 \\
+raw\_max\_b             &                  0.000000 \\
+raw\_dimension\_y       &                  0.000000 \\
+raw\_dimension\_z       &                  0.000000 \\
+t1\_voxel\_size\_x       &                  0.000000 \\
+t1\_dimension\_x        &                  0.000000 \\
+t1\_dimension\_y        &                  0.000000 \\
+t1\_dimension\_z        &                  0.000000 \\
+t1\_voxel\_size\_y       &                  0.000000 \\
+t1\_voxel\_size\_z       &                  0.000000 \\
+t1\_max\_b              &                  0.000000 \\
+t1\_num\_bad\_slices     &                  0.000000 \\
+t1\_num\_directions     &                  0.000000 \\
+raw\_dimension\_x       &                  0.000000 \\
 \bottomrule
-\endlastfoot
+\end{tabular}
+\captionof{table}{%
+  XGB mean absolute shap values
+  \label{tab:xgb-shap}
+}
+
+{\nolinenumbers
+\begin{tabular}{|lr}
+\toprule
+{} &  mean abs shap \\
+feature               &                           \\
+\midrule
 raw\_neighbor\_corr     &                  0.767536 \\
 raw\_incoherence\_index &                  0.453897 \\
 raw\_num\_bad\_slices    &                  0.430422 \\
@@ -1724,8 +1615,14 @@ t1\_voxel\_size\_z       &                  0.000000 \\
 t1\_max\_b              &                  0.000000 \\
 t1\_num\_directions     &                  0.000000 \\
 raw\_dimension\_x       &                  0.000000 \\
-\end{longtable}
-\captionof{table}{Mean absolute shap values for the XGB-q model}
+\bottomrule
+\end{tabular}
+\captionof{table}{%
+  XGB-q mean absolute shap values
+  \label{tab:xgb-q-shap}
+}
+}
+\end{multicols}
 
 \end{appendixbox}
 
