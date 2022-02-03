@@ -281,32 +281,13 @@ site. The specific variant of each session is provided as a column in the partic
 The processed diffusion derivatives are \href{
 https://qsiprep.readthedocs.io/en/latest/preprocessing.html#outputs-of-qsiprep}{
 standard \emph{QSIPrep} outputs}, which contain preprocessed imaging data
-along with the corresponding QC metrics.
+along with the corresponding QC metrics:
 
-\emph{Anatomical Data} Preprocessed images, segmentations and transforms for spatial normalization
-are located in the \texttt{anat/} directory of each session. The gray matter, white matter and 
-cerebrospinal fluid (\texttt{GM}, \texttt{WM}, \texttt{CSF}) probabilistic
-segmentations are provided in nifti format with the \texttt{\_probtissue} suffix. The deterministic 
-segmentation is in \texttt{\_dseg.nii.gz}. All images are in alignment with AC-PC-aligned 
-\texttt{sub-X\_desc-preproc\_T1w.nii.gz} unless \texttt{space-MNI152NLin2009cAsym} is in their file name,
-in which case they are aligned to the MNI Nonlinear T1-weighted asymmetric brain template (version 2009c). 
-The spatial transform between the AC-PC T1w image and the MNI space brain is in the ITK/ANTs format 
-\texttt{sub-X\_from-MNI152NLin2009cAsym\_to-T1w\_mode-image\_xfm.h5} file. The brain mask from
-\texttt{ANTsBrainExtraction.sh} is included with the suffix \texttt{\_desc-brain\_mask.nii.gz}.
+\begin{itemize}
+    \item \emph{Anatomical Data} Preprocessed images, segmentations and transforms for spatial normalization are located in the \texttt{anat/} directory of each session. The gray matter, white matter and  cerebrospinal fluid (\texttt{GM}, \texttt{WM}, \texttt{CSF}) probabilistic segmentations are provided in nifti format with the \texttt{\_probtissue} suffix. The deterministic  segmentation is in \texttt{\_dseg.nii.gz}. All images are in alignment with AC-PC-aligned  \texttt{sub-X\_desc-preproc\_T1w.nii.gz} image unless they have \texttt{space-MNI152NLin2009cAsym} in their file name, in which case they are aligned to the MNI Nonlinear T1-weighted asymmetric brain template (version 2009c).  The spatial transform between the AC-PC T1w image and the MNI space brain is in the ITK/ANTs format file named \texttt{sub-X\_from-MNI152NLin2009cAsym\_to-T1w\_mode-image\_xfm.h5}. The brain mask derived from \texttt{ANTsBrainExtraction.sh} is included in the file with the suffix \texttt{\_desc-brain\_mask.nii.gz}.
 
-\emph{Diffusion Data} The preprocessed dMRI scan and accompanying metadata are located in the 
-\texttt{dwi/} directory of each session. The fully-preprocessed dMRI data is named according to
-the file pattern \texttt{sub-X\_space-T1w\_desc-preproc\_dwi.nii.gz}. These images all have an isotropic voxel
-size of 1.7mm and are aligned in world coordinates with \texttt{anat/sub-X\_desc-preproc\_T1w.nii.gz}.
-Gradient information is provided in \texttt{bval/bvec} format compatible with DIPY and DSI Studio and
-the \texttt{.b} format compatible with MRtrix3. Volume-wise QC metrics including head motion parameters
-are included in the \texttt{confounds.tsv} file. QC measures for the entire image series are provided
-in the \texttt{ImageQC.csv} file, which includes the neighboring DWI Correlation, number of bad slices
-and head motion summary statistics.
-Figure~\ref{fig:metric-dist} depicts the age distribution of study participants by sex and scan site as well as pairwise distributions for the three of these automated QC metrics that were most informative in QC models described later (see Appendix~\ref{app:feature-importance} for further details).
-The \texttt{desc-brain\_mask} file is a dMRI-based brain mask that
-should only be used when the T1w-based brain mask is inappropriate (i.e. when no susceptibility distortion
-correction has been applied).
+    \item \emph{Diffusion Data} The preprocessed dMRI scan and accompanying metadata are located in the  \texttt{dwi/} directory of each session. The fully-preprocessed dMRI data is named according to the file pattern \texttt{sub-X\_space-T1w\_desc-preproc\_dwi.nii.gz}. These images all have an isotropic voxel size of \qty{1.7}{\mm} and are aligned in world coordinates with the anatomical image located at \texttt{anat/sub-X\_desc-preproc\_T1w.nii.gz}. Gradient information is provided in \texttt{bval/bvec} format compatible with DIPY and DSI Studio and the \texttt{.b} format compatible with MRtrix3. Volume-wise QC metrics including head motion parameters are included in the \texttt{confounds.tsv} file. QC measures for the entire image series are provided in the \texttt{ImageQC.csv} file, which includes the neighboring DWI Correlation, number of bad slices and head motion summary statistics. Figure~\ref{fig:metric-dist} depicts the age distribution of study participants by sex and scan site as well as pairwise distributions for the three of these automated QC metrics that were most informative in QC models described later (see Appendix~\ref{app:feature-importance} for further details). The \texttt{desc-brain\_mask} file is a dMRI-based brain mask that should only be used when the T1w-based brain mask is inappropriate (i.e. when no susceptibility distortion correction has been applied).
+\end{itemize}
 
 \begin{figure}[tbp]
     {\phantomsubcaption\label{fig:metric-dist:age}}
@@ -376,7 +357,7 @@ motion parameters throughout the DWI scan, and full 3D volumes depicting
 The experts rated participants using a five-point scale with ratings of ``definitely
 fail,'' ``probably fail,'' ``not sure,'' ``probably pass,'' and ``definitely
 pass.'' The distribution of scores given by the experts demonstrates that the
-gold standard dataset included a range of data quality (Figure~\ref{fig:expert-qc:scatter:hist}. Mean expert ratings
+gold standard dataset included a range of data quality (Figure~\ref{fig:expert-qc:scatter:hist}). Mean expert ratings
 correlate with the three \emph{QSIPrep} automated QC metrics that were most informative for the XGB model described in the next section:
 neighboring DWI correlation \citep{yeh2019-kb} (Figure~\ref{fig:expert-qc:scatter:ndc}), maximum relative
 translation (Figure~\ref{fig:expert-qc:scatter:translation}), and number of outlier slices (Figure~\ref{fig:expert-qc:scatter:outliers}). The neighboring DWI correlation characterizes
@@ -717,8 +698,9 @@ bundles.
 \end{fullwidth}
 \end{figure}
 
-\subsection{QC prediction models generalize to new sites \ldots sometimes}
+\subsection{QC prediction models generalize to new sites\ldots sometimes}
 
+To better understand the ability of our QC models to generalize across scanning sites, we trained several variants of the XGB-q and CNN-i models on partitions of the data with different sites held out.
 \arhtodo[inline]{Add site generalization results}
 
 \subsection{Quality control improves inference}
@@ -815,7 +797,7 @@ performance. To demonstrate this, we select participant age as a representative 
 \end{enumerate*}
 We observed the effect of varying QC cutoff on the predictive performance of an age
 prediction model. Cross-validated $R^2$ scores for an age prediction model
-varies depending on the QC cutoff (Figure~\ref{fig:age-prediction}). An initial large improvement was achieved by excluding the 200 participants with the lowest QC scores, followed by a gradual increase in performance. Finally, when a large number of participants is excluded, performance deteriorated again.
+varied depending on the QC cutoff (Figure~\ref{fig:age-prediction}). An initial large improvement was achieved by excluding the 200 participants with the lowest QC scores, followed by a gradual increase in performance. Finally, when a large number of participants is excluded, performance deteriorated again.
 
 \section{Discussion}
 
@@ -869,8 +851,9 @@ age (Figure~\ref{fig:dl-qc}). This accords with the negative association
 between head motion and age in developmental studies, which is well established both in general
 \citep{power2012spurious,satterthwaite2012impact,fair2012distinct,yendiki2014spurious}
 and specifically for resting-state fMRI in the HBN dataset \citep{alexander2017-yc}.
+Moreover, it is important that QC has bundle-specific and spatially localized effects (Figure~\ref{fig:qc-profiles:md}). Analysis of this data that does not incorporate QC is likely to find replicable but invalid effects. For example, in patient-control studies, patients are likely to have lower quality data. And analysis of these patients that does not control for QC will find spatially-localized and replicable group differences that are due to data quality, not necessarily underlying neuroanatomical differences.
 
-We demonstrate the impact of QC in a benchmark age prediction task
+We further demonstrated the impact of QC in a benchmark age prediction task
 (Figure~\ref{fig:age-prediction}). In this case, the increase in model performance
 from imposing a QC cutoff is intuitive: we know from
 Figure~\ref{fig:qc-profiles:md} that participants with low QC scores have
@@ -1089,7 +1072,6 @@ legal guardians and written assent was obtained from the participant. Voxel
 resolution was \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} with \num{64} non-colinear
 directions measured for each of $b=1000$ \unit{\second \per \mm^{2}} and
 $b=2000$ \unit{\second \per \mm^{2}}.
-\todo[inline]{Comment VJS: We should mention that it is multi-shell data in the Intro/Results. Also could provide the b-values and number of gradients per b-value).}
 
 \subsection{BIDS curation}
 
