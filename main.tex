@@ -274,15 +274,9 @@ Our curation process accounts for the acquisition variability inherent in large 
 by identifying unique \emph{variants} in the HBN 
 dMRI and fieldmap acquisitions. Each session was grouped according to metadata parameters that
 affect the dMRI signal (PhaseEncodingDirection, EchoTime, VoxelSize, FlipAngle, PhasePartialFourier,
-NumberOfVolumes, Fieldmap availibility). We identified a total of 22 unique DWI acquisitions across
-HBN, where about 5\% of acquisitions were different from the most common DWI acquisition at their
-site. The specific variant of each session is provided as a column in the participant.tsv file.
-
-\mctodo[inline]{Please add a table of variant names, descriptions, and participant counts. Like the one you shared on Slack. Hint: use \texttt{df.to\_latex()}}
-
-\arhtodo[inline]{Reference variant info in participants.tsv. And if this is the first time we're telling readers about participants.tsv, explain it.}
-
-\todo[inline]{In discussion, mention the variant annotation and allow end users to decide what they want to do.}
+NumberOfVolumes, Fieldmap availibility). We identified a total of 20 unique DWI acquisitions across
+HBN-POD2, where about 5\% of acquisitions were different from the most common DWI acquisition at their
+site. The specific variant of each session is provided as a column in the participant.tsv file and a summary of variants with participant counts is provided in Appendix~\ref{app:variants}.
 
 The processed diffusion derivatives are \href{
 https://qsiprep.readthedocs.io/en/latest/preprocessing.html#outputs-of-qsiprep}{
@@ -309,7 +303,7 @@ the \texttt{.b} format compatible with MRtrix3. Volume-wise QC metrics including
 are included in the \texttt{confounds.tsv} file. QC measures for the entire image series are provided
 in the \texttt{ImageQC.csv} file, which includes the neighboring DWI Correlation, number of bad slices
 and head motion summary statistics.
-Figure \ref{fig:metric-dist} depicts the age distribution of study participants by sex and scan site as well as pairwise distributions for the three of these automated QC metrics that were most informative in QC models described later (see \ref{app:feature-importance} for further details).
+Figure~\ref{fig:metric-dist} depicts the age distribution of study participants by sex and scan site as well as pairwise distributions for the three of these automated QC metrics that were most informative in QC models described later (see Appendix~\ref{app:feature-importance} for further details).
 The \texttt{desc-brain\_mask} file is a dMRI-based brain mask that
 should only be used when the T1w-based brain mask is inappropriate (i.e. when no susceptibility distortion
 correction has been applied).
@@ -382,10 +376,10 @@ motion parameters throughout the DWI scan, and full 3D volumes depicting
 The experts rated participants using a five-point scale with ratings of ``definitely
 fail,'' ``probably fail,'' ``not sure,'' ``probably pass,'' and ``definitely
 pass.'' The distribution of scores given by the experts demonstrates that the
-gold standard dataset included a range of data quality (Figure \ref{fig:expert-qc:scatter:hist}. Mean expert ratings
+gold standard dataset included a range of data quality (Figure~\ref{fig:expert-qc:scatter:hist}. Mean expert ratings
 correlate with the three \emph{QSIPrep} automated QC metrics that were most informative for the XGB model described in the next section:
-neighboring DWI correlation \citep{yeh2019-kb} (Figure \ref{fig:expert-qc:scatter:ndc}), maximum relative
-translation (Figure \ref{fig:expert-qc:scatter:translation}), and number of outlier slices (Figure \ref{fig:expert-qc:scatter:outliers}). The neighboring DWI correlation characterizes
+neighboring DWI correlation \citep{yeh2019-kb} (Figure~\ref{fig:expert-qc:scatter:ndc}), maximum relative
+translation (Figure~\ref{fig:expert-qc:scatter:translation}), and number of outlier slices (Figure~\ref{fig:expert-qc:scatter:outliers}). The neighboring DWI correlation characterizes
 the pairwise spatial correlation between pairs of DWI volumes that sample
 neighboring points in $q$-space. Since lower values indicate reduced data
 quality, it is reassuring that the neighboring DWI correlation correlates directly with expert rating
@@ -395,7 +389,7 @@ related to mean expert rating (Pearson CC: $-0.692$ and Pearson CC: $-0.695$,
 respectively).
 
 In addition to agreeing qualitatively with \emph{QSIPrep}'s automated QC metrics
-on average, the expert raters also tended to agree with each other (Figure \ref{fig:expert-qc:irr}). We assessed
+on average, the expert raters also tended to agree with each other (Figure~\ref{fig:expert-qc:irr}). We assessed
 inter-rater reliability (IRR) using the pairwise Cohen's $\kappa$
 \citep{di-eugenio2004-bb}, which exceeds 0.52 in all cases, and with a mean value of
 0.648. In addition to the pairwise Cohen's $\kappa$, we also computed the
@@ -615,7 +609,7 @@ and for male and female participants \footnote{%
         splits.
         %
         \textbf{(b)} Joint distributions showing a strong direct association
-        between age and QC score. This likely reflects the well-known negative
+        between age and QC score (Pearson CC: $0.31$). This likely reflects the well-known negative
         association between age and head motion in pediatric neuroimaging.
         The dots encode the mean QC score for each year of age with error bands
         representing a bootstrapped 95\% confidence interval. The line depicts
@@ -647,8 +641,7 @@ Figure~\ref{fig:ig} shows attribution maps for example participants from each
 confusion class: true positive, true negative, false positive, and false
 negative. The columns correspond to the different channels of the deep learning
 input volume: the $b=0$ reference image and the DEC-FA in the $x$, $y$, and $z$
-directions. 
-\todo[inline]{Comment VJS: Because you describe this Figure in detail here, I'd add in what the blue voxels indicate (positive attribution/data supporting QC pass) and red voxels indicate (negative attribution/data supporting QC fail).}
+directions. The blue voxels indicate positive attribution, that is, data that supports a passing QC classification. Conversely, the red voxels indicate negative attribution, data that supports a failing QC classification.
 The true positive map indicates that the network is looking at the
 entire brain rather than focusing on any one anatomical region
 (Figure~\ref{fig:ig:true-pos}). Moreover, the model identifies white matter
@@ -692,7 +685,7 @@ bundles.
         {\bf Integrated gradients attribution maps for the deep learning classifier}:
         Each column depicts a different channel of the input tensor: the $b=0$
         DWI volume and the DEC-FA images in the $x$, $y$, and $z$ directions.
-        The first three columns show a horizontal slice while the last column
+        The first three columns show an axial slice while the last column
         shows a coronal slice. Blue voxels indicate positive attribution (i.e.
         evidence for passing the participant), while red voxels indicate negative
         attribution (i.e. evidence for QC failure). The underlying grayscale
@@ -811,9 +804,16 @@ The effect of QC score on white matter bundle profiles indicates that researcher
 using HBN-POD2 should incorporate QC in their analyses, either by applying a QC cutoff
 when selecting participants or by explicitly adding QC score to their inferential
 models. Failure to do so may cause spurious associations or degrade predictive
-performance. To demonstrate this, we select participant age as a representative
-phenotypic benchmark \citep{cole2019brain,richie-halford2021multidimensional} and
-observed the effect of varying QC cutoff on the predictive performance of an age
+performance. To demonstrate this, we select participant age as a representative phenotypic benchmark because
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before=\unskip{ },%
+    itemjoin={{, }},%
+    itemjoin*={{ and }}]
+    \item it operates on a natural scale with meaninsful units
+    \item despite the unique methodological challenges it presents for biomarker identification \cite{nelson2020biomarkers}, brain age prediction may be diagnostic of overall brain health \citep{franke2010estimating, cole2019brain, richie-halford2021multidimensional}.
+\end{enumerate*}
+We observed the effect of varying QC cutoff on the predictive performance of an age
 prediction model. Cross-validated $R^2$ scores for an age prediction model
 varies depending on the QC cutoff (Figure~\ref{fig:age-prediction}). An initial large improvement was achieved by excluding the 200 participants with the lowest QC scores, followed by a gradual increase in performance. Finally, when a large number of participants is excluded, performance deteriorated again.
 
@@ -832,7 +832,7 @@ quality control of other large-scale datasets.
 \subsection{Preprocessing and quality control increase the impact of openly-available data}
 
 The most immediate contribution of this work is a large analysis-ready dMRI
-dataset, openly accessible to the public. In the past decade, projects such as
+data resource, openly accessible to the public. In the past decade, projects such as
 the Human Connectome Project (HCP) \citep{van-essen2013-oi}, UK Biobank
 \citep{miller2016-mq}, ABCD \citep{jernigan2018-my}, and CamCAN
 \citep{taylor2017-or,shafto2014-ld} and of course FCP-INDI (which includes HBN)
@@ -844,18 +844,24 @@ researchers' burden and extending the benefits of data-sharing from data
 collection to preprocessing and secondary analysis. Following the example of the
 HCP, HBN-POD2 provides analysis-ready dMRI derivatives. This avoids duplication
 of and heterogeneity across the preprocessing effort while also ensuring a minimum standard of data quality
-for HBN researchers. The data is amenable to many different analyses, including
+for HBN researchers.
+We also provide the CuBIDS variant annotation in the participants.tsv file, allowing researchers to account for the imaging heterogeneity inherent in a dataset of this size.
+
+The data is amenable to many different analyses, including
 tractometry \citep{yeatman2012-rc, yeatman2018browser, kruper2021evaluating}, graph theoretical analysis \citep{yeh2020-nu},
 and combinations with functional MRI data and other data types for the same
 participants. The availability of standardized preprocessed diffusion data will
 allow researchers to create and test hypotheses on the white matter properties
 underlying behavior and disease, from reading and math acquisition to childhood
 adversity and mental health. As such, this dataset will accelerate discovery at
-the nexus of structural connectivity and neurodevelopmental and learning
+the nexus of white matter microstructure and neurodevelopmental and learning
 disorders.
 
 In large developmental datasets, it is critically important to perform accurate and reliable QC of
-the data.  HBN-POD2 provides four separate QC scores alongside its large dataset
+the data.
+QC is associated not just with age, but with many
+phenotypic variables of interest in cognition and psychopathology \cite{siegel2017quality}.
+HBN-POD2 provides four separate QC scores alongside its large dataset
 of pediatric neuroimaging diffusion derivatives, paving the way for users of the
 data to incorporate considerations of data quality into their analysis of the
 processed data. Unsurprisingly, QC scores are strongly correlated with
@@ -879,7 +885,7 @@ for high quality data and the desire for a large sample size. In this case,
 after a QC cutoff of around $0.9$, the training set size is reduced such that it
 degrades predictive performance. Importantly, we do not expect the sensitivity
 analysis of an age prediction model to generalize to other analyses and therefore
-recommend that researchers using HBN-POD2 choose the most appropriate QC cutoff for their research question.
+recommend that researchers using HBN-POD2 choose the most appropriate QC cutoff for their research question and consider including QC score as a model covariate in their analyses.
 This recommendation also justifies the use of ROC-AUC to compare the XGB and CNN classifier families because ROC-AUC aggregates classifier performance across all possible thresholds.
 
 \subsection{Site generalization}
@@ -916,11 +922,11 @@ Nevertheless, we recognize that decisions about QC inclusion must balance accura
     output by \emph{QSIPrep}.
 \end{enumerate*}
 We view the XGB-q scores, which are available for all participants, as a more interpretable and scalable fallback because the XGB-q model ingests \emph{QSIPrep} output without any further postprocessing.
-\arhtodo[inline]{Mention the XGB-q docker image and streamlit app.}
+Because the XGB-q model most readily generalizes to other \emph{QSIPrep} outputs, we package it as an independent QC service in the QSIQC software package \cite{richiehalford2022qsiqc}, available both as a docker image at \texttt{ghcr.io/richford/qsiqc} and as a Streamlit app at \url{https://share.streamlit.io/richford/qsiqc/main/app.py}.
 The decision to use a more interpretable but slightly less
 performant method of generating QC scores was also advocated by
 \cite{tobe2021longitudinal}, who noted that the Euler number of T1-weighed
-images in the NKI-Rockland dataset can reliably predict scores generated with
+images \cite{rosen2018quantitative} in the NKI-Rockland dataset can reliably predict scores generated with
 \emph{Braindr}, the community science application developed in our previous work
 \citep{keshavan2019-er}.
 
@@ -1056,8 +1062,8 @@ To facilitate replicability, Jupyter notebooks \citep{kluyver2016jupyter} and
 Dockerfiles \citep{merkel2014docker} necessary to reproduce the methods described
 herein are provided in the HBN-POD2 GitHub repository at
 \url{https://github.com/richford/hbn-pod2-qc}. The specific version of the
-repository used in this study is also available at
-\url{https://doi.org/our.awesome.doi}. The \texttt{make} or \texttt{make help}
+repository used in this study is documented in \cite{richiehalford2022hbnpod2qc}.
+The \texttt{make} or \texttt{make help}
 commands will list the available commands and \texttt{make build} will build the
 requisite Docker images to analyze HBN-POD2 QC data. In order to separate data
 from analysis code \citep{Wilson2017-rj}, we provide intermediate data necessary
@@ -1067,7 +1073,6 @@ command in the root of the HBN-POD2 GitHub repository. Most of the code in this
 repository uses Pandas \citep{mckinney-proc-scipy-2010,reback2020pandas}, Numpy
 \citep{harris2020array}, Matplotlib \citep{hunter2007matplotlib}, and Seaborn
 \citep{waskom2021seaborn}.
-\arhtodo[inline]{Zenodo the Github repo and add a citation here.}
 
 \subsection{Inputs}
 
@@ -1095,8 +1100,6 @@ specification. The BIDS-curated dataset is available on FCP-INDI and can be
 accessed via AWS S3 at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/}.
 
 \todo[inline]{We mention dcm2bids and ``custom scripts.'' Ask Alex which version of dcm2bids and which custom scripts. Can we put them on GitHub?}
-
-\sctodo[inline]{Can you please add a citation for CuBIDS?}
 
 After conforming the data to BIDS, we used the ``Curation of BIDS'' (CuBIDS) \citep{sydney-covitz2022-cubids} package to identify unique combinations, or ``variants'' of imaging parameters in the curated dataset.
 CuBIDS is a Python-based software package that provides a sanity-preserving workflow to help users reproducibly parse, validate, curate, and understand heterogeneous BIDS imaging datasets. CuBIDS includes a robust implementation of the BIDS Validator that scales to large samples and incorporates DataLad \cite{halchenko2021datalad}, a distributed data management system, to ensure reproducibility and provenance tracking throughout the curation process. CuBIDS tools also employ agglomerative clustering to identify the aforementioned variants of imaging parameters. Users may then test BIDS-Apps on a subset of participants that represent the full range of acquisition parameters that are present. These variants are listed in the participants.tsv file in the BIDS-curated dataset.
@@ -1214,14 +1217,8 @@ QC page that provides an interactive version of \emph{QSIPrep}'s visual reports
 The viewer allows users to assign a rating of $-2$ (definitely fail), $-1$
 (probably fail), $0$ (not sure), $1$ (probably pass), or $2$ (definitely pass) to a
 participant. To standardize rater expectations before rating, expert raters watched
-a tutorial video (which is available in the OSF project). They then rated each
+a tutorial video (available on YouTube at \url{https://youtu.be/SQ0v-O-e5b8} and in the OSF project). They then rated each
 participant and saved their scores and sent them to the lead author for compilation.
-
-\todo[inline]{%
-    The new viewer will be called NIRV, the neuroimaging report viewer and we'll
-    write another paper about that. So lots of details about the implementation
-    are withheld from this paper.
-}
 
 To compute the pairwise Cohen's $\kappa$ scores in Figure~\ref{fig:expert-qc:irr}, we
 used the \emph{scikit-learn} \citep{scikit-learn} \texttt{cohen\_kappa\_score}
@@ -1247,8 +1244,8 @@ directory of the \emph{Fibr} GitHub repository. \emph{Fibr} saves each community
 rating to its Google Firebase backend, the contents of which have been archived
 to the HBN-POD2 OSF project.
 
-The \emph{Fibr} ratings were then combined with automated \emph{QSIPrep} QC
-metrics to train the gradient boosted trees models XGB, XGB-f, and XGB-q. These
+The \emph{Fibr} ratings were then combined with 31 automated \emph{QSIPrep} QC
+metrics to train the gradient boosted trees models XGB, XGB-f, and XGB-q. See Appendix~\ref{app:feature-importance} for a list of these automated QC metrics and a measure of their global feature importance in the XGB and XGB-q models. These
 models were implemented as binary classifiers using the XGBoost library
 \citep{xgboost}. The targets for these classifiers were the mean expert ratings
 in the gold standard dataset, rescaled to the range $[0, 1]$ and binarized with
@@ -1373,7 +1370,7 @@ TFRecord format using the \emph{Nobrainer} deep learning framework
 files are available in the ``notebooks'' directory of the \emph{Fibr} GitHub
 repository.
 
-We trained each model using the Google Cloud AI Platform Training service and
+We trained each model using the Google Cloud AI Platform Training service;
 the HBN-POD2 GitHub repository contains Docker services to launch training (with
 \texttt{make dl-train}) and prediction (with \texttt{make dl-predict}) jobs on
 Google Cloud, if the user has provided the appropriate credentials in an
@@ -1446,7 +1443,6 @@ mean diffusivity (MD) and the fractional anisotropy (FA) from a diffusion
 kurtosis imaging (DKI) model \citep{jensen2005-ta}, and impute missing bundles
 using median imputation as implemented by \emph{scikit-learn}'s
 \texttt{SimpleImputer} class. 
-\todo[inline]{Comment VJS: May want to add a sentence explaining/justifying why DKI-derived measures were chosen here over other possible multishell modeling approaches + measures. Especially given that mrtrix was used for CSD and FOD reconstruction, so one may expect mrtrix's fiber density to be examined.}
 Because the HBN-POD2 bundle
 profiles exhibit strong site effects \citep{richie-halford2021multidimensional},
 we used the ComBat harmonization method to robustly adjust for site effects in
@@ -1472,18 +1468,12 @@ implemented using XGBoost. The input feature space for each model consisted of
 the twenty-four major tracts. We imputed missing bundles and harmonized the
 different scanning sites as above. The XGBoost models' hyperparameters were
 hand-tuned to values that have been performant in the authors' previous
-experience. We log-transformed each participant's age before prediction using
+experience. Within the limited age range of the HBN study, MD and FA follow logarithmic maturation trajectories \cite{yeatman2014lifespan}. We therefore log-transformed each participant's age before prediction using
 \emph{scikit-learn}'s \texttt{TransformedTargetRegressor} class. For each value
 of the QC cutoff between 0 and 0.95, in steps of 0.05, we computed the
 cross-validated $R^2$ values using \emph{scikit-learn}'s
 \texttt{cross\_val\_score} function with repeated K-fold cross-validation using
-five folds and five repeats. Note that the practice of whole dataset imputation
-before cross-validation permits the possibility of dataset leakage between train
-and test splits. Similarly, sequential hand-tuning of hyperparameters can lead
-to unexpected overfitting \citep{hosseini2020itried}. A detailed study of aging
-and the white matter would need to correct for these transgressions. For this
-study we deemed the risk of overfitting acceptable for the less fraught
-demonstration of the effect of varying the QC cutoff.
+five folds and five repeats.
 
 \section{Author contributions statement}
 
@@ -1532,7 +1522,7 @@ or views of the Child Mind Institute. This work was supported via BRAIN Initiati
 \label{app:feature-importance}
 \section{XGB feature importance}
 
-SHAP is a method to explain individual predictions based on game theoretically optimal Shapley values \cite{lundberg2017unified}. To estimate global feature importance for the XGB and XGB-q models, we use the \texttt{shap} library's \texttt{TreeExplainer} \cite{lundberg2020local} and average the absolute Shapley value per feature across each individual prediction. Tables \ref{tab:xgb-shap} and \ref{tab:xgb-q-shap} list the \emph{QSIPrep} automated QC metric features in order of decreasing mean absolute shap value for the XGB and XGB-q models, respectively. We chose the top three metrics from Table \ref{tab:xgb-shap} to plot metric distributions in Figure \ref{fig:metric-dist} and correlations with the expert QC results in Figure \ref{fig:expert-qc}.
+SHAP is a method to explain individual predictions based on game theoretically optimal Shapley values \cite{lundberg2017unified}. To estimate global feature importance for the XGB and XGB-q models, we use the \texttt{shap} library's \texttt{TreeExplainer} \cite{lundberg2020local} and average the absolute Shapley value per feature across each individual prediction. Tables~\ref{tab:xgb-shap} and \ref{tab:xgb-q-shap} list the \emph{QSIPrep} automated QC metric features in order of decreasing mean absolute shap value for the XGB and XGB-q models, respectively. We chose the top three metrics from Table~\ref{tab:xgb-shap} to plot metric distributions in Figure~\ref{fig:metric-dist} and correlations with the expert QC results in Figure~\ref{fig:expert-qc}.
 
 \begin{multicols}{2}
 \begin{tabular}{lr|}
@@ -1623,8 +1613,47 @@ raw\_dimension\_x       &                  0.000000 \\
 }
 }
 \end{multicols}
-
 \end{appendixbox}
 
+\appendix
+\begin{appendixbox}
+\label{app:variants}
+\section{CuBIDS variant annotation}
+
+We identified 20 unique DWI acquisitions across HBN-POD2, which are summarized in Table~\ref{tab:variants}. Site CBIC has two acquisition types: ``64dir,'' which shares it's pulse sequence with sites RU and CUNY, and ``ABCD64dir,'' with acquisition parameters that better match the ABCD study (TE=\qty{0.089}{\second} and TR=\qty{4.1}{\second}). The ``Most\_Common'' variant identifies the most common combination of acquisition parameters for a given site and acquisition. The ``Low\_Volume'' variant identifies participants from all sites with less that 129 DWI volumes, which is the number of volumes in the most common variants. All remaining variants names identify the acquisition parameter(s) that differ from those of the most common variant. For example, the ``MultibandAccelerationFactor'' variant has a different multiband acceleration factor than that of the the most common variant but all participants within that variant share the same multiband acceleration factor. Variants that differ by multiple acquisition parameters have names that are composed of concatenated parameters. For example, the variant ``Dim3SizeVoxelSizeDim3'' varies both in the number of voxels in dimension 3 (``Dim3Size'') and in the voxel size in dimension 3 (``VoxelSizeDim3'').
+
+
+\begin{tabular}{lllr}
+\toprule
+     Site &      Acquisition &                        Variant &  Count \\
+\midrule
+     CBIC &            64dir &                    Most\_Common &    828 \\
+     CBIC &            64dir &                      Obliquity &     32 \\
+     CBIC &            64dir &     VoxelSizeDim1VoxelSizeDim2 &      1 \\
+     CBIC &        ABCD64dir &                    Most\_Common &     15 \\
+     CBIC &        ABCD64dir &                        HasFmap &      2 \\
+     CBIC &        ABCD64dir &    MultibandAccelerationFactor &      1 \\
+     CBIC &        ABCD64dir &                      Obliquity &      1 \\
+     CUNY &            64dir &                    Most\_Common &     68 \\
+     CUNY &            64dir &          Dim3SizeVoxelSizeDim3 &      4 \\
+     CUNY &            64dir &                      Obliquity &      2 \\
+       RU &            64dir &                    Most\_Common &    859 \\
+       RU &            64dir &                         NoFmap &      5 \\
+       RU &            64dir &                      Obliquity &      8 \\
+       RU &            64dir &         PhaseEncodingDirection &      1 \\
+       SI &            64dir &                       EchoTime &      1 \\
+       SI &            64dir & EchoTimePhaseEncodingDirection &      9 \\
+       SI &            64dir &                    Most\_Common &    269 \\
+       SI &            64dir &                         NoFmap &      2 \\
+       SI &            64dir &                      Obliquity &     12 \\
+All Sites & All Acquisitions &               Low\_Volume\_Count &     14 \\
+\bottomrule
+\end{tabular}
+\captionof{table}{%
+  Participant counts for HBN-POD2 variants.
+  \label{tab:variants}
+}
+
+\end{appendixbox}
 
 \end{document}
