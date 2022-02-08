@@ -87,13 +87,12 @@ development of mental health disorders, based on openly-available diffusion MRI
 HBN dMRI data (N=\num{2747}) into the Brain Imaging Data
 Structure (BIDS) and preprocessed it according to best-practices, including denoising and correcting for motion effects, susceptibility-related
 distortions, and eddy currents. 
-\todo[inline]{Comment ARF: A sentence (or two) describing diffusion derivatives is missing in the abstract}
 Data quality plays a key role in the analysis of dMRI. Analysis of these data requires considerations
 of data quality. To scale quality control (QC) to this large dataset, we
 trained a convolutional neural network through the combination of a small data
 subset scored by experts and a larger set scored by web-based community
-scientists. The network performs QC highly concordant with that of an expert (how much?) on a left
-out set (HOW MUCH AGREEMENT?, CAN PUT SOME RESULTS HERE).
+scientists. The network performs QC highly concordant with that of an expert on a left
+out set.
 The dataset both (a) delivers a resource for transdiagnostic
 research in brain connectivity and pediatric mental health and (b) serves as a paradigm
 for automated QC of large datasets.
@@ -154,6 +153,8 @@ BIDS App \citep{Gorgolewski2017-mb}. \emph{QSIPrep} automatically builds and exe
 best-practices preprocessing workflow given the available BIDS data. The results include automated
 QC metrics, visual reports and a description of the processing steps automatically chosen to process
 each session.
+
+This preprocessing requires a costly compute infrastructure and is both time-consuming and error-prone. Requiring researchers to process dMRI data on their own introduces both a financial barrier to access and an extra source of heterogeneity into the data, devaluing its scientific utility. We provide the preprocessed data as a transparent and open resource, thereby reducing barriers to data access and allowing researchers to spend more of their time answering questions in development and psychopathology rather than recapitulating preprocessing best practices.
 
 In addition to requiring extensive preprocessing, dMRI data must be thoroughly checked for quality. dMRI measurements are susceptible to a variety of artifacts that affect
 the quality of the signals and the ability to make accurate inferences from
@@ -219,7 +220,7 @@ we curated these data for compliance with the Brain Imaging Data Structure
 (BIDS) specification \citep{gorgolewski2016-lh} and preprocessed the structural
 MRI (sMRI) and diffusion MRI (dMRI) data using \emph{QSIPrep}. Participants that
 could not be curated to comply with the BIDS standard or that did not have dMRI
-data were excluded, resulting in \num{2136} participants with preprocessed,
+data were excluded, resulting in \num{2134} participants with preprocessed,
 BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
 
 \begin{figure}[tbp]
@@ -238,7 +239,7 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
         %
         Imaging data was preprocessed using \emph{QSIPrep} \citep{cieslak2021-iq}
         to group, distortion correct, motion correct, denoise, coregister and
-        resample MRI scans. Of the BIDS curated participants, \num{2136}
+        resample MRI scans. Of the BIDS curated participants, \num{2134}
         passed this step, with the majority of failures coming from participants
         with missing dMRI scans.
         %
@@ -700,8 +701,20 @@ bundles.
 
 \subsection{QC prediction models generalize to new sites\ldots sometimes}
 
-To better understand the ability of our QC models to generalize across scanning sites, we trained several variants of the XGB-q and CNN-i models on partitions of the data with different sites held out.
-\arhtodo[inline]{Add site generalization results}
+HBN neuroimaging data is collected at four sites: 
+Staten Island (SI, $N=300$), Rutgers University Brain Imaging Center (RU, $N=873$), the CitiGroup Cornell Brain Imaging Center (CBIC, $N=887$), and the City University of New York Advanced Science Research Center (CUNY, $N=74$), where the numbers in parentheses represent participant counts in HBN-POD2.
+Site harmonization is a major issue for any multisite neuroimaging study and developing automated quality assessment tools that generalize between sites has been a perennial issue \cite{esteban2017mriqc}. Furthermore, the ability to generalize between sites in a single multisite study would signal the promise of generalizing to other datasets altogether. To better understand the ability of our QC models to generalize across scanning sites, we trained several variants of the XGB-q and CNN-i models on partitions of the data with different sites held out (Figure \ref{fig:site-generalization}). We find that ROC-AUC for generalization is uniformly high for both the XGB-q and the CNN-i models. However, more importantly, accuracy and balanced accuracy vary substantially: depending on the site that was used for training, balanced accuracy can be as low as guess rate, particularly for the CNN-i model. Notably, it seems that including the RU site in the training data leads to relatively high balanced accuracy in both models. The XGB-q model balanced accuracy seems less dependent on the specific sites used for training, but also displays some variability across permutations of this experiment. In particular, the benefit from including the ``right site'' in the training data, namely RU, eclipses the slight benefit conferred by including more than one site in the training data.
+
+\begin{figure}[tbp]
+    {\phantomsubcaption\label{fig:site-generalization:dl}}
+    {\phantomsubcaption\label{fig:site-generalization:xgb}}
+    \centering
+    \includegraphics[width=\linewidth]{site-generalization/site_generalization.pdf}
+    \caption{%
+        {\bf Generalization of QC scores to unseen sites}: In each experiment, CNN-i (\textbf{a}) and XGB-q (\textbf{b}) models were trained with some sites held out and evaluated only on data from these held out sites. Model performance is quantified as ROC-AUC (blue), accuracy (orange) and balanced accuracy (green). For XGB-q, the targets are the expert ratings on data from the held out site. For CNN-i, performance is scored against XGB scores (as used before; test set in filled circles), or expert ratings on the data from the held out site (report set in crosses).
+    }
+    \label{fig:site-generalization}
+\end{figure}
 
 \subsection{Quality control improves inference}
 
@@ -828,6 +841,7 @@ HCP, HBN-POD2 provides analysis-ready dMRI derivatives. This avoids duplication
 of and heterogeneity across the preprocessing effort while also ensuring a minimum standard of data quality
 for HBN researchers.
 We also provide the CuBIDS variant annotation in the participants.tsv file, allowing researchers to account for the imaging heterogeneity inherent in a dataset of this size.
+Making MRI derivatives accessible not only reduces the burden of processing large datasets for research groups with limited resources \cite{laird2021large}, but also aids research performed by clinicians who are interested in brain-behavior relationships but may be lacking the technical training to process large-scale dMRI data.
 
 The data is amenable to many different analyses, including
 tractometry \citep{yeatman2012-rc, yeatman2018browser, kruper2021evaluating}, graph theoretical analysis \citep{yeh2020-nu},
@@ -869,25 +883,21 @@ after a QC cutoff of around $0.9$, the training set size is reduced such that it
 degrades predictive performance. Importantly, we do not expect the sensitivity
 analysis of an age prediction model to generalize to other analyses and therefore
 recommend that researchers using HBN-POD2 choose the most appropriate QC cutoff for their research question and consider including QC score as a model covariate in their analyses.
-This recommendation also justifies the use of ROC-AUC to compare the XGB and CNN classifier families because ROC-AUC aggregates classifier performance across all possible thresholds.
+% This recommendation also justifies the use of ROC-AUC to compare the XGB and CNN classifier families because ROC-AUC aggregates classifier performance across all possible thresholds.
 
-\subsection{Site generalization}
-
-\arhtodo[inline]{Add site generalization experiments.}
-
-\subsection{Automated quality control: a tension between scalability and interpretability}
+\subsection{Automated quality control:  scalability, interpretability, and generalization}
 
 The predictive
 performance of the CNN-i model (Figure~\ref{fig:dl-qc:roc}) gives
 us confidence that it could accurately classify unseen data, justifying its
-extension to the entire HBN-POD2 dataset and to future releases. However, it
+extension to the entire HBN-POD2 dataset and to future releases of HBN. However, it
 does not explain its decisions. As deep learning models have been increasingly
 applied to medical image analysis, there is an evolving interest in the
 interpretability of these models \citep{salahuddin2022transparency, lipton2017doctor,
 Zech2018-ki, Ghassemi2021-zg}. While an
 exhaustive interpretation of deep learning QC models is beyond the scope of this
 work, we provided a preliminary qualitative interpretation of the CNN-i model
-(Figure~\ref{fig:ig}) that demonstrates the intuitive nature of its decisions.
+(Figure~\ref{fig:ig}) that demonstrates the intuitive nature of its decisions. This also suggests that it might be able to generalize to similar images from other datasets. To assess this possibility, we trained the models with some sites held out. Both the CNN-i model and the XGB-q model can generalize to data from unseen sites. However, they don't always generalize and we cannot \emph{a priori} predict to which site they would generalize. This suggests that a procedure could be developed whereby the models that we developed here would be applied to data from other studies, but comprehensive calibration and validation would have to be undertaken. 
 
 Nevertheless, we recognize that decisions about QC inclusion must balance accuracy, interpretability, generalization to new data, and scalability to ever larger datasets. We therefore provide three additional scores
 \begin{enumerate*}[%
@@ -904,8 +914,7 @@ Nevertheless, we recognize that decisions about QC inclusion must balance accura
     learning generated scores, but which rely only on the automated QC metrics
     output by \emph{QSIPrep}.
 \end{enumerate*}
-We view the XGB-q scores, which are available for all participants, as a more interpretable and scalable fallback because the XGB-q model ingests \emph{QSIPrep} output without any further postprocessing.
-Because the XGB-q model most readily generalizes to other \emph{QSIPrep} outputs, we package it as an independent QC service in the QSIQC software package \cite{richiehalford2022qsiqc}, available both as a docker image at \texttt{ghcr.io/richford/qsiqc} and as a Streamlit app at \url{https://share.streamlit.io/richford/qsiqc/main/app.py}.
+We view the XGB-q scores, which are available for all participants, as a more interpretable and scalable fallback because the XGB-q model ingests \emph{QSIPrep} output without any further postprocessing. XGB-q also provides slightly more uniform performance in generalization across HBN sites. Because the XGB-q model most readily generalizes to other \emph{QSIPrep} outputs, we package it as an independent QC service in the QSIQC software package \cite{richiehalford2022qsiqc}, available both as a docker image at \texttt{ghcr.io/richford/qsiqc} and as a Streamlit app at \url{https://share.streamlit.io/richford/qsiqc/main/app.py}.
 The decision to use a more interpretable but slightly less
 performant method of generating QC scores was also advocated by
 \cite{tobe2021longitudinal}, who noted that the Euler number of T1-weighed
@@ -1016,29 +1025,6 @@ community science rating and analysis software. All of these tools are provided
 openly, so that this approach can be generalized even more widely in other
 projects and in other scientific fields.
 
-\rokemtodo[inline]{%
-    After we run the site generalization experiments, speculate about
-    generalization to other datasets.
-}
-
-\subsection{Ideas and Speculation}
-
-\alltodo[inline]{%
-    We are targeting eLife for first submission and eLife now allows an
-    \href{https://elifesciences.org/inside-elife/e3e52a93/elife-latest-including-ideas-and-speculation-in-elife-papers}{Ideas
-    and Speculation} subsection within the discussion section. This is a spot
-    for authors to ``freely speculate about the meaning and implications of
-    their data.'' It is reviewed but only for ``factual inaccuracies, clarity
-    and speculation not germane to the paper.'' We should take advantage of this
-    opportunity. Insert your speculations here.
-}
-\todo[inline]{Comments from Sendy:
-Can we get these QC scores for other HBN datasets (e.g., fMRI, EEG, behavioral)?
-Would it make sense to have a global QC for each HBN participant that takes into account different techniques? How well can the QCs of one modality predict the QCs of a different modality on the same participants?
-Would it be possible to propose a new way to evaluate the reliability of a scientific finding based on its dependence on QC scores?}
-
-\rokemtodo[inline]{Speculate about multiverse analysis, garden of forking paths, etc.}
-
 \section{Methods and Materials}
 
 To facilitate replicability, Jupyter notebooks \citep{kluyver2016jupyter} and
@@ -1061,12 +1047,13 @@ repository uses Pandas \citep{mckinney-proc-scipy-2010,reback2020pandas}, Numpy
 
 Inputs for this study consisted of MRI data from the Healthy Brain Network
 pediatric mental health study \citep{alexander2017-yc}, containing dMRI data from
-\num{2747} participants aged 5-21 years. These data were measured using a
-\qty{1.5}{\tesla} Siemens mobile scanner on Staten Island (SI) and three fixed
+\num{2747} participants aged 5-21 years.
+These data were measured using a \qty{1.5}{\tesla} Siemens mobile scanner on Staten Island (SI) and three fixed
 \qty{3}{\tesla} Siemens MRI scanners at sites in the New York area: Rutgers
-University Brain Imaging Center (RUBIC), the CitiGroup Cornell Brain Imaging
+University Brain Imaging Center (RU), the CitiGroup Cornell Brain Imaging
 Center (CBIC), and the City University of New York Advanced Science Research
-Center (CUNY). Informed consent was obtained from each participant aged 18 or
+Center (CUNY).
+Informed consent was obtained from each participant aged 18 or
 older. For participants younger than 18, written consent was obtained from their
 legal guardians and written assent was obtained from the participant. Voxel
 resolution was \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} with \num{64} non-colinear
@@ -1081,14 +1068,12 @@ to the Brain Imaging Data Structure (BIDS; \citep{gorgolewski2016-lh})
 specification. The BIDS-curated dataset is available on FCP-INDI and can be
 accessed via AWS S3 at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/}.
 
-\todo[inline]{We mention dcm2bids and ``custom scripts.'' Ask Alex which version of dcm2bids and which custom scripts. Can we put them on GitHub?}
-
 After conforming the data to BIDS, we used the ``Curation of BIDS'' (CuBIDS) \citep{sydney-covitz2022-cubids} package to identify unique combinations, or ``variants'' of imaging parameters in the curated dataset.
 CuBIDS is a Python-based software package that provides a sanity-preserving workflow to help users reproducibly parse, validate, curate, and understand heterogeneous BIDS imaging datasets. CuBIDS includes a robust implementation of the BIDS Validator that scales to large samples and incorporates DataLad \cite{halchenko2021datalad}, a distributed data management system, to ensure reproducibility and provenance tracking throughout the curation process. CuBIDS tools also employ agglomerative clustering to identify the aforementioned variants of imaging parameters. Users may then test BIDS-Apps on a subset of participants that represent the full range of acquisition parameters that are present. These variants are listed in the participants.tsv file in the BIDS-curated dataset.
 
 \subsection{Preprocessing}
 
-We performed dMRI preprocessing on \num{2136} participants, using \emph{QSIPrep}
+We performed dMRI preprocessing on \num{2134} participants, using \emph{QSIPrep}
 \citep{cieslak2021-iq} 0.12.1, which is based on \emph{Nipype} 1.5.1
 \citep{nipype1,nipype2}, RRID:SCR\_002502. \emph{QSIPrep} a robust and scalable
 pipeline to group, distortion correct, motion correct, denoise, coregister and
@@ -1383,7 +1368,12 @@ can be invoked using the \texttt{make dl-integrated-gradients} command.
 
 \subsection{Site generalization experiments}
 
-\arhtodo[inline]{Add methods for site generalization}
+To simulate the generalization of the XGB-q and CNN-i models to new scanning sites, we trained multiple versions of XGB-q and CNN-i with different scanning sites held out and then evaluated those models on the held out sites. These models were therefore evaluated on data from ``unseen'' sites. We constructed these train/evaluate splits from combinations of the HBN sites with \qty{3}{\tesla} scanners (RU, CBIC, and CUNY), and excluded CUNY as a standalone training or test site because of its low number of participants ($N=74$). This left four combinations of site-generated training splits: CBIC~+~CUNY (eval: RU), CBIC (eval: RU~+~CUNY), RU~+~CUNY (eval: CBIC), and RU (eval: CBIC~+~CUNY).
+
+We trained eight models (with distinct random seeds) from the CNN-i family of models using the global XGB scores as targets, just as with the full CNN-i model. Similarly, we trained twenty models (with distinct random seeds) from the XGB-q family of models using the expert scores as targets, just as with the full XGB-q model. For each model, we reported three evaluation metrics: ROC-AUC, accuracy, and balanced accuracy. Because the distribution of QC scores was imbalanced (Figures~\ref{fig:expert-qc:scatter:hist} and \ref{fig:dl-qc:hist:site}), we included balanced accuracy as an evaluation metric. Balanced accuracy avoids inflated accuracy estimates on imbalanced data \cite{velez2007balanced}, and in the binary classification case, it is the mean of the sensitivity and specificity. For the CNN-i family, we further decomposed the evaluation split into a report set, for which expert scores were available, and a test set, with participants who were not in the ``gold standard'' dataset. For the report set, we evaluated the model using the expert scores as the ground truth. For the test set, we evaluated each model using the XGB scores as ground truth.
+
+Aside from the specification of train and evaluation splits, model training followed exactly the same procedure as for the full dataset. For example, we use the same cross validation and hyperparameter optimization procedure for the XGB-q family as for the original XGB-q model and the same architecture, input format, and early stopping criteria for the CNN-i family as for the CNN-i model. In the HBN-POD2 GitHub repository, we provide a Docker
+service to conduct the CNN-i site generalization experiments Google Cloud, which can be invoked using the \texttt{make dl-site-generalization} command. The XGB-q site generalization experiments can be replicated locally using the \texttt{make site-generalization} command, which will also plot the results of the CNN-i experiments.
 
 \subsection{QC bundle profiles}
 
