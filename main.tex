@@ -889,17 +889,17 @@ recommend that researchers using HBN-POD2 choose the most appropriate QC cutoff 
 
 The predictive
 performance of the CNN-i model (Figure~\ref{fig:dl-qc:roc}) gives
-us confidence that it could accurately classify unseen data, justifying its
-extension to the entire HBN-POD2 dataset and to future releases of HBN. However, it
-does not explain its decisions. As deep learning models have been increasingly
+us confidence that it could accurately classify unseen data from the same sites, justifying its
+extension to the entire HBN-POD2 dataset and to future releases of HBN. However, one limitation of this model is that it
+does not satisfactorily explain its decisions. As deep learning models have been increasingly
 applied to medical image analysis, there is an evolving interest in the
 interpretability of these models \citep{salahuddin2022transparency, lipton2017doctor,
 Zech2018-ki, Ghassemi2021-zg}. While an
 exhaustive interpretation of deep learning QC models is beyond the scope of this
 work, we provided a preliminary qualitative interpretation of the CNN-i model
-(Figure~\ref{fig:ig}) that demonstrates the intuitive nature of its decisions. This also suggests that it might be able to generalize to similar images from other datasets. To assess this possibility, we trained the models with some sites held out. Both the CNN-i model and the XGB-q model can generalize to data from unseen sites. However, they don't always generalize and we cannot \emph{a priori} predict to which site they would generalize. This suggests that a procedure could be developed whereby the models that we developed here would be applied to data from other studies, but comprehensive calibration and validation would have to be undertaken. 
+(Figure~\ref{fig:ig}) that demonstrates the intuitive nature of its decisions. This also suggested that it might be able to generalize to similar images from other datasets. To assess this possibility, we trained the models with some sites held out. Both the CNN-i model and the XGB-q model can sometimes generalize to data from unseen sites. However, one clear limitation of the QC models we present is that they do not reliably generalize and we cannot \emph{a priori} predict to which sites they would generalize. This suggests that a procedure could be developed whereby the models that we developed here would be applied to data from other studies, but comprehensive calibration and validation would have to be undertaken. 
 
-Nevertheless, we recognize that decisions about QC inclusion must balance accuracy, interpretability, generalization to new data, and scalability to ever larger datasets. We therefore provide three additional scores
+We recognize that decisions about QC inclusion must balance accuracy, interpretability, generalization to new data, and scalability to ever larger datasets. We therefore provide three additional scores
 \begin{enumerate*}[%
     label=(\roman*),%
     before=\unskip{: },%
