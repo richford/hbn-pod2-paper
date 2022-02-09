@@ -82,7 +82,7 @@
 
 \begin{abstract}
 
-We created resources to facilitate research on the role of human brain microstructure in the development of mental health disorders, based on openly-available diffusion MRI (dMRI) data from the Healthy Brain Network (HBN) study. First, we curated the HBN dMRI data (N=\num{2747}) into the Brain Imaging Data Structure (BIDS) and preprocessed it according to best-practices, including denoising and correcting for motion effects, susceptibility-related distortions, and eddy currents. Preprocessed, analysis-ready data was made openly available. Data quality plays a key role in the analysis of dMRI, and we provide automated quality control (QC) scores for every scan, as part of the data release. To scale QC to this large dataset, we trained a convolutional neural network through the combination of a small data subset scored by experts and a larger set scored by web-based community scientists. The network performs QC highly concordant with that of an expert on a left out set. A further analysis of the neural network demonstrates that it relies on image features with relevance to QC. Altogether, this work (a) delivers a resource for transdiagnostic research in brain connectivity and pediatric mental health and (b) serves as a paradigm for automated QC of large datasets.
+We created resources to facilitate research on the role of human brain microstructure in the development of mental health disorders, based on openly-available diffusion MRI (dMRI) data from the Healthy Brain Network (HBN) study. First, we curated the HBN dMRI data (N=\num{2747}) into the Brain Imaging Data Structure and preprocessed it according to best-practices, including denoising and correcting for motion effects, susceptibility-related distortions, and eddy currents. Preprocessed, analysis-ready data was made openly available. Data quality plays a key role in the analysis of dMRI, and we provide automated quality control (QC) scores for every scan, as part of the data release. To scale QC to this large dataset, we trained a neural network through the combination of a small data subset scored by experts and a larger set scored by community scientists. The network performs QC highly concordant with that of experts on a held out set (ROC-AUC $=0.947$). A further analysis of the neural network demonstrates that it relies on image features with relevance to QC. Altogether, this work both delivers a resource for transdiagnostic research in brain connectivity and pediatric mental health and serves as a paradigm for automated QC of large datasets.
 
 \end{abstract}
 
@@ -90,7 +90,7 @@ We created resources to facilitate research on the role of human brain microstru
     Note to editing authors:
 
     We're targeting an eLife ``Tools and Resources'' paper for first submission.
-    For eLife, the abstract should be around 150 words. Suggestions welcome.
+    For eLife, the abstract word limit is 200 words.
 
     We use the \texttt{todonotes} package to keep track of remaining tasks and
     comments. You can add a task for Adam with the
@@ -342,7 +342,7 @@ motion parameters throughout the DWI scan, and full 3D volumes depicting
     \item the brain mask and $b=0$ to T1w registration
     \item a directionally encoded color fractional anisotropy (DEC-FA) image laid over the $b=0$ volume.
 \end{enumerate*}
-The experts rated participants using a five-point scale with ratings of ``definitely
+See Appendix~\ref{app:web-apps} for an example of the \emph{dmriprep-viewer} interface. The experts rated participants using a five-point scale with ratings of ``definitely
 fail,'' ``probably fail,'' ``not sure,'' ``probably pass,'' and ``definitely
 pass.'' The distribution of scores given by the experts demonstrates that the
 gold standard dataset included a range of data quality (Figure~\ref{fig:expert-qc:scatter:hist}). Mean expert ratings
@@ -416,7 +416,8 @@ entire HBN-POD2 dataset would be prohibitively time consuming. To assess the
 image quality of the remaining participants, we deployed \emph{Fibr}
 (\url{https://fibr.dev}), a community science web application in which users
 assigned binary pass/fail labels assessing the quality of horizontal slice DEC-FA
-images overlaid on the $b=0$ image. Specifically, \emph{Fibr} users saw individual
+images overlaid on the $b=0$ image (see Appendix~\ref{app:web-apps} for an example).
+Specifically, \emph{Fibr} users saw individual
 slices or an animated sequence of ten slices taken from the entire DEC-FA volume
 that the expert raters saw. The \emph{Fibr} users, therefore, saw only a subset of
 the imaging data that the dMRI experts had access to for a given participant, but they
@@ -1495,6 +1496,74 @@ or views of the Child Mind Institute. This work was supported via BRAIN Initiati
 
 \appendix
 \begin{appendixbox}
+\label{app:variants}
+\section{CuBIDS variant annotation}
+
+We identified 20 unique dMRI acquisitions across HBN-POD2, which are summarized in Table~\ref{tab:variants}. Site CBIC has two acquisition types: ``64dir,'' which shares it's pulse sequence with sites RU and CUNY, and ``ABCD64dir,'' with acquisition parameters that better match the ABCD study (TE=\qty{0.089}{\second} and TR=\qty{4.1}{\second}). The ``Most\_Common'' variant identifies the most common combination of acquisition parameters for a given site and acquisition. The ``Low\_Volume'' variant identifies participants from all sites with less that 129 DWI volumes, which is the number of volumes in the most common variants. All remaining variants names identify the acquisition parameter(s) that differ from those of the most common variant. For example, the ``MultibandAccelerationFactor'' variant has a different multiband acceleration factor than that of the the most common variant but all participants within that variant share the same multiband acceleration factor. Variants that differ by multiple acquisition parameters have names that are composed of concatenated parameters. For example, the variant ``Dim3SizeVoxelSizeDim3'' varies both in the number of voxels in dimension 3 (``Dim3Size'') and in the voxel size in dimension 3 (``VoxelSizeDim3'').
+
+\begin{tabular}{lllr}
+\toprule
+     Site &      Acquisition &                        Variant &  Count \\
+\midrule
+     CBIC &            64dir &                    Most\_Common &    828 \\
+     CBIC &            64dir &                      Obliquity &     32 \\
+     CBIC &            64dir &     VoxelSizeDim1VoxelSizeDim2 &      1 \\
+     CBIC &        ABCD64dir &                    Most\_Common &     15 \\
+     CBIC &        ABCD64dir &                        HasFmap &      2 \\
+     CBIC &        ABCD64dir &    MultibandAccelerationFactor &      1 \\
+     CBIC &        ABCD64dir &                      Obliquity &      1 \\
+     CUNY &            64dir &                    Most\_Common &     68 \\
+     CUNY &            64dir &          Dim3SizeVoxelSizeDim3 &      4 \\
+     CUNY &            64dir &                      Obliquity &      2 \\
+       RU &            64dir &                    Most\_Common &    859 \\
+       RU &            64dir &                         NoFmap &      5 \\
+       RU &            64dir &                      Obliquity &      8 \\
+       RU &            64dir &         PhaseEncodingDirection &      1 \\
+       SI &            64dir &                       EchoTime &      1 \\
+       SI &            64dir & EchoTimePhaseEncodingDirection &      9 \\
+       SI &            64dir &                    Most\_Common &    269 \\
+       SI &            64dir &                         NoFmap &      2 \\
+       SI &            64dir &                      Obliquity &     12 \\
+All Sites & All Acquisitions &               Low\_Volume\_Count &     14 \\
+\bottomrule
+\end{tabular}
+\captionof{table}{%
+  Participant counts for HBN-POD2 variants.
+  \label{tab:variants}
+}
+
+\end{appendixbox}
+
+\appendix
+\begin{appendixbox}
+\label{app:web-apps}
+\section{HBN-POD2 quality control instruments}
+
+We created quality control web applications for both community raters and expert raters. These apps are publicly accessible at \url{https://fibr.dev}, for the community science instrument and at \url{http://www.nipreps.org/dmriprep-viewer/} for the expert rating instrument. We encourage readers to try these web applications on their own but have included screenshots and a summary of the interfaces in Figure~\ref{fig:web-apps}.
+
+\includegraphics[width=0.95\textwidth]{hbn-pod2-qc-instruments.pdf}
+\captionof{figure}{
+    {\bf HBN-POD2 quality control instruments}:
+    {\bf (A)} The user interface for community science QC app \emph{Fibr}. After a
+    tutorial, users are asked to give binary pass/fail ratings to
+    each subject's DEC-FA image. The
+    intuitive swipe or click interface allows community scientists to
+    review more images than is practical for expert reviewers. Expert
+    reviewers use the more advanced \emph{dmriprep-viewer} interface, where
+    they can
+    {\bf (B)} view the distribution of data quality metrics for the entire
+    study using interactive scatterplots and violin plots, and
+    {\bf (C)} inspect individual participants' preprocessing results,
+    including corrected dMRI images, frame displacement, q-space
+    sampling distributions, registration information, and a DTI
+    model.
+    \label{fig:web-apps}
+}
+
+\end{appendixbox}
+
+\appendix
+\begin{appendixbox}
 \label{app:feature-importance}
 \section{XGB feature importance}
 
@@ -1591,44 +1660,5 @@ raw\_dimension\_x       &                  0.000000 \\
 \end{multicols}
 \end{appendixbox}
 
-\appendix
-\begin{appendixbox}
-\label{app:variants}
-\section{CuBIDS variant annotation}
-
-We identified 20 unique dMRI acquisitions across HBN-POD2, which are summarized in Table~\ref{tab:variants}. Site CBIC has two acquisition types: ``64dir,'' which shares it's pulse sequence with sites RU and CUNY, and ``ABCD64dir,'' with acquisition parameters that better match the ABCD study (TE=\qty{0.089}{\second} and TR=\qty{4.1}{\second}). The ``Most\_Common'' variant identifies the most common combination of acquisition parameters for a given site and acquisition. The ``Low\_Volume'' variant identifies participants from all sites with less that 129 DWI volumes, which is the number of volumes in the most common variants. All remaining variants names identify the acquisition parameter(s) that differ from those of the most common variant. For example, the ``MultibandAccelerationFactor'' variant has a different multiband acceleration factor than that of the the most common variant but all participants within that variant share the same multiband acceleration factor. Variants that differ by multiple acquisition parameters have names that are composed of concatenated parameters. For example, the variant ``Dim3SizeVoxelSizeDim3'' varies both in the number of voxels in dimension 3 (``Dim3Size'') and in the voxel size in dimension 3 (``VoxelSizeDim3'').
-
-\begin{tabular}{lllr}
-\toprule
-     Site &      Acquisition &                        Variant &  Count \\
-\midrule
-     CBIC &            64dir &                    Most\_Common &    828 \\
-     CBIC &            64dir &                      Obliquity &     32 \\
-     CBIC &            64dir &     VoxelSizeDim1VoxelSizeDim2 &      1 \\
-     CBIC &        ABCD64dir &                    Most\_Common &     15 \\
-     CBIC &        ABCD64dir &                        HasFmap &      2 \\
-     CBIC &        ABCD64dir &    MultibandAccelerationFactor &      1 \\
-     CBIC &        ABCD64dir &                      Obliquity &      1 \\
-     CUNY &            64dir &                    Most\_Common &     68 \\
-     CUNY &            64dir &          Dim3SizeVoxelSizeDim3 &      4 \\
-     CUNY &            64dir &                      Obliquity &      2 \\
-       RU &            64dir &                    Most\_Common &    859 \\
-       RU &            64dir &                         NoFmap &      5 \\
-       RU &            64dir &                      Obliquity &      8 \\
-       RU &            64dir &         PhaseEncodingDirection &      1 \\
-       SI &            64dir &                       EchoTime &      1 \\
-       SI &            64dir & EchoTimePhaseEncodingDirection &      9 \\
-       SI &            64dir &                    Most\_Common &    269 \\
-       SI &            64dir &                         NoFmap &      2 \\
-       SI &            64dir &                      Obliquity &     12 \\
-All Sites & All Acquisitions &               Low\_Volume\_Count &     14 \\
-\bottomrule
-\end{tabular}
-\captionof{table}{%
-  Participant counts for HBN-POD2 variants.
-  \label{tab:variants}
-}
-
-\end{appendixbox}
 
 \end{document}
