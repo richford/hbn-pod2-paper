@@ -17,6 +17,7 @@
 \usepackage{multicol}
 \usepackage{xargs}  % Use more than one optional parameter in a new commands
 \usepackage[colorinlistoftodos,prependcaption]{todonotes}
+\usepackage[nobiblatex]{xurl}
 
 \graphicspath{{figures/}}
 \sisetup{locale=US,group-minimum-digits=5,group-separator={,}}
@@ -31,7 +32,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ARTICLE SETUP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{An open, analysis-ready, and quality controlled resource for pediatric brain white matter research}
+\title{An open, analysis-ready, and quality controlled resource for pediatric brain white-matter research}
 
 \author[1,2\authfn{1}*]{Adam Richie-Halford}
 \author[3,4\authfn{1}*]{Matthew Cieslak}
@@ -61,7 +62,7 @@
 \affil[5]{Child Mind Institute, Center for the Developing Brain, New York City, New York, 10022, USA}
 \affil[6]{Stanford University, Graduate School of Education and Division of Developmental and Behavioral Pediatrics, Stanford, California, 94305, USA}
 \affil[7]{Nathan Kline Institute for Psychiatric Research, Center for Biomedical Imaging and Neuromodulation, Orangeburg, New York, 10962, USA}
-\affil[8]{Stanford University, Center for Interdisciplinary Brain Sciences Research, Department of Psychiatry and Behavioral Sciences, School of Medicine, Stanford, California, 94305, USA}
+\affil[8]{Stanford University, Department of Psychiatry and Behavioral Sciences, School of Medicine, Stanford, California, 94305, USA}
 \affil[9]{University of Zurich, Department of Child and Adolescent Psychiatry and Psychotherapy, University Hospital of Psychiatry Zurich, Zurich, 8032, Switzerland}
 \affil[10]{University of Modena and Reggio Emilia, Department of Biomedical, Metabolic and Neural Sciences, Via Campi 287, 41125 Modena, Italy}
 \affil[11]{The Fibr Community Science Consortium}
@@ -137,12 +138,13 @@ steps.
 Here we address these problems by meticulously curating
 the HBN data according to the Brain Imaging Data Specification (BIDS)
 \citep{gorgolewski2016-lh} and processing the data using the \emph{QSIPrep} \citep{cieslak2021-iq} 
-BIDS App \citep{Gorgolewski2017-mb}. \emph{QSIPrep} automatically builds and executes a 
-best-practices preprocessing workflow given the available BIDS data. The results include automated
+BIDS App \citep{Gorgolewski2017-mb}. \emph{QSIPrep} automatically builds and executes
+benchmarked workflows that adhere to best practices in the field
+given the available BIDS data. The results include automated
 data quality metrics, visual reports and a description of the processing steps automatically chosen to process
 each session.
 
-This preprocessing requires a costly compute infrastructure and is both time-consuming and error-prone. Requiring researchers to process dMRI data on their own introduces both a practical barrier to access and an extra source of heterogeneity into the data, devaluing its scientific utility. We provide the preprocessed data as a transparent and open resource, thereby reducing barriers to data access and allowing researchers to spend more of their time answering questions in development and psychopathology rather than recapitulating preprocessing best practices.
+This preprocessing requires a costly compute infrastructure and is both time-consuming and error-prone. Requiring researchers to process dMRI data on their own introduces both a practical barrier to access and an extra source of heterogeneity into the data, devaluing its scientific utility. We provide the preprocessed data as a transparent and open resource, thereby reducing barriers to data access and allowing researchers to spend more of their time answering questions in development and psychopathology rather than recapitulating preprocessing.
 
 In addition to requiring extensive preprocessing, dMRI data must be thoroughly checked for quality. dMRI measurements are susceptible to a variety of artifacts that affect
 the quality of the signals and the ability to make accurate inferences from
@@ -262,7 +264,7 @@ The curation process accounts for the acquisition variability inherent in large 
 by identifying unique \emph{variants} in the HBN 
 dMRI and fieldmap acquisitions. Each session was grouped according to metadata parameters that
 affect the dMRI signal (PhaseEncodingDirection, EchoTime, VoxelSize, FlipAngle, PhasePartialFourier,
-NumberOfVolumes, Fieldmap availibility). We identified a total of 20 unique DWI acquisitions across
+NumberOfVolumes, Fieldmap availability). Using the ``Curation of BIDS'' (CuBIDS) package \citep{sydney-covitz2022-cubids}, we identified a total of 20 unique DWI acquisitions across
 HBN-POD2, where about 5\% of acquisitions were different from the most common DWI acquisition at their
 site. The specific variant of each session is provided as a column in the participant.tsv file and a summary of variants with participant counts is provided in Appendix~\ref{app:variants}.
 
@@ -272,7 +274,7 @@ standard \emph{QSIPrep} outputs}, which contain preprocessed imaging data
 along with the corresponding QC metrics:
 
 \begin{itemize}
-    \item \emph{Anatomical Data} Preprocessed images, segmentations and transforms for spatial normalization are located in the \texttt{anat/} directory of each session. The gray matter, white matter and  cerebrospinal fluid (\texttt{GM}, \texttt{WM}, \texttt{CSF}) probabilistic segmentations are provided in nifti format with the \texttt{\_probtissue} suffix. The deterministic  segmentation is in \texttt{\_dseg.nii.gz}. All images are in alignment with AC-PC-aligned  \texttt{sub-X\_desc-preproc\_T1w.nii.gz} image unless they have \texttt{space-MNI152NLin2009cAsym} in their file name, in which case they are aligned to the MNI Nonlinear T1-weighted asymmetric brain template (version 2009c; \citep{Fonov2009-ze}).  The spatial transform between the AC-PC T1w image and the MNI space brain is in the ITK/ANTs format file named \texttt{sub-X\_from-MNI152NLin2009cAsym\_to-T1w\_mode-image\_xfm.h5}. The brain mask derived from \texttt{ANTsBrainExtraction.sh} is included in the file with the suffix \texttt{\_desc-brain\_mask.nii.gz}.
+    \item \emph{Anatomical Data} Preprocessed images, segmentations and transforms for spatial normalization are located in the \texttt{anat/} directory of each session. The gray matter, white matter and  cerebrospinal fluid (\texttt{GM}, \texttt{WM}, \texttt{CSF}) probabilistic segmentations are provided in nifti format with the \texttt{\_probtissue} suffix. The deterministic  segmentation is in \texttt{\_dseg.nii.gz}. All images are in alignment with AC-PC-aligned  \texttt{sub-X\_desc-preproc\_T1w.nii.gz} image unless they have \texttt{space-MNI152NLin2009cAsym} in their file name, in which case they are aligned to the MNI Nonlinear T1-weighted asymmetric brain template (version 2009c; \citep{Fonov2009-ze}).  The spatial transform between the AC-PC T1w image and the MNI space brain is in the ITK/ANTs format file named \texttt{sub-X\_from-MNI152NLin2009cAsym\_to-T1w\_mode-image\_xfm.h5}. The brain mask from \texttt{ANTsBrainExtraction.sh} is included in the file with the \texttt{\_desc-brain\_mask.nii.gz} suffix.
 
     \item \emph{Diffusion Data} The preprocessed dMRI scan and accompanying metadata are located in the  \texttt{dwi/} directory of each session. The fully-preprocessed dMRI data is named according to the file pattern \texttt{sub-X\_space-T1w\_desc-preproc\_dwi.nii.gz}. These images all have an isotropic voxel size of \qty{1.7}{\mm} and are aligned in world coordinates with the anatomical image located at \texttt{anat/sub-X\_desc-preproc\_T1w.nii.gz}. Gradient information is provided in \texttt{bval/bvec} format compatible with DIPY and DSI Studio and the \texttt{.b} format compatible with MRtrix3. Volume-wise QC metrics including head motion parameters are included in the \texttt{confounds.tsv} file. Automatically computed quality measures for the entire image series are provided in the \texttt{ImageQC.csv} file, which includes the neighboring DWI Correlation, number of bad slices and head motion summary statistics. Figure~\ref{fig:metric-dist} depicts the age distribution of study participants by sex and scan site as well as pairwise distributions for the three of these automated quality metrics that were most informative in QC models described later (see Appendix~\ref{app:feature-importance} for further details). The \texttt{desc-brain\_mask} file is a dMRI-based brain mask that should only be used when the T1w-based brain mask is inappropriate (i.e. when no susceptibility distortion correction has been applied).
 \end{itemize}
@@ -604,7 +606,8 @@ interpret deep learning models applied to retinal imaging in diabetic
 retinopathy \citep{sayres2019using} and glaucoma \citep{Mehta2021-zp} prediction,
 as well as in multiple sclerosis prediction from brain MRI
 \citep{wargnier-dauchelle2021interpretable}. Our goal is to confirm that the
-CNN-i model was looking at the same features that an expert rater would look at,
+CNN-i model
+was driven by the same features that would drive the expert rating,
 thereby bolstering the decision to apply it to new data.
 
 Figure~\ref{fig:ig} shows attribution maps for example participants from each
@@ -1101,9 +1104,9 @@ using \texttt{N4BiasFieldCorrection} \citep{n4} (ANTs 2.3.1), and used as
 T1w-reference throughout the workflow. The T1w-reference was then skull-stripped
 using \texttt{antsBrainExtraction.sh} (ANTs 2.3.1), using OASIS as target
 template. Spatial normalization to the ICBM 152 Nonlinear Asymmetrical template
-version 2009c \citep{mni}, RRID:SCR\_008796 was performed through nonlinear
-registration with \texttt{antsRegistration} \citep{ants}, ANTs 2.3.1,
-RRID:SCR\_004757, using brain-extracted versions of both T1w volume and
+version 2009c (\cite{mni}, RRID:SCR\_008796) was performed through nonlinear
+registration with \texttt{antsRegistration}\linebreak(\cite{ants}, ANTs~2.3.1,
+RRID:SCR\_004757), using brain-extracted versions of both T1w volume and
 template. Brain tissue segmentation of cerebrospinal fluid (CSF), white-matter
 (WM) and gray-matter (GM) was performed on the brain-extracted T1w using
 \texttt{FAST} \citep{fsl-fast}, FSL 6.0.3:b862cdd5, RRID:SCR\_002823.
