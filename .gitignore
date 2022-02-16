@@ -11,3 +11,5 @@ __latexindent_temp.tex
 main.pdf
 
 **.DS_Store
+.aspell.en.prepl
+dictionary.txt
