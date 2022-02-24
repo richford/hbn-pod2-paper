@@ -20,6 +20,7 @@
 \PassOptionsToPackage{hyphens}{url}
 \usepackage{hyperref}
 % \usepackage[nobiblatex]{xurl}
+% \interfootnotelinepenalty=\@m
 
 \graphicspath{{figures/}}
 \sisetup{%
@@ -167,15 +168,16 @@ methods is that they require a large training dataset to attain accurate
 performance. In previous work, we demonstrated that deep learning can accurately
 emulate expert QC of T1-weighted (T1w) anatomical brain images
 \citep{keshavan2019-er}. To obtain a large enough training dataset of T1w images
-in our prior study, we deployed a community science application that collected quality
-control scores of parts of the dataset from volunteers through a web application
+in our prior study, we deployed a community science tool
 \footnote{%
     While the term ``citizen science'' evokes a sense of civic duty in
     scientific engagement, it can also imply a barrier for community members who
     want to contribute to science but may not be citizens of a particular
     country. In this manuscript we use the more modern term ``community
     science.''
-}.
+}
+that collected quality
+control scores of parts of the dataset from volunteers through a web application.
 The scores were then calibrated using a gold standard expert-scored subset of
 these images. A deep learning neural network was trained on the calibrated and
 aggregated score, resulting in very high concordance with expert ratings on a
