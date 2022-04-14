@@ -14,7 +14,7 @@
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{xargs}  % Use more than one optional parameter in a new commands
-\usepackage[colorinlistoftodos,prependcaption]{todonotes}
+\usepackage[disable,colorinlistoftodos,prependcaption]{todonotes}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{inline}{enumitem}
 \usepackage{hyperref}
@@ -1007,8 +1007,6 @@ ROC-AUC for generalization is uniformly high for both the XGB-q and the CNN-i mo
 
 To demonstrate the effect that quality control has on inference, we analyzed tract profile data derived from HBN-POD2 data. 
 
-\todo[inline]{Add SLFL MD and FA profiles to Figure 8}
-
 Missing values were imputed using median imputation as implemented by \emph{scikit-learn}'s \texttt{SimpleImputer} class. Because the HBN-POD2 bundle profiles exhibit strong site effects \cite{richie-halford2021multidimensional}, we used the ComBat harmonization method to robustly adjust for site effects in the tract profiles \cite{Johnson2007-kl, fortin2018-hk, fortin2017-be, nielson2018detecting}, using the \emph{neurocombat\_sklearn} library \cite{neurocombat-sklearn}.
 
 In Figure~\ref{fig:age-prediction}, we plot the mean diffusivity (MD) and fractional anisotropy (FA) profiles along the left superior longitudinal fasciculus (SLFL) grouped into four QC bins.
@@ -1265,8 +1263,6 @@ repository used in this study is documented in \cite{richiehalford2022hbnpod2qc}
 Most of the code in this repository uses Pandas \cite{mckinney-proc-scipy-2010,reback2020pandas}, Numpy \cite{harris2020array}, Matplotlib \cite{hunter2007matplotlib}, and Seaborn \cite{waskom2021seaborn}.
 The \texttt{make} or \texttt{make help} commands will list the available commands and \texttt{make build} will build the requisite Docker images to analyze HBN-POD2 QC data.
 
-\todo[inline]{Update zenodo ref for the HBN-POD2 GitHub repo.}
-
 In order to separate data from analysis code \cite{Wilson2017-rj}, we provide intermediate data necessary to analyze the QC results in an OSF \cite{Foster-MSLS2017-rl} project \cite{hbn-pod2-osf}, the contents of which can be downloaded using the \texttt{make data} command in the root of the HBN-POD2 GitHub repository. The NIFTI-1 files and TFRecord files provided as input to the CNN models may be separately downloaded using the \texttt{make niftis} and \texttt{make tfrecs} commands, respectively. The remaining \texttt{make} commands and Jupyter notebooks follow the major steps of the methods section:
 
 \begin{enumerate}
@@ -1330,9 +1326,9 @@ Funding Acquisition: A.R. and T.S.
 
 \section*{Competing interests}
 
-\todo[inline]{%
-The corresponding author is responsible for providing a \href{https://www.nature.com/sdata/policies/editorial-and-publishing-policies#competing}{competing interests statement} on behalf of all authors of the paper. This statement must be included in the submitted article file.
-}
+The authors declare no competing financial interests.
+
+\todo[inline]{Ariel, do you want to add anything here?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% APPENDICES
