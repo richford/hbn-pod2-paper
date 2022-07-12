@@ -14,10 +14,23 @@
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{xargs}  % Use more than one optional parameter in a new commands
-\usepackage[disable,colorinlistoftodos,prependcaption]{todonotes}
+\usepackage[colorinlistoftodos,prependcaption]{todonotes}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{inline}{enumitem}
 \usepackage{hyperref}
+
+\usepackage{svg}
+\def\orcid#1{\kern .08em\href{https://orcid.org/#1}{\includesvg[keepaspectratio,width=0.95em]{orcid.svg}}}
+\def\noorcid{\hspace{0.95em}}
+
+\usepackage{xcolor}
+\usepackage{manyfoot}
+\DeclareNewFootnote{A}[roman]
+% Use "final" option in next line to suppress change markup
+\usepackage[final,commentmarkup=footnote]{changes}
+\setcommentmarkup{%
+\footnoteA{\textcolor{violet}{#1}}
+}
 
 % \usepackage[nobiblatex]{xurl}
 % \interfootnotelinepenalty=\@m
@@ -94,7 +107,7 @@ symptoms of many mental health disorders emerge \cite{Paus2008-gi}.
 Understanding how individual differences in brain development relate to the onset and progression of psychopathology inevitably requires large datasets  \cite{Paus2010-qk, Fair2021-eg}.
 The Healthy Brain Network (HBN) is a landmark pediatric mental health study
 that is designed to eventually include MRI images along with detailed clinical and cognitive phenotyping from over \num{5000} New York
-City area children and adolescents \cite{alexander2017-yc}. The HBN dataset
+City area children and adolescents \replaced[comment=We added the source dataset citation at the editor's request.]{\cite{alexander2017yc, hbndata}}{\cite{alexander2017yc}}. The HBN dataset
 takes a trans-diagnostic approach and provides a broad range of phenotypic and brain
 imaging data for each individual. One of the brain imaging measurements acquired 
 is diffusion MRI (dMRI), which is the dominant technology for inferring the
@@ -104,7 +117,7 @@ Project and the International Neuroimaging Data-Sharing Initiative (FCP-INDI),
 spurring collaboration on open and reproducible science \cite{Mennes2013-dl}.
 
 However, this raw, publicly available data requires extensive processing and quality assurance before it can be fruitfully analyzed.
-The most immediate contribution of the present work is a large openly-available analysis-ready dMRI data resource derived from the HBN dataset. In the past decade, projects such as the Human Connectome Project (HCP) \cite{van-essen2013-oi}, UK Biobank
+The most immediate contribution of the present work is a large openly-available analysis-ready dMRI data resource derived from the HBN dataset \added[comment=We added a data citation for the main dataset as requested by the editor.]{\cite{hbnpod2data}}. In the past decade, projects such as the Human Connectome Project (HCP) \cite{van-essen2013-oi}, UK Biobank
 \cite{miller2016-mq}, ABCD \cite{jernigan2018-my}, and CamCAN
 \cite{taylor2017-or,shafto2014-ld}, as well as FCP-INDI, have ushered a culture of data sharing in open big-data
 human neuroscience. The adoption and reuse of these datasets reduces or eliminates the
@@ -248,21 +261,30 @@ BIDS-compliant dMRI data (Figure~\ref{fig:hbn-sankey}).
 \subsection*{Inputs}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Inputs for this study consisted of MRI data from the Healthy Brain Network
-pediatric mental health study \cite{alexander2017-yc}, containing dMRI data from
+Inputs for this study consisted of MRI data from \added[comment=We added the input data release numbers as requested by Reviewer~\#2]{releases 1-9 of} the Healthy Brain Network
+pediatric mental health study \replaced[comment=We added the source dataset citation at the editor's request.]{\cite{alexander2017yc, hbndata}}{\cite{alexander2017yc}}, containing dMRI data from
 \num{2747} participants aged 5-21 years.
 These data were measured using a \qty{1.5}{\tesla} Siemens mobile scanner on Staten Island (SI, $N=300$) and three fixed
 \qty{3}{\tesla} Siemens MRI scanners at sites in the New York area: Rutgers
 University Brain Imaging Center (RU, $N=873$), the CitiGroup Cornell Brain Imaging
 Center (CBIC, $N=887$), and the City University of New York Advanced Science Research
 Center (CUNY, $N=74$), where numbers in parentheses represent participant counts in HBN-POD2.
+\added[comment=We added information about the ABCD-harmonized scan sequence in response to Reviewer \#2]{Site CBIC has two different acquisition types: one which shares its pulse sequence with sites RU and CUNY. In 19 CBIC subjects another acquisition protocol was used, which better matches the ABCD study diffusion protocol \cite{casey2018adolescent}.}
 Informed consent was obtained from each participant aged 18 or
 older. For participants younger than 18, written consent was obtained from their
-legal guardians and written assent was obtained from the participant. Voxel
-resolution was \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} with \num{64} non-colinear
-directions measured for each of $b=1000$ \unit{\second \per \mm^{2}} and
+legal guardians and written assent was obtained from the participant.
+Voxel resolution was \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} $\times$ \qty{1.8}{\mm} with \num{64} non-colinear
+directions measured for each \replaced[comment=We added clarifying text about different b-values for different scanning variants in response to Reviewer \#2]{
+two degrees of diffusion weighting:
+$b=1500$ \unit{\second \per \mm^{2}} and
+$b=3000$ \unit{\second \per \mm^{2}} for the ABCD-harmonized sequence and
+$b=1000$ \unit{\second \per \mm^{2}} and
+$b=2000$ \unit{\second \per \mm^{2}} for the others.
+}{
+of $b=1000$ \unit{\second \per \mm^{2}} and
 $b=2000$ \unit{\second \per \mm^{2}}.
-Figure~\ref{fig:metric-dist} depicts the age distribution of study participants by sex for each of these scan site as well as pairwise distributions for the automated quality metrics that are described in the next sections.
+}
+Figure~\ref{fig:metric-dist} depicts the age distribution of study participants by sex for each of these scan sites as well as pairwise distributions for the automated quality metrics that are described in the next sections.
 
 \subsection*{BIDS curation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -301,9 +323,18 @@ the remainder of this subsection to document each preprocessing step.
 \begin{itemize}
 
 \item {\it Anatomical data preprocessing}
+\replaced[comment=We amended the anatomical data preprocessing to account for that fact that some participants had multiple T1w images.]{
+All T1-weighted (T1w) images found for each participant were corrected for intensity non-uniformity (INU)
+using \texttt{N4BiasFieldCorrection} \cite{n4} (ANTs 2.3.1). If a single T1w was found, it was used as the T1w-reference throughout the workflow.
+If multiple T1w images were found, a
+T1w-reference map was computed after registration of the T1w images (after
+INU-correction) using \texttt{mri\_robust\_template} \cite{fstemplate} (FreeSurfer 6.0.1).
+}{
 The T1-weighted (T1w) image was corrected for intensity non-uniformity (INU)
 using \texttt{N4BiasFieldCorrection} \cite{n4} (ANTs 2.3.1), and used as
-T1w-reference throughout the workflow. The T1w-reference was then skull-stripped
+T1w-reference throughout the workflow.
+}
+The T1w-reference was then skull-stripped
 using \texttt{antsBrainExtraction.sh} (ANTs 2.3.1), using OASIS as target
 template. Spatial normalization to the ICBM 152 Nonlinear Asymmetrical template
 version 2009c (RRID:SCR\_008796)\cite{mni} was performed through nonlinear
@@ -416,7 +447,7 @@ The viewer allows users to assign a rating of $-2$ (definitely fail), $-1$
 (probably fail), $0$ (not sure), $1$ (probably pass), or $2$ (definitely pass) to a
 participant.
 To standardize rater expectations before rating, expert raters watched
-a tutorial video (available on YouTube at \url{https://youtu.be/SQ0v-O-e5b8} and in the OSF project).
+a tutorial video (available on YouTube at \url{https://youtu.be/SQ0v-O-e5b8} and in the OSF project), \added[comment={In response to Reviewer~\#2 (point 1), we clarified that the video was used to specify a rating standard.}]{which demonstrated data for which each of these ratings was appropriate}.
 Six of the
 co-authors, who are all dMRI experts, rated the gold standard subset
 using extensive visual examination of each participant's dMRI data,
@@ -430,7 +461,7 @@ motion parameters throughout the DWI scan, and full 3D volumes depicting
     \item the brain mask and $b=0$ to T1w registration
     \item a directionally encoded color fractional anisotropy (DEC-FA) image laid over the $b=0$ volume.
 \end{enumerate*}
-See Appendix~\ref{app:web-apps} for an example of the \emph{dmriprep-viewer} interface.
+See Appendix~\ref{fig:web-apps} for an example of the \emph{dmriprep-viewer} interface.
 
 The distribution of scores given by the experts demonstrates that the
 gold standard dataset included a range of data quality (Figure~\ref{fig:expert-qc:scatter:hist}). Mean expert ratings
@@ -506,7 +537,7 @@ entire HBN-POD2 dataset would be prohibitively time consuming. To assess the
 image quality of the remaining participants, we deployed \emph{Fibr}
 (\url{https://fibr.dev}), a community science web application in which users
 assigned binary pass/fail labels assessing the quality of horizontal slice DEC-FA
-images overlaid on the $b=0$ image (see Appendix~\ref{app:web-apps} for an example).
+images overlaid on the $b=0$ image (see Figure~\ref{fig:web-apps} for an example).
 Specifically, after a brief tutorial, \emph{Fibr} users saw individual
 slices or an animated sequence of ten slices taken from the entire DEC-FA volume
 that the expert raters saw. The \emph{Fibr} users, therefore, saw only a subset of
@@ -515,7 +546,31 @@ saw data from many more participants. In total, \num{374} community scientists p
 \num{587778} ratings for a mean of $>50$ ratings per slice (or $>200$ ratings
 per participant) from \num{1653} participants. Of the community scientists, \num{145}
 raters provided $>3,000$ ratings each and are included in the \emph{Fibr} Community
-Science Consortium as co-authors on this paper \cite{Ward-Fear2020-zq} (see Appendix~\ref{app:fibr-consortium} for a list of consortium co-authors).
+Science Consortium as co-authors on this paper \cite{Ward-Fear2020-zq}.
+
+\comment{This paragraph and Figure~\ref{fig:web-apps} were previously in an appendix. We have moved them to the main text at the editor's request.}
+We created quality control web applications for both community raters and expert raters. These apps are publicly accessible at \url{https://fibr.dev}, for the community science instrument and at \url{http://www.nipreps.org/dmriprep-viewer/} for the expert rating instrument. We encourage readers to try these web applications on their own but have included screenshots and a summary of the interfaces in Figure~\ref{fig:web-apps}.
+
+\begin{figure}[tbp]
+    \includegraphics[width=0.95\textwidth]{hbn-pod2-qc-instruments.pdf}
+    \caption{
+        {\bf HBN-POD2 quality control instruments}:
+        {\bf (A)} The user interface for community science QC app \emph{Fibr}. After a
+        tutorial, users are asked to give binary pass/fail ratings to
+        each subject's DEC-FA image. The
+        intuitive swipe or click interface allows community scientists to
+        review more images than is practical for expert reviewers. Expert
+        reviewers use the more advanced \emph{dmriprep-viewer} interface, where
+        they can
+        {\bf (B)} view the distribution of data quality metrics for the entire
+        study using interactive scatterplots and violin plots, and
+        {\bf (C)} inspect individual participants' preprocessing results,
+        including corrected dMRI images, frame displacement, q-space
+        sampling distributions, registration information, and a DTI
+        model.
+        \label{fig:web-apps}
+    }
+\end{figure}
 
 There are three issues to account for when comparing \emph{Fibr} and expert QC ratings. First, the unadjusted \emph{Fibr} ratings were overly optimistic; i.e., on average,
 community scientists were not as conservative as the expert raters
@@ -527,7 +582,6 @@ we trained gradient boosted decision trees \cite{chen2016-eb} to predict expert 
 binarized with a $0.5$ threshold,
 based on a combination of community science ratings and 31 automated \emph{QSIPrep}
 data quality metrics.
-See Appendix~\ref{app:feature-importance} for a list of these automated metrics and a measure of their global feature importance in the gradient boosting models. 
 One can think of the gradient boosting model as assigning more weight to \emph{Fibr} raters who reliably agree with the expert raters, thereby resolving the aforesaid issues with community rater accuracy. We refer to this gradient boosting model as XGB.
 
 \begin{figure}[tbp]
@@ -598,6 +652,104 @@ accurate as automated data quality metrics are at predicting expert ratings. And
 increased performance of XGB over XGB-q demonstrates that there is additional
 image quality information to be gained by incorporating community scientist input.
 
+\comment{This paragraph and Tables~\ref{tab:xgb-shap} and~\ref{tab:xgb-q-shap} were previously in an appendix. We have moved them to the main text at the editor's request.}
+We used SHapley Additive exPlanations (SHAP) to measure the global feature importance of the automated quality metrics in the gradient boosting models.
+SHAP is a method to explain individual predictions based on game theoretically optimal Shapley values \cite{lundberg2017unified}. To estimate global feature importance for the XGB and XGB-q models, we use the \texttt{shap} library's \texttt{TreeExplainer} \cite{lundberg2020local} and average the absolute Shapley value per feature across each individual prediction. Tables~\ref{tab:xgb-shap} and \ref{tab:xgb-q-shap} list the \emph{QSIPrep} automated QC metric features in order of decreasing mean absolute shap value for the XGB and XGB-q models, respectively. We chose the top three metrics from Table~\ref{tab:xgb-shap} to plot metric distributions in Figure~\ref{fig:metric-dist} and correlations with the expert QC results in Figure~\ref{fig:expert-qc}.
+
+\begin{table}[tbp]
+\begin{multicols}{2}
+\centering
+\begin{tabular}{lr}
+\toprule
+{} &  mean abs shap \\
+feature               &                           \\
+\midrule
+raw\_neighbor\_corr     &                  0.666429 \\
+max\_rel\_translation   &                  0.348662 \\
+raw\_num\_bad\_slices    &                  0.288937 \\
+t1\_neighbor\_corr      &                  0.282198 \\
+raw\_incoherence\_index &                  0.229733 \\
+raw\_coherence\_index   &                  0.162103 \\
+max\_rel\_rotation      &                  0.118963 \\
+mean\_fd               &                  0.116457 \\
+max\_fd                &                  0.099359 \\
+max\_rotation          &                  0.078774 \\
+t1\_coherence\_index    &                  0.035553 \\
+t1\_dice\_distance      &                  0.034510 \\
+max\_translation       &                  0.032323 \\
+t1\_incoherence\_index  &                  0.030225 \\
+raw\_voxel\_size\_x      &                  0.000000 \\
+raw\_voxel\_size\_y      &                  0.000000 \\
+raw\_voxel\_size\_z      &                  0.000000 \\
+raw\_num\_directions    &                  0.000000 \\
+raw\_max\_b             &                  0.000000 \\
+raw\_dimension\_y       &                  0.000000 \\
+raw\_dimension\_z       &                  0.000000 \\
+t1\_voxel\_size\_x       &                  0.000000 \\
+t1\_dimension\_x        &                  0.000000 \\
+t1\_dimension\_y        &                  0.000000 \\
+t1\_dimension\_z        &                  0.000000 \\
+t1\_voxel\_size\_y       &                  0.000000 \\
+t1\_voxel\_size\_z       &                  0.000000 \\
+t1\_max\_b              &                  0.000000 \\
+t1\_num\_bad\_slices     &                  0.000000 \\
+t1\_num\_directions     &                  0.000000 \\
+raw\_dimension\_x       &                  0.000000 \\
+\bottomrule
+\end{tabular}
+\captionof{table}{%
+  XGB mean absolute shap values
+  \label{tab:xgb-shap}
+}
+
+{\nolinenumbers
+\begin{tabular}{lr}
+\toprule
+{} &  mean abs shap \\
+feature               &                           \\
+\midrule
+raw\_neighbor\_corr     &                  0.767536 \\
+raw\_incoherence\_index &                  0.453897 \\
+raw\_num\_bad\_slices    &                  0.430422 \\
+t1\_coherence\_index    &                  0.382218 \\
+max\_rel\_translation   &                  0.363052 \\
+raw\_coherence\_index   &                  0.320438 \\
+t1\_neighbor\_corr      &                  0.250948 \\
+t1\_dice\_distance      &                  0.248104 \\
+t1\_incoherence\_index  &                  0.242348 \\
+max\_rel\_rotation      &                  0.135590 \\
+mean\_fd               &                  0.128642 \\
+max\_translation       &                  0.120815 \\
+max\_fd                &                  0.119739 \\
+max\_rotation          &                  0.101209 \\
+t1\_num\_bad\_slices     &                  0.007075 \\
+raw\_dimension\_y       &                  0.000000 \\
+raw\_dimension\_z       &                  0.000000 \\
+raw\_voxel\_size\_x      &                  0.000000 \\
+raw\_voxel\_size\_y      &                  0.000000 \\
+raw\_voxel\_size\_z      &                  0.000000 \\
+raw\_max\_b             &                  0.000000 \\
+t1\_voxel\_size\_x       &                  0.000000 \\
+raw\_num\_directions    &                  0.000000 \\
+t1\_dimension\_x        &                  0.000000 \\
+t1\_dimension\_y        &                  0.000000 \\
+t1\_dimension\_z        &                  0.000000 \\
+t1\_voxel\_size\_y       &                  0.000000 \\
+t1\_voxel\_size\_z       &                  0.000000 \\
+t1\_max\_b              &                  0.000000 \\
+t1\_num\_directions     &                  0.000000 \\
+raw\_dimension\_x       &                  0.000000 \\
+\bottomrule
+\end{tabular}
+\captionof{table}{%
+  XGB-q mean absolute shap values
+  \label{tab:xgb-q-shap}
+}
+}
+\end{multicols}
+\end{table}
+
+
 As a way of evaluating the quality of the XGB predictions, consider the fact
 that the average Cohen's $\kappa$ between XGB and the expert raters was 0.74,
 which is higher than the average Cohen's $\kappa$ between any of the other raters
@@ -630,8 +782,104 @@ metrics from \emph{QSIPrep}. We trained these networks on XGB scores and validat
 against the gold standard expert-scored dataset. We refer to the convolutional
 neural network model trained only on imaging data as CNN-i and the model that
 incorporates automated QC metrics as CNN-i+q.
-These model architectures and training procedures are described in more detail in
-Appendix \ref{app:deep-learning-architectures}.
+
+\comment{These two paragraphs and Figures~\ref{fig:dl-architecture} and~\ref{fig:dl-loss} were previously in an appendix. We have moved them to the main text at the editor's request.}
+Both the CNN-i and CNN-i+q models were implemented in Tensorflow 2 \cite{tensorflow} using the Keras module \cite{keras}.
+The image processing part of the model architecture was
+identical for both models: a modification of an existing 3D CNN
+\cite{zunair2020-bs} previously applied to assess tuberculosis severity
+\cite{dicente2019clef}. It accepts a 3D volume as input with four channels
+\begin{enumerate*}[%
+    label=(\roman*),%
+    before=\unskip{: },%
+    itemjoin={{, }},%
+    itemjoin*={{ and }}]
+    \item the $b=0$ reference volume
+    \item DEC-FA in the $x$-direction
+    \item DEC-FA in the $y$-direction
+    \item DEC-FA in the $z$-direction.
+\end{enumerate*}
+The \emph{QSIPrep}'s automated QC metrics were included as an additional fifth
+channel. The CNN-i+q model architecture is summarized in
+Figure~\ref{fig:dl-architecture}. Upon input, the CNN-i+q model extracts the
+imaging channels and passes them through the CNN architecture. The remaining data quality
+metrics channel is flattened and passed ``around'' the CNN architecture and
+concatenated with the output of the convolutional layers. This concatenated
+output is then passed through a fully-connected layer to produce a single
+output, the probability of passing QC. This architecture has \num{1438783} trainable
+parameters.
+
+\begin{figure}[tbp]
+    \begin{subfigure}[t]{0.6\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{deep-learning-qc/model.pdf}
+    \caption{Slicing and combining the input channels}
+    \label{fig:dl-architecture:complete}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.4\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{deep-learning-qc/image_model.pdf}
+    \caption{CNN architecture}
+    \label{fig:dl-architecture:cnn}
+    \end{subfigure}
+    \caption{%
+        {\bf Deep learning model architecture}:
+        \textbf{(a)} The CNN-i+q model accepts multichannel input that combined
+        four imaging channels with a fifth channel containing 31 \emph{QSIPrep}
+        automated data quality metrics. The imaging channels are separated from the data quality
+        channel using \texttt{Lambda} layers. The imaging channels are passed
+        through a CNN \textbf{(b)}, the output of which is concatenated with the
+        data quality metrics, batch normalized and passed through two fully-connected (FC)
+        layers, with rectified linear unit (ReLu) activation functions and with
+        512 and 128 units respectively. Each FC layer is followed by a dropout
+        layer which drops 40\% of the input units. The final layer contains a
+        single unit with a sigmoid activation function and outputs the
+        probability of passing QC.
+        %
+        \textbf{(b)} The CNN portion of the model passes the imaging input
+        through four convolutional blocks. Each block consists of a 3D
+        convolutional layer with a kernel size of 3 and a ReLu activation, a 3D
+        max pooling layer with a pool size of 2, and a batch normalization layer
+        with Tensorflow's default parameters. The number of filters in the
+        convolutional layers in each block are 64, 64, 128, and 256 respectively.
+        The output of the final block is passed through a 3D global average
+        pooling layer with Tensorflow's default parameters.
+    }
+    \label{fig:dl-architecture}
+\end{figure}
+
+To estimate the variability in model training, we trained ten separate models using
+different training and validation splits of the data. The gold standard dataset
+was not included in any of these splits and was reserved for reporting final
+model performance. Models were optimized for binary crossentropy loss using the
+Adam optimizer \cite{kingma2017adam} with an initial learning rate of 0.0001. We
+reduced the learning rate by a factor of 0.5 when the validation loss plateaued
+for more than two epochs. We also stopped training when the validation loss
+failed to improve by more than 0.001 for twenty consecutive epochs. These two
+adjustments were made using the \texttt{ReduceLROnPlateau} and
+\texttt{EarlyStopping} callbacks in Tensorflow 2 \cite{tensorflow} respectively.
+The training and validation loss curves for both the CNN-i and CNN-i+q models
+are depicted in Figure~\ref{fig:dl-loss}. While the CNN-i+q model achieved
+better validation loss, it did not outperform the CNN-i model on the held out
+gold standard dataset.
+
+\begin{figure}[tbp]
+    \hfill
+    \includegraphics[width=0.45\linewidth]{deep-learning-qc/dl_learning_curve_with_qc.pdf}
+    \hfill
+    \includegraphics[width=0.45\linewidth]{deep-learning-qc/dl_learning_curve_without_qc.pdf}
+    \hfill
+    \caption[Deep learning model loss curves]{%
+        {\bf Deep learning model loss curves}:
+        The binary cross-entropy loss (top), accuracy (middle), and ROC-AUC
+        (bottom) for \textbf{(a)} the CNN-i+q model and \textbf{(a)} the CNN-i
+        model. Model performance typically plateaued after twenty epochs but was
+        allowed continue until meeting the early stopping criterion. The error
+        bands represent a bootstrapped 95\% confidence interval.
+    }
+    \label{fig:dl-loss}
+\end{figure}
+
 The two models performed nearly identically and achieved an ROC-AUC of $0.947 \pm 0.004$ (Figure~\ref{fig:dl-qc:roc}). The
 near-identical performance suggests that \emph{QSIPrep}'s automated data quality metrics
 provided information that was redundant with information available in the imaging
@@ -703,6 +951,61 @@ To further validate the importance of quality control, we used tract profiling \
 We used the previously mentioned \emph{cloudknot} cloud-computing library \cite{cloudknot} to parallelize the pyAFQ tractometry pipeline over individual participants on spot instances in the
 Amazon Web Services Batch service.
 
+\comment{This paragraph and Figures~\ref{fig:qc-profiles:md} and~\ref{fig:qc-profiles:fa} were previously in an appendix. We have moved them to the main text at the editor's request.}
+Here, we plot mean diffusivity tract profiles (MD, Figure~\ref{fig:qc-profiles:md}) and fractional anisotropy profiles (FA, Figure~\ref{fig:qc-profiles:fa}) grouped
+into four QC bins along the length of twenty-four bundles. While some bundles,
+such as the cingulum cingulate (CGC) and the inferior longitudinal fasciculus
+(ILF), appear insensitive to QC score, others, such as the uncinate (UNC) and
+the orbital portion of the corpus callosum, exhibit strong differences between
+QC bins. In most bundles, low QC scores tend to flatten the MD profile, indicating that MD appears artifactually homogeneous across the bundle.
+
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=\linewidth]{bundle-profiles/qc-bins-dki-md.pdf}
+    \caption{%
+        {\bf MD bundle profiles show large QC group differences}:
+        MD profiles binned by QC score in twenty-four major while matter
+        bundles.  The $x$-axis represents distance along the length of the fiber
+        bundle.
+        %
+        The left and right uncinate bundles were the most sensitive
+        to QC score. Generally, QC score tended to flatten bundle profiles.
+        %
+        Error bands represent bootstrapped 95\% confidence intervals. Bundle
+        abbreviations for lateralized bundles contain a trailing ``L'' or ``R''
+        indicating the hemisphere. Bundle abbreviations:
+        inferior fronto-occipital fasciculus (IFO),
+        uncinate (UNC),
+        thalamic radiation (ATR),
+        corticospinal (CST),
+        arcuate (ARC),
+        superior longitudinal fasciculus (SLF).
+        inferior longitudinal fasciculus (ILF),
+        cingulum cingulate (CGC),
+        orbital corpus callosum (Orbital),
+        anterior frontal corpus callosum (AntFrontal),
+        superior frontal corpus callosum (SupFrontal),
+        motor corpus callosum (Motor),
+        superior parietal corpus callosum (SupParietal),
+        temporal corpus callosum (Temporal),
+        post-parietal corpus callosum (PostParietal), and
+        occipital corpus callosum (Occipital).
+    }
+    \label{fig:qc-profiles:md}
+\end{figure}
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=\linewidth]{bundle-profiles/qc-bins-dki-fa.pdf}
+    \caption[FA bundle profiles]{%
+        {\bf FA bundle profiles binned by QC score}:
+        FA profiles binned by QC score in twenty-four major while matter
+        bundles. The $x$-axis represents distance along the length of the fiber
+        bundle. Error bands represent bootstrapped 95\% confidence intervals.
+        Bundle abbreviations are as in Figure~\ref{fig:qc-profiles:md}
+    }
+    \label{fig:qc-profiles:fa}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Data Records}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -710,7 +1013,7 @@ Amazon Web Services Batch service.
 \subsection*{Curated imaging data}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Curated BIDS data and their corresponding \emph{QSIPrep} outputs are provided in the FCP-INDI Amazon Web Services (AWS) S3 bucket as indicated in Table~\ref{tab:data-records}.
+Curated BIDS data and their corresponding \emph{QSIPrep} outputs are provided in the FCP-INDI Amazon Web Services (AWS) S3 bucket \added[comment={We added a data citation for the main dataset.}]{\cite{hbnpod2data}} as indicated in Table~\ref{tab:data-records}.
 This public resource can be accessed by anyone using standard S3 access tools.
 The processed diffusion derivatives are \href{
 https://qsiprep.readthedocs.io/en/latest/preprocessing.html#outputs-of-qsiprep}{
@@ -721,7 +1024,12 @@ along with the corresponding QC metrics:
     \item \emph{Anatomical Data} Preprocessed images, segmentations and transforms for spatial normalization are located in the \texttt{anat/} directory of each session. The gray matter, white matter and  cerebrospinal fluid (\texttt{GM}, \texttt{WM}, \texttt{CSF}) probabilistic segmentations are provided in nifti format with the \texttt{\_probtissue} suffix. The deterministic  segmentation is in \texttt{\_dseg.nii.gz}. All images are in alignment with AC-PC-aligned  \texttt{sub-X\_desc-preproc\_T1w.nii.gz} image unless they have \texttt{space-MNI152NLin2009cAsym} in their file name, in which case they are aligned to the MNI Nonlinear T1-weighted asymmetric brain template (version 2009c)\cite{Fonov2009-ze}. The spatial transform between the AC-PC T1w image and MNI space is in the ITK/ANTs format file named \texttt{sub-X\_from-MNI152NLin2009cAsym\_to-T1w\_mode-image\_xfm.h5}. The brain mask from \texttt{ANTsBrainExtraction.sh} is included in the file with the \texttt{\_desc-brain\_mask.nii.gz} suffix.
 
     \item \emph{Diffusion Data} The preprocessed dMRI scan and accompanying metadata are in the  \texttt{dwi} directory of each session. The fully-preprocessed dMRI data is follows the naming pattern \texttt{sub-X\_space-T1w\_desc-preproc\_dwi.nii.gz}. These images all have an isotropic voxel size of \qty{1.7}{\mm} and are aligned in world coordinates with the anatomical image located at \texttt{anat/sub-X\_desc-preproc\_T1w.nii.gz}. Gradient information is provided in \texttt{bval/bvec} format compatible with DIPY and DSI Studio and the \texttt{.b} format compatible with MRtrix3. Volume-wise QC metrics including head motion parameters are included in the \texttt{confounds.tsv} file. Automatically computed quality measures for the entire image series are provided in the \texttt{ImageQC.csv} file, which includes the neighboring DWI Correlation, number of bad slices and head motion summary statistics.
-    Figure~\ref{fig:metric-dist} depicts pairwise distributions for the three of these automated data quality metrics that were most informative in QC models described later (see Appendix~\ref{app:feature-importance} for further details).
+    Figure~\ref{fig:metric-dist} depicts pairwise distributions for the three of these automated data quality metrics that were most informative in QC models described later
+    \replaced[comment={We changed this reference from an appendix to tables in the main text.}]{
+    (see Tables~\ref{tab:xgb-shap} and~\ref{tab:xgb-q-shap}).
+    }{
+    (see Appendix~?? for further details).
+    }
     The \texttt{desc-brain\_mask} file is a dMRI-based brain mask that should only be used when the T1w-based brain mask is inappropriate (i.e. when no susceptibility distortion correction has been applied).
 \end{itemize}
 
@@ -771,7 +1079,7 @@ along with the corresponding QC metrics:
 
 \hline
 \hline
-\multicolumn{3}{l}{{$\dagger$ FCP-INDI: all paths are relative to the root \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/}}} \\
+\multicolumn{3}{l}{{$\dagger$ FCP-INDI: all paths are relative to the root \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/} \cite{hbnpod2data}}} \\
 \multicolumn{3}{l}{{* participants.tsv: located on FCP-INDI at relative path \texttt{derivatives/qsiprep/participants.tsv}}} \\
 \multicolumn{3}{l}{{$\ddagger$ OSF: DOI \href{https://doi.org/10.17605/OSF.IO/8CY32}{10.17605/OSF.IO/8CY32}, all paths are relative to the root \texttt{HBN-POD2 QC/OSF Storage}}} \\
 \bottomrule
@@ -818,15 +1126,59 @@ along with the corresponding QC metrics:
     pyAFQ tractography \& tractometry
         & FCP-INDI\textsuperscript{$\dagger$}
         & \texttt{/derivatives/afq/} \\
+    \added{pyAFQ streamline counts}
+        &
+        FCP-INDI\textsuperscript{$\dagger$}
+        &
+        \texttt{/derivatives/afq/participants.tsv} \\
     pyAFQ tract profiles
         & FCP-INDI\textsuperscript{$\dagger$}
         & \texttt{/derivatives/afq/combined\_tract\_profiles.csv} \\
 \end{longtable}
 
-\subsection*{CuBIDS Variants}
+\subsection*{CuBIDS Variants
+\comment{The contents of this subsection were previously in an appendix. We have moved it to the main text at the editor's request.}
+}
 
-The specific variant of each scanning session is provided as a column in the HBN-POD2 participant.tsv file and a summary of variants with participant counts is provided in Appendix~\ref{app:variants}.
-Users may test their BIDS-Apps on a subset of participants that represent the full range of acquisition parameters that are present.
+We identified 20 unique dMRI acquisitions across HBN-POD2, which are summarized in Table~\ref{tab:variants}. Site CBIC has two acquisition types: ``64dir,'' which shares its pulse sequence with sites RU and CUNY, and ``ABCD64dir,'' with acquisition parameters that better match the ABCD study (TE=\qty{0.089}{\second} and TR=\qty{4.1}{\second}). The ``Most\_Common'' variant identifies the most common combination of acquisition parameters for a given site and acquisition. The ``Low\_Volume'' variant identifies participants from all sites with less that 129 DWI volumes, which is the number of volumes in the most common variants. All remaining variants names identify the acquisition parameter(s) that differ from those of the most common variant. For example, the ``MultibandAccelerationFactor'' variant has a different multiband acceleration factor than that of the the most common variant but all participants within that variant share the same multiband acceleration factor. Variants that differ by multiple acquisition parameters have names that are composed of concatenated parameters. For example, the variant ``Dim3SizeVoxelSizeDim3'' varies both in the number of voxels in dimension 3 (``Dim3Size'') and in the voxel size in dimension 3 (``VoxelSizeDim3'').
+
+The specific variant of each scanning session is provided as a column in the HBN-POD2 participant.tsv file. 
+Users may use this information to test their BIDS-Apps on a subset of participants that represent the full range of acquisition parameters that are present.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lllr}
+\toprule
+     Site &      Acquisition &                        Variant &  Count \\
+\midrule
+     CBIC &            64dir &                    Most\_Common &    828 \\
+     CBIC &            64dir &                      Obliquity &     32 \\
+     CBIC &            64dir &     VoxelSizeDim1VoxelSizeDim2 &      1 \\
+     CBIC &        ABCD64dir &                    Most\_Common &     15 \\
+     CBIC &        ABCD64dir &                        HasFmap &      2 \\
+     CBIC &        ABCD64dir &    MultibandAccelerationFactor &      1 \\
+     CBIC &        ABCD64dir &                      Obliquity &      1 \\
+     CUNY &            64dir &                    Most\_Common &     68 \\
+     CUNY &            64dir &          Dim3SizeVoxelSizeDim3 &      4 \\
+     CUNY &            64dir &                      Obliquity &      2 \\
+       RU &            64dir &                    Most\_Common &    859 \\
+       RU &            64dir &                         NoFmap &      5 \\
+       RU &            64dir &                      Obliquity &      8 \\
+       RU &            64dir &         PhaseEncodingDirection &      1 \\
+       SI &            64dir &                       EchoTime &      1 \\
+       SI &            64dir & EchoTimePhaseEncodingDirection &      9 \\
+       SI &            64dir &                    Most\_Common &    269 \\
+       SI &            64dir &                         NoFmap &      2 \\
+       SI &            64dir &                      Obliquity &     12 \\
+All Sites & All Acquisitions &               Low\_Volume\_Count &     14 \\
+\bottomrule
+\end{tabular}
+\caption{%
+  Participant counts for HBN-POD2 variants.
+  \label{tab:variants}
+}
+\end{table}
+
 
 \subsection*{Quality control data}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -841,6 +1193,7 @@ Finally, the CNN-i+q model's positive class probabilities are available in the `
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The outputs of the pyAFQ tractometry pipeline, including tractography and tract profiles, are provided in a BIDS derivative directory on FCP-INDI as specified in Table~\ref{tab:data-records}. In particular the FA and MD tract profiles for each participants are available on S3 at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/derivatives/afq/combined_tract_profiles.csv}.
+\added[comment=We added information on the streamline counts file in response to Reviewer~\#2]{Streamline counts for each of the bundles are available at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/derivatives/afq/participants.tsv}}
 
 For each subject, intermediate data derivatives of the pyAFQ pipeline are also provided. 
 
@@ -857,6 +1210,8 @@ For each subject, intermediate data derivatives of the pyAFQ pipeline are also p
 \item An interactive visualization of bundles relative to the individual anatomy is stored with the ``\texttt{\_viz.html}'' suffix and summaries of streamline counts in each bundle are stored with the ``\texttt{\_sl\_count.csv}''. Additional visualizations are provided in the ``tract\_profile\_plots'' and ``viz\_bundles'' sub-directory.
 
 \item Individual tract profiles are stored with the ``\texttt{afq\_profiles.csv}'' suffix. This information is redundant with the one provided in aggregate format in the ``\texttt{combined\_tract\_profiles.csv}'' file.
+
+\item \added[comment=We added an item for the bundle streamline counts output]{Individual streamline counts for each of the bundles are stored with the ``\texttt{\_sl\_count.csv}'' suffix. This information is redundant with the one provided in aggregate format in the ``\texttt{participants.tsv}'' file.}
 
 \end{itemize}
 
@@ -888,7 +1243,8 @@ Figure~\ref{fig:ig} shows attribution maps for example participants from each
 confusion class: true positive, true negative, false positive, and false
 negative. The columns correspond to the different channels of the deep learning
 input volume: the $b=0$ reference image and the DEC-FA in the $x$, $y$, and $z$
-directions. The blue voxels indicate positive attribution, that is, data that supports a passing QC classification. Conversely, the red voxels indicate negative attribution, data that supports a failing QC classification.
+directions. \added[comment={We added a sentence describing the meaning of the integrated gradient attribution maps in response to Reviewer~\#3 (point~2).}]{These integrated gradients are dimensionless quantities but their sign is meaningful. They are proportional to the probability of assigning one label (``pass'') or another (``fail'')}. 
+The blue voxels indicate positive attribution, that is, data that supports a passing QC classification. Conversely, the red voxels indicate negative attribution, data that supports a failing QC classification.
 The true positive map indicates that the network was looking at the
 entire brain rather than focusing on any one anatomical region
 (Figure~\ref{fig:ig:true-pos}). Moreover, the model identified white matter
@@ -933,8 +1289,8 @@ are outside of the brain to be as informative as voxels in the major white matte
         The first three columns show an axial slice while the last column
         shows a coronal slice. Blue voxels indicate positive attribution (i.e.
         evidence for passing the participant), while red voxels indicate negative
-        attribution (i.e. evidence for QC failure). The underlying grayscale
-        depicts the input channel. Each row depicts a representative participant
+        attribution (i.e. evidence for QC failure). \added{The voxels with small magnitude attribution values ($\leq 98\%$ of the highest value in each image) have been rendered to be transparent, as they do not indicate strong evidence in either direction. In these cases, t}he underlying grayscale
+        depicts the input channel \added{($b=0$ or $x$, $y$, or $z$ elements of the DEC-FA image)}. Each row depicts a representative participant
         from each confusion class:
         %
         \textbf{(a)} Attribution maps for a true positive prediction. The model
@@ -1086,7 +1442,7 @@ processed data. Unsurprisingly, QC scores are strongly correlated with
 age (Figure~\ref{fig:dl-qc}). This accords with the negative association
 between head motion and age in developmental studies, which is well established both in general
 \cite{power2012spurious,satterthwaite2012impact,fair2012distinct,yendiki2014spurious}
-and specifically for resting-state fMRI in the HBN dataset \cite{alexander2017-yc}.
+and specifically for resting-state fMRI in the HBN dataset \replaced[comment=We added the source dataset citation at the editor's request.]{\cite{alexander2017yc, hbndata}}{\cite{alexander2017yc}}.
 Moreover, it is important that QC has bundle-specific and spatially localized effects (Figure~\ref{fig:qc-profiles:md}). Analysis of this data that does not incorporate QC is likely to find replicable but invalid effects. For example, in patient-control studies, patients are likely to have lower quality data. And analysis of such patient data that does not control for QC will find spatially-localized and replicable group differences that are due to data quality, not necessarily underlying neuroanatomical differences.
 
 We further demonstrated the impact of QC in a benchmark age prediction task
@@ -1123,7 +1479,7 @@ work, we provided a preliminary qualitative interpretation of the CNN-i model
 
 The accuracy in generalizing to unseen data from HBN also suggested the tantalizing possibility that the QC models would be able to generalize to similar data from other datasets. To assess this, we trained the models with unseen sites held out (Figure \ref{fig:site-generalization}). Both the CNN-i model and the XGB-q model do sometimes generalize to data from unseen sites, suggesting that they would be able to generalize to some other datasets as well. However, they do not reliably generalize, implying that they should not currently be used in this way. Future work could build upon the work that we have done here to establish a procedure whereby the models that we fit in HBN would be applied to data from other studies, but comprehensive calibration and validation would have to be undertaken as part of this procedure. 
 
-We recognize that decisions about QC inclusion must balance accuracy, interpretability, generalization to new data, and scalability to ever larger datasets. We therefore provide three additional scores
+We recognize that decisions about QC \replaced{exclusion}{inclusion} must balance accuracy, interpretability, generalization to new data, and scalability to ever larger datasets. We therefore provide three additional scores
 \begin{enumerate*}[%
     label=(\roman*),%
     before=\unskip{: },%
@@ -1163,6 +1519,8 @@ improvements to the final QC scores could be obtained through improvements to
 IRR, or by designing a more extensive expert QC protocol. The tradeoff between
 more extensive QC for each participant and more superficial QC on more participants was
 not explored in this study, but could also be the target for future research.
+
+\added[comment={In response to Reviewer~2 (point~5), we added a paragraph recommending the use of other metrics for inclusion criteria.}]{Finally, the QC scores in this dataset are single scalar representations of the quality of each participant's diffusion weighted imaging. They should not be taken as a single measurement of suitability for inclusion. QC metrics are exclusion metrics, not inclusion metrics. In fact, we postulate that no single measurement is suitable as an inclusion criterion \emph{by itself}. For example, some HBN participants have both neuroanatomical abnormalities and high quality diffusion data, as measured by high neighboring DWI correlation, low framewise displacement, and high QC scores. Therefore, one would need to include other sources of information when considering inclusion in a particular study. For example, we recommend that users consult the pyAFQ streamline counts (see Table~\ref{tab:data-records}) to assess suitability for inclusion in a study of normative brains.}
 
 \subsection*{Transparent pipelines provide an extensible baseline for future methods}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1227,8 +1585,8 @@ other kinds of measurements and other research domains.
 \subsection*{Future work and open problems}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The HBN study plans to acquire imaging data for over \num{5000} participants,
-necessitating future data releases. Since future releases of HBN will also require future releases of HBN-POD2, a plan for these is essential. This is
+\replaced[comment=We specified the input HBN releases as requested by Reviewer~\#2]{While our work was based on HBN releases 1-9, the}{The} HBN study plans to acquire imaging data for over \num{5000} participants,
+necessitating future data releases. \added[comment={This was added in response to Reviewer~\#2's point~2.}]{In particular, the 10th release of HBN data was already made available between completion of the work and the publication of this paper}. Since \added[comment={Added in response to Reviewer~\#2's point~2.}]{this 10th release as well as} future releases of HBN will also require future releases of HBN-POD2, a plan for these is essential. This is
 a general issue affecting multi-year neuroimaging projects for which derivative
 data is being released before study completion. The use of \emph{QSIPrep},
 \emph{cloudknot} and the containerization of the QC score assignment process
@@ -1266,11 +1624,17 @@ The \texttt{make} or \texttt{make help} commands will list the available command
 In order to separate data from analysis code \cite{Wilson2017-rj}, we provide intermediate data necessary to analyze the QC results in an OSF \cite{Foster-MSLS2017-rl} project \cite{hbn-pod2-osf}, the contents of which can be downloaded using the \texttt{make data} command in the root of the HBN-POD2 GitHub repository. The NIFTI-1 files and TFRecord files provided as input to the CNN models may be separately downloaded using the \texttt{make niftis} and \texttt{make tfrecs} commands, respectively. The remaining \texttt{make} commands and Jupyter notebooks follow the major steps of the methods section:
 
 \begin{enumerate}
-    \item The \emph{cloudknot} preprocessing function used to execute \emph{QSIPrep} workflows on curated data was a thin wrapper around \emph{QSIPrep}'s command line interface and is provided in a Jupyter notebook with suffix \texttt{preprocess-remaining-hbn-curated.ipynb} in the HBN-POD2 GitHub repository in the ``notebooks'' directory.
+    \item The \emph{cloudknot} preprocessing function used to execute \emph{QSIPrep} workflows on curated data was a thin wrapper around \emph{QSIPrep}'s command line interface and is provided
+    \replaced[comment={Edited to prevent line breaking across a filename}]{
+    in the ``notebooks'' directory of the HBN-POD2 GitHub repository
+    in a Jupyter notebook with the suffix \texttt{preprocess-remaining-hbn-curated.ipynb}.
+    }{
+    in a Jupyter notebook with the suffix \texttt{preprocess-remaining-hbn-curated.ipynb} in the HBN-POD2 GitHub repository in the ``notebooks'' directory.
+    }
 
     \item The expert rating analysis can be replicated using the \texttt{make expert-qc} command in the HBN-POD2 GitHub repository.
     
-    \item The \emph{Fibr} community science web application is based on the SwipesForScience framework \url{https://swipesforscience.org/}, which generates a web application for community science given an open repository of images to be labelled and a configuration file. The source code for the \emph{Fibr} web application is available at \url{https://github.com/richford/fibr}.
+    \item The \emph{Fibr} community science web application is based on the SwipesForScience framework (\url{swipesforscience.org}), which generates a web application for community science given an open repository of images to be labelled and a configuration file. The source code for the \emph{Fibr} web application is available at \url{https://github.com/richford/fibr}.
     
     \item The images that the \emph{Fibr} raters saw were generated using a \emph{DIPY} \cite{dipy} \texttt{TensorModel} in a \emph{cloudknot}-enabled Jupyter notebook that is available in the ``notebooks'' directory of the \emph{Fibr} GitHub repository. \emph{Fibr} saves each community rating to its Google Firebase backend, the contents of which have been archived to the HBN-POD2 OSF project as specified in Table~\ref{tab:data-records}.
 
@@ -1282,10 +1646,16 @@ In order to separate data from analysis code \cite{Wilson2017-rj}, we provide in
     
     \item We provide a Docker service to compute integrated gradient attribution maps on Google Cloud, which can be invoked using the \texttt{make dl-integrated-gradients} command. This step also requires the setup steps described in \texttt{README\_GCP.md}.
     
-    \item We provide a Docker service to conduct the CNN-i site generalization experiments Google Cloud, which can be invoked using the \texttt{make dl-site-generalization} command, which, again, requires the setup steps described in \texttt{README\_GCP.md}.
-    The XGB-q site generalization experiments can be replicated locally using the \texttt{make site-generalization} command, which will also plot the results of the CNN-i experiments.
+    \item We provide a Docker service to conduct the CNN-i site generalization experiments on Google Cloud, which can be invoked using the \texttt{make dl-site-generalization} command, which, again, requires the setup steps described in \texttt{README\_GCP.md}.
+    \replaced[comment={Edited to encourage aesthetic line breaking.}]{Similarly, the}{The} XGB-q site generalization experiments can be replicated locally using the \texttt{make site-generalization} command, which will also plot the results of the CNN-i experiments.
     
-    \item The tractometry pipeline was executed using pyAFQ and \emph{cloudknot} in a Jupyter notebook with suffix \texttt{afq-hbn-curated.ipynb}, provided in the HBN-POD2 GitHub repository in the ``notebooks'' directory.
+    \item The tractometry pipeline was executed using pyAFQ and \emph{cloudknot} in a Jupyter notebook
+    \replaced[comment=Edited to prevent line breaking across file name suffix]{
+    provided in the ``notebooks'' directory of the HBN-POD2 GitHub repository with the
+    with suffix \texttt{afq-hbn-curated.ipynb}.
+    }{
+    with suffix \texttt{afq-hbn-curated.ipynb}, provided in the HBN-POD2 GitHub repository in the ``notebooks'' directory.
+    }
     The pyAFQ documentation contains a more pedagogical example of \href{https://yeatmanlab.github.io/pyAFQ/auto_examples/cloudknot_example.html}{using pyAFQ with cloudknot to analyze a large openly available dataset}.
     
     \item The bundle profile and age prediction analyses can be replicated using the \texttt{make bundle-profiles} and \texttt{make inference} commands, respectively. 
@@ -1307,7 +1677,7 @@ or views of the Child Mind Institute. This work was supported via BRAIN Initiati
 The last two authors named share senior authorship. The first two authors named
 share lead authorship. The remaining authors are listed in alphabetical order,
 with the exception of the \emph{Fibr} Community Science Consortium, whose members
-provided community science QC ratings and are listed in Appendix~\ref{app:fibr-consortium}.
+provided community science QC ratings and are listed in the following section.
 We describe contributions to the paper using the CRediT taxonomy \cite{brand2015-vd,allen2014-oc}:
 Conceptualization: A.R-H., A.R., T.S., and M.C.;
 Methodology: A.R-H. and A.R.;
@@ -1324,485 +1694,143 @@ Supervision: A.R. and T.S.;
 Project Administration: A.R-H. and A.R.;
 Funding Acquisition: A.R. and T.S.
 
+\section*{The \emph{Fibr} Community Science Consortium Authorship
+\comment{The contents of this subsection were previously in an appendix. We have moved it to the main text at the editor's request.}
+}
+
+The following community raters provided $>3,000$ ratings each and elected to be included in the \emph{Fibr} Community Science Consortium as co-authors on this paper:
+
+\begin{multicols}{3}
+\begin{itemize}[nosep,label={}]
+    \item \orcid{0000-0003-1466-0352} Nicholas J. Abbott
+    \item \orcid{0000-0001-6511-1957} John A. E. Anderson
+    \item \noorcid{} Gagana B.
+    \item \orcid{0000-0002-0762-2596} MaryLena Bleile
+    \item \orcid{0000-0002-8356-7701} Peter S. Bloomfield
+    \item \noorcid{} Vince Bottom
+    \item \noorcid{} Josiane Bourque
+    \item \orcid{0000-0003-0787-6892} Rory Boyle
+    \item \orcid{0000-0002-1627-6576} Julia K. Brynildsen
+    \item \orcid{0000-0002-4391-0472} Navona Calarco
+    \item \orcid{0000-0001-5834-7101} Jaime J. Castrellon
+    \item \orcid{0000-0003-0944-6159} Natasha Chaku
+    \item \orcid{0000-0002-0117-9757} Bosi Chen
+    \item \orcid{0000-0003-0866-3477} Sidhant Chopra
+    \item \orcid{0000-0001-8249-7396} Emily B. J. Coffey
+    \item \orcid{0000-0003-0928-2668} Nigel Colenbier
+    \item \noorcid{} Daniel J. Cox
+    \item \noorcid{} James Elliott Crippen
+    \item \orcid{0000-0002-3805-2936} Jacob J. Crouse
+    \item \orcid{0000-0003-0316-3895} Szabolcs David
+    \item \orcid{0000-0002-1378-2756} Benjamin De Leener
+    \item \noorcid{} Gwyneth Delap
+    \item \orcid{0000-0001-8925-0871} Zhi-De Deng
+    \item \orcid{0000-0003-4946-0350} Jules Roger Dugre
+    \item \orcid{0000-0001-7061-7995} Anders Eklund
+    \item \orcid{0000-0002-7570-0939} Kirsten Ellis
+    \item \orcid{0000-0002-8386-4423} Arielle Ered
+    \item \orcid{0000-0002-3684-0605} Harry Farmer
+    \item \orcid{0000-0003-1814-7206} Joshua Faskowitz
+    \item \orcid{0000-0003-2457-1345} Jody E. Finch
+    \item \orcid{0000-0003-0077-7859} Guillaume Flandin
+    \item \orcid{0000-0001-7014-4665} Matthew W. Flounders
+    \item \orcid{0000-0001-8874-7843} Leon Fonville
+    \item \noorcid{} Summer Frandsen
+    \item \orcid{0000-0003-3595-4210} Dea Garic
+    \item \orcid{0000-0002-9561-8983} Patricia Garrido-Vásquez
+    \item \orcid{0000-0002-7209-1736} Gabriel Gonzalez-Escamilla
+    \item \orcid{0000-0003-0383-4601} Shannon E. Grogans
+    \item \orcid{0000-0002-8653-1157} Mareike Grotheer
+    \item \orcid{0000-0001-6504-191X} David C. Gruskin
+    \item \noorcid{} Guido I. Guberman
+    \item \orcid{0000-0003-0597-7956} Edda Briana Haggerty
+    \item \noorcid{} Younghee Hahn
+    \item \noorcid{} Elizabeth H. Hall
+    \item \orcid{0000-0002-0469-8886} Jamie L. Hanson
+    \item \orcid{0000-0002-8970-1983} Yann Harel
+    \item \orcid{0000-0002-8770-7396} Bruno Hebling Vieira
+    \item \orcid{0000-0002-7973-6752} Meike D. Hettwer
+    \item \orcid{0000-0001-6738-1029} Corey Horien
+    \item \noorcid{} Fan Huang
+    \item \noorcid{} Zeeshan M. Huque
+    \item \orcid{0000-0002-5297-2229} Anthony R. James
+    \item \orcid{0000-0002-0963-9738} Isabella Kahhale
+    \item \noorcid{} Sarah L. H. Kamhout
+    \item \orcid{0000-0003-4708-1672} Arielle S. Keller
+    \item \orcid{0000-0001-6840-4616} Harmandeep Singh Khera
+    \item \orcid{0000-0001-8915-496X} Gregory Kiar
+    \item \orcid{0000-0003-0786-3039} Peter Alexander Kirk
+    \item \orcid{0000-0003-0949-6754} Simon H. Kohl
+    \item \noorcid{} Stephanie A. Korenic
+    \item \orcid{0000-0003-2562-9617} Cole Korponay
+    \item \noorcid{} Alyssa K. Kozlowski
+    \item \orcid{0000-0003-0869-648X} Nevena Kraljevic
+    \item \orcid{0000-0002-8688-581X} Alberto Lazari
+    \item \orcid{0000-0002-6100-3235} Mackenzie J. Leavitt
+    \item \orcid{0000-0003-2246-4116} Zhaolong Li
+    \item \orcid{0000-0002-5684-4443} Giulia Liberati
+    \item \orcid{0000-0003-1311-726X} Elizabeth S. Lorenc
+    \item \orcid{0000-0001-5921-1353} Annabelle Julina Lossin
+    \item \orcid{0000-0002-2337-6073} Leon D. Lotter
+    \item \orcid{0000-0001-8702-3923} David M. Lydon-Staley
+    \item \orcid{0000-0003-3228-6501} Christopher R. Madan
+    \item \orcid{0000-0002-6777-4225} Neville Magielse
+    \item \orcid{0000-0002-0771-6795} Hilary A. Marusak
+    \item \orcid{0000-0001-9827-5421} Julien Mayor
+    \item \orcid{0000-0003-3422-0135} Amanda L. McGowan
+    \item \noorcid{} Kahini P. Mehta
+    \item \orcid{0000-0002-8888-1572} Steven Lee Meisler
+    \item \orcid{0000-0002-5300-473X} Cleanthis Michael
+    \item \orcid{0000-0002-0225-6320} Mackenzie E. Mitchell
+    \item \orcid{0000-0002-5880-3688} Simon Morand-Beaulieu
+    \item \orcid{0000-0002-0668-2853} Benjamin T. Newman
+    \item \orcid{0000-0002-2717-193X} Jared A. Nielsen
+    \item \noorcid{} Shane M. O'Mara
+    \item \orcid{0000-0002-1038-0225} Amar Ojha
+    \item \noorcid{} Adam Omary
+    \item \orcid{0000-0003-0859-1311} Evren Özarslan
+    \item \orcid{0000-0002-9329-7207} Linden Parkes
+    \item \noorcid{} Madeline Peterson
+    \item \noorcid{} Adam Robert Pines
+    \item \orcid{0000-0002-9151-4319} Claudia Pisanu
+    \item \orcid{0000-0001-9495-3184} Ryan R. Rich
+    \item \orcid{0000-0003-1815-6655} Ashish K. Sahoo
+    \item \orcid{0000-0002-6001-7395} Amjad Samara
+    \item \noorcid{} Farah Sayed
+    \item \orcid{0000-0002-1925-6669} Jonathan Thore Schneider
+    \item \orcid{0000-0002-0642-1717} Lindsay S. Shaffer
+    \item \orcid{0000-0001-8900-0792} Ekaterina Shatalina
+    \item \orcid{0000-0001-7107-1891} Sara A. Sims
+    \item \orcid{0000-0003-3010-6431} Skyler Sinclair
+    \item \orcid{0000-0002-3127-6427} Jae W. Song
+    \item \orcid{0000-0003-2877-078X} Griffin Stockton Hogrogian
+    \item \orcid{0000-0002-9191-6764} Christian K. Tamnes
+    \item \orcid{0000-0001-6377-3885} Ursula A. Tooley
+    \item \noorcid{} Vaibhav Tripathi
+    \item \orcid{0000-0002-2670-4036} Hamid B. Turker
+    \item \orcid{0000-0003-2998-6849} Sofie Louise Valk
+    \item \orcid{0000-0002-0493-6274} Matthew B. Wall
+    \item \noorcid{} Cheryl K. Walther
+    \item \orcid{0000-0001-9871-3006} Yuchao Wang
+    \item \orcid{0000-0003-2193-6003} Bertil Wegmann
+    \item \orcid{0000-0002-9503-2093} Thomas Welton
+    \item \orcid{0000-0003-0917-1570} Alex I. Wiesman
+    \item \noorcid{} Andrew G. Wiesman
+    \item \noorcid{} Mark Wiesman
+    \item \orcid{0000-0002-0701-9658} Drew E. Winters
+    \item \noorcid{} Ruiyi Yuan
+    \item \orcid{0000-0001-8770-4614} Sadie J. Zacharek
+    \item \orcid{0000-0002-0204-6497} Chris Zajner
+    \item \orcid{0000-0001-7207-9641} Ilya Zakharov
+    \item \orcid{0000-0002-9733-380X} Gianpaolo Zammarchi
+    \item \orcid{0000-0001-9240-1327} Dale Zhou
+    \item \orcid{0000-0003-2570-8198} Benjamin Zimmerman
+    \item \noorcid{} Kurt Zoner
+\end{itemize}
+\end{multicols}
+
 \section*{Competing interests}
 
 The authors declare no competing financial interests.
-
-\todo[inline]{Ariel, do you want to add anything here?}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% APPENDICES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newpage
-\appendix
-
-\section{CuBIDS variant annotation}
-\label{app:variants}
-
-We identified 20 unique dMRI acquisitions across HBN-POD2, which are summarized in Table~\ref{tab:variants}. Site CBIC has two acquisition types: ``64dir,'' which shares it's pulse sequence with sites RU and CUNY, and ``ABCD64dir,'' with acquisition parameters that better match the ABCD study (TE=\qty{0.089}{\second} and TR=\qty{4.1}{\second}). The ``Most\_Common'' variant identifies the most common combination of acquisition parameters for a given site and acquisition. The ``Low\_Volume'' variant identifies participants from all sites with less that 129 DWI volumes, which is the number of volumes in the most common variants. All remaining variants names identify the acquisition parameter(s) that differ from those of the most common variant. For example, the ``MultibandAccelerationFactor'' variant has a different multiband acceleration factor than that of the the most common variant but all participants within that variant share the same multiband acceleration factor. Variants that differ by multiple acquisition parameters have names that are composed of concatenated parameters. For example, the variant ``Dim3SizeVoxelSizeDim3'' varies both in the number of voxels in dimension 3 (``Dim3Size'') and in the voxel size in dimension 3 (``VoxelSizeDim3'').
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{lllr}
-\toprule
-     Site &      Acquisition &                        Variant &  Count \\
-\midrule
-     CBIC &            64dir &                    Most\_Common &    828 \\
-     CBIC &            64dir &                      Obliquity &     32 \\
-     CBIC &            64dir &     VoxelSizeDim1VoxelSizeDim2 &      1 \\
-     CBIC &        ABCD64dir &                    Most\_Common &     15 \\
-     CBIC &        ABCD64dir &                        HasFmap &      2 \\
-     CBIC &        ABCD64dir &    MultibandAccelerationFactor &      1 \\
-     CBIC &        ABCD64dir &                      Obliquity &      1 \\
-     CUNY &            64dir &                    Most\_Common &     68 \\
-     CUNY &            64dir &          Dim3SizeVoxelSizeDim3 &      4 \\
-     CUNY &            64dir &                      Obliquity &      2 \\
-       RU &            64dir &                    Most\_Common &    859 \\
-       RU &            64dir &                         NoFmap &      5 \\
-       RU &            64dir &                      Obliquity &      8 \\
-       RU &            64dir &         PhaseEncodingDirection &      1 \\
-       SI &            64dir &                       EchoTime &      1 \\
-       SI &            64dir & EchoTimePhaseEncodingDirection &      9 \\
-       SI &            64dir &                    Most\_Common &    269 \\
-       SI &            64dir &                         NoFmap &      2 \\
-       SI &            64dir &                      Obliquity &     12 \\
-All Sites & All Acquisitions &               Low\_Volume\_Count &     14 \\
-\bottomrule
-\end{tabular}
-\caption{%
-  Participant counts for HBN-POD2 variants.
-  \label{tab:variants}
-}
-\end{table}
-
-\section{HBN-POD2 quality control instruments}
-\label{app:web-apps}
-
-We created quality control web applications for both community raters and expert raters. These apps are publicly accessible at \url{https://fibr.dev}, for the community science instrument and at \url{http://www.nipreps.org/dmriprep-viewer/} for the expert rating instrument. We encourage readers to try these web applications on their own but have included screenshots and a summary of the interfaces in Figure~\ref{fig:web-apps}.
-
-\includegraphics[width=0.95\textwidth]{hbn-pod2-qc-instruments.pdf}
-\captionof{figure}{
-    {\bf HBN-POD2 quality control instruments}:
-    {\bf (A)} The user interface for community science QC app \emph{Fibr}. After a
-    tutorial, users are asked to give binary pass/fail ratings to
-    each subject's DEC-FA image. The
-    intuitive swipe or click interface allows community scientists to
-    review more images than is practical for expert reviewers. Expert
-    reviewers use the more advanced \emph{dmriprep-viewer} interface, where
-    they can
-    {\bf (B)} view the distribution of data quality metrics for the entire
-    study using interactive scatterplots and violin plots, and
-    {\bf (C)} inspect individual participants' preprocessing results,
-    including corrected dMRI images, frame displacement, q-space
-    sampling distributions, registration information, and a DTI
-    model.
-    \label{fig:web-apps}
-}
-
-\section{XGB feature importance}
-\label{app:feature-importance}
-
-SHAP is a method to explain individual predictions based on game theoretically optimal Shapley values \cite{lundberg2017unified}. To estimate global feature importance for the XGB and XGB-q models, we use the \texttt{shap} library's \texttt{TreeExplainer} \cite{lundberg2020local} and average the absolute Shapley value per feature across each individual prediction. Tables~\ref{tab:xgb-shap} and \ref{tab:xgb-q-shap} list the \emph{QSIPrep} automated QC metric features in order of decreasing mean absolute shap value for the XGB and XGB-q models, respectively. We chose the top three metrics from Table~\ref{tab:xgb-shap} to plot metric distributions in Figure~\ref{fig:metric-dist} and correlations with the expert QC results in Figure~\ref{fig:expert-qc}.
-
-\begin{multicols}{2}
-\centering
-\begin{tabular}{lr|}
-\toprule
-{} &  mean abs shap \\
-feature               &                           \\
-\midrule
-raw\_neighbor\_corr     &                  0.666429 \\
-max\_rel\_translation   &                  0.348662 \\
-raw\_num\_bad\_slices    &                  0.288937 \\
-t1\_neighbor\_corr      &                  0.282198 \\
-raw\_incoherence\_index &                  0.229733 \\
-raw\_coherence\_index   &                  0.162103 \\
-max\_rel\_rotation      &                  0.118963 \\
-mean\_fd               &                  0.116457 \\
-max\_fd                &                  0.099359 \\
-max\_rotation          &                  0.078774 \\
-t1\_coherence\_index    &                  0.035553 \\
-t1\_dice\_distance      &                  0.034510 \\
-max\_translation       &                  0.032323 \\
-t1\_incoherence\_index  &                  0.030225 \\
-raw\_voxel\_size\_x      &                  0.000000 \\
-raw\_voxel\_size\_y      &                  0.000000 \\
-raw\_voxel\_size\_z      &                  0.000000 \\
-raw\_num\_directions    &                  0.000000 \\
-raw\_max\_b             &                  0.000000 \\
-raw\_dimension\_y       &                  0.000000 \\
-raw\_dimension\_z       &                  0.000000 \\
-t1\_voxel\_size\_x       &                  0.000000 \\
-t1\_dimension\_x        &                  0.000000 \\
-t1\_dimension\_y        &                  0.000000 \\
-t1\_dimension\_z        &                  0.000000 \\
-t1\_voxel\_size\_y       &                  0.000000 \\
-t1\_voxel\_size\_z       &                  0.000000 \\
-t1\_max\_b              &                  0.000000 \\
-t1\_num\_bad\_slices     &                  0.000000 \\
-t1\_num\_directions     &                  0.000000 \\
-raw\_dimension\_x       &                  0.000000 \\
-\bottomrule
-\end{tabular}
-\captionof{table}{%
-  XGB mean absolute shap values
-  \label{tab:xgb-shap}
-}
-
-{\nolinenumbers
-\begin{tabular}{|lr}
-\toprule
-{} &  mean abs shap \\
-feature               &                           \\
-\midrule
-raw\_neighbor\_corr     &                  0.767536 \\
-raw\_incoherence\_index &                  0.453897 \\
-raw\_num\_bad\_slices    &                  0.430422 \\
-t1\_coherence\_index    &                  0.382218 \\
-max\_rel\_translation   &                  0.363052 \\
-raw\_coherence\_index   &                  0.320438 \\
-t1\_neighbor\_corr      &                  0.250948 \\
-t1\_dice\_distance      &                  0.248104 \\
-t1\_incoherence\_index  &                  0.242348 \\
-max\_rel\_rotation      &                  0.135590 \\
-mean\_fd               &                  0.128642 \\
-max\_translation       &                  0.120815 \\
-max\_fd                &                  0.119739 \\
-max\_rotation          &                  0.101209 \\
-t1\_num\_bad\_slices     &                  0.007075 \\
-raw\_dimension\_y       &                  0.000000 \\
-raw\_dimension\_z       &                  0.000000 \\
-raw\_voxel\_size\_x      &                  0.000000 \\
-raw\_voxel\_size\_y      &                  0.000000 \\
-raw\_voxel\_size\_z      &                  0.000000 \\
-raw\_max\_b             &                  0.000000 \\
-t1\_voxel\_size\_x       &                  0.000000 \\
-raw\_num\_directions    &                  0.000000 \\
-t1\_dimension\_x        &                  0.000000 \\
-t1\_dimension\_y        &                  0.000000 \\
-t1\_dimension\_z        &                  0.000000 \\
-t1\_voxel\_size\_y       &                  0.000000 \\
-t1\_voxel\_size\_z       &                  0.000000 \\
-t1\_max\_b              &                  0.000000 \\
-t1\_num\_directions     &                  0.000000 \\
-raw\_dimension\_x       &                  0.000000 \\
-\bottomrule
-\end{tabular}
-\captionof{table}{%
-  XGB-q mean absolute shap values
-  \label{tab:xgb-q-shap}
-}
-}
-\end{multicols}
-
-\section{The \emph{Fibr} Community Science Consortium}
-\label{app:fibr-consortium}
-
-The following community raters
-provided $>3,000$ ratings each and elected to be included in the \emph{Fibr} Community
-Science Consortium as co-authors on this paper.
-
-\begin{longtable}{ll}
-\toprule
-                      Name &            ORCID iD \\
-\midrule
-\endfirsthead
-
-\toprule
-                      Name &            ORCID iD \\
-\midrule
-\endhead
-\midrule
-\multicolumn{2}{r}{{Continued on next page}} \\
-\midrule
-\endfoot
-
-\bottomrule
-\endlastfoot
-        Nicholas J. Abbott & 0000-0003-1466-0352 \\
-       John A. E. Anderson & 0000-0001-6511-1957 \\
-                 Gagana B. &                     \\
-           MaryLena Bleile & 0000-0002-0762-2596 \\
-       Peter S. Bloomfield & 0000-0002-8356-7701 \\
-              Vince Bottom &                     \\
-           Josiane Bourque &                     \\
-                Rory Boyle & 0000-0003-0787-6892 \\
-       Julia K. Brynildsen & 0000-0002-1627-6576 \\
-            Navona Calarco & 0000-0002-4391-0472 \\
-       Jaime J. Castrellon & 0000-0001-5834-7101 \\
-             Natasha Chaku & 0000-0003-0944-6159 \\
-                 Bosi Chen & 0000-0002-0117-9757 \\
-            Sidhant Chopra & 0000-0003-0866-3477 \\
-        Emily B. J. Coffey & 0000-0001-8249-7396 \\
-           Nigel Colenbier & 0000-0003-0928-2668 \\
-             Daniel J. Cox &                     \\
-     James Elliott Crippen &                     \\
-           Jacob J. Crouse & 0000-0002-3805-2936 \\
-            Szabolcs David & 0000-0003-0316-3895 \\
-        Benjamin De Leener & 0000-0002-1378-2756 \\
-             Gwyneth Delap &                     \\
-               Zhi-De Deng & 0000-0001-8925-0871 \\
-         Jules Roger Dugre & 0000-0003-4946-0350 \\
-             Anders Eklund & 0000-0001-7061-7995 \\
-             Kirsten Ellis & 0000-0002-7570-0939 \\
-              Arielle Ered & 0000-0002-8386-4423 \\
-              Harry Farmer & 0000-0002-3684-0605 \\
-          Joshua Faskowitz & 0000-0003-1814-7206 \\
-             Jody E. Finch & 0000-0003-2457-1345 \\
-         Guillaume Flandin & 0000-0003-0077-7859 \\
-      Matthew W. Flounders & 0000-0001-7014-4665 \\
-             Leon Fonville & 0000-0001-8874-7843 \\
-           Summer Frandsen &                     \\
-                 Dea Garic & 0000-0003-3595-4210 \\
-  Patricia Garrido-Vásquez & 0000-0002-9561-8983 \\
-Gabriel Gonzalez-Escamilla & 0000-0002-7209-1736 \\
-        Shannon E. Grogans & 0000-0003-0383-4601 \\
-          Mareike Grotheer & 0000-0002-8653-1157 \\
-          David C. Gruskin & 0000-0001-6504-191X \\
-         Guido I. Guberman &                     \\
-      Edda Briana Haggerty & 0000-0003-0597-7956 \\
-             Younghee Hahn &                     \\
-         Elizabeth H. Hall &                     \\
-           Jamie L. Hanson & 0000-0002-0469-8886 \\
-                Yann Harel & 0000-0002-8970-1983 \\
-      Bruno Hebling Vieira & 0000-0002-8770-7396 \\
-          Meike D. Hettwer & 0000-0002-7973-6752 \\
-              Corey Horien & 0000-0001-6738-1029 \\
-                 Fan Huang &                     \\
-          Zeeshan M. Huque &                     \\
-          Anthony R. James & 0000-0002-5297-2229 \\
-          Isabella Kahhale & 0000-0002-0963-9738 \\
-       Sarah L. H. Kamhout &                     \\
-         Arielle S. Keller & 0000-0003-4708-1672 \\
-    Harmandeep Singh Khera & 0000-0001-6840-4616 \\
-              Gregory Kiar & 0000-0001-8915-496X \\
-      Peter Alexander Kirk & 0000-0003-0786-3039 \\
-             Simon H. Kohl & 0000-0003-0949-6754 \\
-      Stephanie A. Korenic &                     \\
-             Cole Korponay & 0000-0003-2562-9617 \\
-       Alyssa K. Kozlowski &                     \\
-          Nevena Kraljevic & 0000-0003-0869-648X \\
-            Alberto Lazari & 0000-0002-8688-581X \\
-      Mackenzie J. Leavitt & 0000-0002-6100-3235 \\
-               Zhaolong Li & 0000-0003-2246-4116 \\
-           Giulia Liberati & 0000-0002-5684-4443 \\
-       Elizabeth S. Lorenc & 0000-0003-1311-726X \\
-   Annabelle Julina Lossin & 0000-0001-5921-1353 \\
-            Leon D. Lotter & 0000-0002-2337-6073 \\
-     David M. Lydon-Staley & 0000-0001-8702-3923 \\
-      Christopher R. Madan & 0000-0003-3228-6501 \\
-          Neville Magielse & 0000-0002-6777-4225 \\
-         Hilary A. Marusak & 0000-0002-0771-6795 \\
-              Julien Mayor &  0000-0001-9827-542 \\
-         Amanda L. McGowan & 0000-0003-3422-0135 \\
-           Kahini P. Mehta &                     \\
-        Steven Lee Meisler & 0000-0002-8888-1572 \\
-         Cleanthis Michael & 0000-0002-5300-473X \\
-     Mackenzie E. Mitchell & 0000-0002-0225-6320 \\
-     Simon Morand-Beaulieu & 0000-0002-5880-3688 \\
-        Benjamin T. Newman & 0000-0002-0668-2853 \\
-          Jared A. Nielsen & 0000-0002-2717-193X \\
-           Shane M. O'Mara &                     \\
-                 Amar Ojha & 0000-0002-1038-0225 \\
-                Adam Omary &                     \\
-            Evren Özarslan & 0000-0003-0859-1311 \\
-             Linden Parkes & 0000-0002-9329-7207 \\
-         Madeline Peterson &                     \\
-         Adam Robert Pines &                     \\
-            Claudia Pisanu & 0000-0002-9151-4319 \\
-              Ryan R. Rich & 0000-0001-9495-3184 \\
-           Ashish K. Sahoo & 0000-0003-1815-6655 \\
-              Amjad Samara & 0000-0002-6001-7395 \\
-               Farah Sayed &                     \\
-  Jonathan Thore Schneider & 0000-0002-1925-6669 \\
-        Lindsay S. Shaffer & 0000-0002-0642-1717 \\
-       Ekaterina Shatalina & 0000-0001-8900-0792 \\
-              Sara A. Sims & 0000-0001-7107-1891 \\
-           Skyler Sinclair & 0000-0003-3010-6431 \\
-               Jae W. Song & 0000-0002-3127-6427 \\
-Griffin Stockton Hogrogian & 0000-0003-2877-078X \\
-       Christian K. Tamnes & 0000-0002-9191-6764 \\
-          Ursula A. Tooley & 0000-0001-6377-3885 \\
-          Vaibhav Tripathi &                     \\
-           Hamid B. Turker & 0000-0002-2670-4036 \\
-         Sofie Louise Valk & 0000-0003-2998-6849 \\
-           Matthew B. Wall & 0000-0002-0493-6274 \\
-         Cheryl K. Walther &                     \\
-               Yuchao Wang & 0000-0001-9871-3006 \\
-            Bertil Wegmann & 0000-0003-2193-6003 \\
-             Thomas Welton & 0000-0002-9503-2093 \\
-           Alex I. Wiesman & 0000-0003-0917-1570 \\
-         Andrew G. Wiesman &                     \\
-              Mark Wiesman &                     \\
-           Drew E. Winters & 0000-0002-0701-9658 \\
-                Ruiyi Yuan &                     \\
-         Sadie J. Zacharek & 0000-0001-8770-4614 \\
-              Chris Zajner & 0000-0002-0204-6497 \\
-             Ilya Zakharov & 0000-0001-7207-9641 \\
-       Gianpaolo Zammarchi & 0000-0002-9733-380X \\
-                 Dale Zhou & 0000-0001-9240-1327 \\
-        Benjamin Zimmerman & 0000-0003-2570-8198 \\
-                Kurt Zoner &                     \\
-\end{longtable}
-
-\section{Deep learning model architectures and loss curves}
-\label{app:deep-learning-architectures}
-
-Both the CNN-i and CNN-i+q models were implemented in Tensorflow 2 \cite{tensorflow} using the Keras
-module \cite{keras}. The image processing part of the model architecture was
-identical for both models: a modification of an existing 3D CNN
-\cite{zunair2020-bs} previously applied to assess tuberculosis severity
-\cite{dicente2019clef}. It accepts a 3D volume as input with four channels
-\begin{enumerate*}[%
-    label=(\roman*),%
-    before=\unskip{: },%
-    itemjoin={{, }},%
-    itemjoin*={{ and }}]
-    \item the $b=0$ reference volume
-    \item DEC-FA in the $x$-direction
-    \item DEC-FA in the $y$-direction
-    \item DEC-FA in the $z$-direction.
-\end{enumerate*}
-The \emph{QSIPrep}'s automated QC metrics were included as an additional fifth
-channel. The CNN-i+q model architecture is summarized in
-Figure~\ref{fig:dl-architecture}. Upon input, the CNN-i+q model extracts the
-imaging channels and passes them through the CNN architecture. The remaining data quality
-metrics channel is flattened and passed ``around'' the CNN architecture and
-concatenated with the output of the convolutional layers. This concatenated
-output is then passed through a fully-connected layer to produce a single
-output, the probability of passing QC. This architecture has \num{1438783} trainable
-parameters.
-
-\begin{figure}[tbp]
-    \begin{subfigure}[t]{0.6\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/model.pdf}
-    \caption{Slicing and combining the input channels}
-    \label{fig:dl-architecture:complete}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.4\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/image_model.pdf}
-    \caption{CNN architecture}
-    \label{fig:dl-architecture:cnn}
-    \end{subfigure}
-    \caption{%
-        {\bf Deep learning model architecture}:
-        \textbf{(a)} The CNN-i+q model accepts multichannel input that combined
-        four imaging channels with a fifth channel containing 31 \emph{QSIPrep}
-        automated data quality metrics. The imaging channels are separated from the data quality
-        channel using \texttt{Lambda} layers. The imaging channels are passed
-        through a CNN \textbf{(b)}, the output of which is concatenated with the
-        data quality metrics, batch normalized and passed through two fully-connected (FC)
-        layers, with rectified linear unit (ReLu) activation functions and with
-        512 and 128 units respectively. Each FC layer is followed by a dropout
-        layer which drops 40\% of the input units. The final layer contains a
-        single unit with a sigmoid activation function and outputs the
-        probability of passing QC.
-        %
-        \textbf{(b)} The CNN portion of the model passes the imaging input
-        through four convolutional blocks. Each block consists of a 3D
-        convolutional layer with a kernel size of 3 and a ReLu activation, a 3D
-        max pooling layer with a pool size of 2, and a batch normalization layer
-        with Tensorflow's default parameters. The number of filters in the
-        convolutional layers in each block are 64, 64, 128, and 256 respectively.
-        The output of the final block is passed through a 3D global average
-        pooling layer with Tensorflow's default parameters.
-    }
-    \label{fig:dl-architecture}
-\end{figure}
-
-To
-estimate the variability in model training, we trained ten separate models using
-different training and validation splits of the data. The gold standard dataset
-was not included in any of these splits and was reserved for reporting final
-model performance. Models were optimized for binary crossentropy loss using the
-Adam optimizer \cite{kingma2017adam} with an initial learning rate of 0.0001. We
-reduced the learning rate by a factor of 0.5 when the validation loss plateaued
-for more than two epochs. We also stopped training when the validation loss
-failed to improve by more than 0.001 for twenty consecutive epochs. These two
-adjustments were made using the \texttt{ReduceLROnPlateau} and
-\texttt{EarlyStopping} callbacks in Tensorflow 2 \cite{tensorflow} respectively.
-The training and validation loss curves for both the CNN-i and CNN-i+q models
-are depicted in Figure~\ref{fig:dl-loss}. While the CNN-i+q model achieved
-better validation loss, it did not outperform the CNN-i model on the held out
-gold standard dataset.
-
-\begin{figure}[tbp]
-    \hfill
-    \includegraphics[width=0.45\linewidth]{deep-learning-qc/dl_learning_curve_with_qc.pdf}
-    \hfill
-    \includegraphics[width=0.45\linewidth]{deep-learning-qc/dl_learning_curve_without_qc.pdf}
-    \hfill
-    \caption[Deep learning model loss curves]{%
-        {\bf Deep learning model loss curves}:
-        The binary cross-entropy loss (top), accuracy (middle), and ROC-AUC
-        (bottom) for \textbf{(a)} the CNN-i+q model and \textbf{(a)} the CNN-i
-        model. Model performance typically plateaued after twenty epochs but was
-        allowed continue until meeting the early stopping criterion. The error
-        bands represent a bootstrapped 95\% confidence interval.
-    }
-    \label{fig:dl-loss}
-\end{figure}
-
-\section{Bundle profiles}
-\label{app:profiles}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-We plot mean diffusivity tract profiles (MD, Figure~\ref{fig:qc-profiles:md}) and fractional anisotropy profiles (FA, Figure~\ref{fig:qc-profiles:fa}) grouped
-into four QC bins along the length of twenty-four bundles. While some bundles,
-such as the cingulum cingulate (CGC) and the inferior longitudinal fasciculus
-(ILF), appear insensitive to QC score, others, such as the uncinate (UNC) and
-the orbital portion of the corpus callosum, exhibit strong differences between
-QC bins. In most bundles, low QC scores tend to flatten the MD profile, indicating that MD appears artifactually homogeneous across the bundle.
-
-\begin{figure}[tbp]
-    \centering
-    \includegraphics[width=\linewidth]{bundle-profiles/qc-bins-dki-md.pdf}
-    \caption{%
-        {\bf MD bundle profiles show large QC group differences}:
-        MD profiles binned by QC score in twenty-four major while matter
-        bundles.  The $x$-axis represents distance along the length of the fiber
-        bundle.
-        %
-        The left and right uncinate bundles were the most sensitive
-        to QC score. Generally, QC score tended to flatten bundle profiles.
-        %
-        Error bands represent bootstrapped 95\% confidence intervals. Bundle
-        abbreviations for lateralized bundles contain a trailing ``L'' or ``R''
-        indicating the hemisphere. Bundle abbreviations:
-        inferior fronto-occipital fasciculus (IFO),
-        uncinate (UNC),
-        thalamic radiation (ATR),
-        corticospinal (CST),
-        arcuate (ARC),
-        superior longitudinal fasciculus (SLF).
-        inferior longitudinal fasciculus (ILF),
-        cingulum cingulate (CGC),
-        orbital corpus callosum (Orbital),
-        anterior frontal corpus callosum (AntFrontal),
-        superior frontal corpus callosum (SupFrontal),
-        motor corpus callosum (Motor),
-        superior parietal corpus callosum (SupParietal),
-        temporal corpus callosum (Temporal),
-        post-parietal corpus callosum (PostParietal), and
-        occipital corpus callosum (Occipital).
-    }
-    \label{fig:qc-profiles:md}
-\end{figure}
-\begin{figure}[tbp]
-    \centering
-    \includegraphics[width=\linewidth]{bundle-profiles/qc-bins-dki-fa.pdf}
-    \caption[FA bundle profiles]{%
-        {\bf FA bundle profiles binned by QC score}:
-        FA profiles binned by QC score in twenty-four major while matter
-        bundles. The $x$-axis represents distance along the length of the fiber
-        bundle. Error bands represent bootstrapped 95\% confidence intervals.
-        Bundle abbreviations are as in Figure~\ref{fig:qc-profiles:md}
-    }
-    \label{fig:qc-profiles:fa}
-\end{figure}
-
 
 \end{document}
