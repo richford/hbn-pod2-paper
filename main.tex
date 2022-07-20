@@ -804,18 +804,10 @@ output, the probability of passing QC. This architecture has \num{1438783} train
 parameters.
 
 \begin{figure}[tbp]
-    \begin{subfigure}[t]{0.6\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/model.pdf}
-    \caption{Slicing and combining the input channels}
-    \label{fig:dl-architecture:complete}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.4\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/image_model.pdf}
-    \caption{CNN architecture}
-    \label{fig:dl-architecture:cnn}
-    \end{subfigure}
+    {\phantomsubcaption\label{fig:dl-architecture:complete}}
+    {\phantomsubcaption\label{fig:dl-architecture:cnn}}
+    \includegraphics[width=\linewidth]{deep-learning-qc/model_combined.pdf}
     \caption{%
         {\bf Deep learning model architecture}:
         \textbf{(a)} The CNN-i+q model accepts multichannel input that combined
