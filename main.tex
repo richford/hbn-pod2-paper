@@ -1247,27 +1247,12 @@ false positive case, the network was confused enough that it treated voxels that
 are outside of the brain to be as informative as voxels in the major white matter bundles.
 
 \begin{figure}[tbp]
+    {\phantomsubcaption\label{fig:ig:true-pos}}
+    {\phantomsubcaption\label{fig:ig:true-neg}}
+    {\phantomsubcaption\label{fig:ig:false-pos}}
+    {\phantomsubcaption\label{fig:ig:false-neg}}
     \centering
-    \adjustbox{minipage=3.5em}{\subcaption{true positive}\label{fig:ig:true-pos}}%
-    \begin{subfigure}{\dimexpr\linewidth-3.5em\relax}
-    \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-true-pos.pdf}
-    \end{subfigure}
-    \adjustbox{minipage=3.5em}{\subcaption{true negative}\label{fig:ig:true-neg}}%
-    \begin{subfigure}{\dimexpr\linewidth-3.5em\relax}
-    \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-true-neg.pdf}
-    \end{subfigure}
-    \adjustbox{minipage=3.5em}{\subcaption{false positive}\label{fig:ig:false-pos}}%
-    \begin{subfigure}{\dimexpr\linewidth-3.5em\relax}
-    \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-false-pos.pdf}
-    \end{subfigure}
-    \adjustbox{minipage=3.5em}{\subcaption{false negative}\label{fig:ig:false-neg}}%
-    \begin{subfigure}{\dimexpr\linewidth-3.5em\relax}
-    \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/attribution-maps-false-neg.pdf}
-    \end{subfigure}
+    \includegraphics[width=\linewidth]{deep-learning-qc/attribution_maps.pdf}
     \caption{%
         {\bf Integrated gradients attribution maps for the deep learning classifier}:
         Each column depicts a different channel of the input tensor: the $b=0$
