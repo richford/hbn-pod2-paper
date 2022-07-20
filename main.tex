@@ -582,14 +582,7 @@ One can think of the gradient boosting model as assigning more weight to \emph{F
     {\phantomsubcaption\label{fig:fibr-qc:scatter:fibr}}
     {\phantomsubcaption\label{fig:fibr-qc:scatter:xgb}}
     {\phantomsubcaption\label{fig:fibr-qc:roc}}
-    \begin{subfigure}{.63\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{community-qc/fibr-rating-scatter-plot.pdf}
-    \end{subfigure}
-    \begin{subfigure}{.37\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{community-qc/xgb-roc-curve.pdf}
-    \end{subfigure}
+    \includegraphics[width=\linewidth]{community-qc/community_qc.pdf}
     \caption{%
         {\bf Community science predictions of the expert ratings}:
         Scatter plots showing the relationship between mean expert rating and
@@ -850,11 +843,8 @@ better validation loss, it did not outperform the CNN-i model on the held out
 gold standard dataset.
 
 \begin{figure}[tbp]
-    \hfill
-    \includegraphics[width=0.45\linewidth]{deep-learning-qc/dl_learning_curve_with_qc.pdf}
-    \hfill
-    \includegraphics[width=0.45\linewidth]{deep-learning-qc/dl_learning_curve_without_qc.pdf}
-    \hfill
+    \centering
+    \includegraphics[width=\linewidth]{deep-learning-qc/dl_learning_curves.pdf}
     \caption[Deep learning model loss curves]{%
         {\bf Deep learning model loss curves}:
         The binary cross-entropy loss (top), accuracy (middle), and ROC-AUC
