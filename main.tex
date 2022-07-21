@@ -20,14 +20,14 @@
 \usepackage{hyperref}
 
 \usepackage{svg}
-\def\orcid#1{\kern .08em\href{https://orcid.org/#1}{\includesvg[keepaspectratio,width=0.95em]{orcid.svg}}}
+\def\orcid#1{\kern .08em\href{https://orcid.org/#1}{\includegraphics[keepaspectratio,width=0.95em]{orcid.pdf}}}
 \def\noorcid{\hspace{0.95em}}
 
 \usepackage{xcolor}
 \usepackage{manyfoot}
 \DeclareNewFootnote{A}[roman]
 % Use "final" option in next line to suppress change markup
-\usepackage[commentmarkup=footnote]{changes}
+\usepackage[final,commentmarkup=footnote]{changes}
 \setcommentmarkup{%
 \footnoteA{\textcolor{violet}{#1}}
 }
