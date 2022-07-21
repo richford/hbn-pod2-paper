@@ -501,7 +501,7 @@ machine learning model that predicts the expert scores.
     {\phantomsubcaption\label{fig:expert-qc:scatter:outliers}}
     {\phantomsubcaption\label{fig:expert-qc:irr}}
     \centering
-    \includegraphics[width=\linewidth]{community-qc/expert_qc.pdf}
+    \includegraphics[width=\linewidth]{expert_qc.pdf}
     \caption{%
         {\bf Expert QC results}:
         Six dMRI experts rated a subset of \num{200} participants.  Experts agreed
@@ -582,7 +582,7 @@ One can think of the gradient boosting model as assigning more weight to \emph{F
     {\phantomsubcaption\label{fig:fibr-qc:scatter:fibr}}
     {\phantomsubcaption\label{fig:fibr-qc:scatter:xgb}}
     {\phantomsubcaption\label{fig:fibr-qc:roc}}
-    \includegraphics[width=\linewidth]{community-qc/community_qc.pdf}
+    \includegraphics[width=\linewidth]{community_qc.pdf}
     \caption{%
         {\bf Community science predictions of the expert ratings}:
         Scatter plots showing the relationship between mean expert rating and
@@ -800,7 +800,7 @@ parameters.
     \centering
     {\phantomsubcaption\label{fig:dl-architecture:complete}}
     {\phantomsubcaption\label{fig:dl-architecture:cnn}}
-    \includegraphics[width=\linewidth]{deep-learning-qc/model_combined.pdf}
+    \includegraphics[width=\linewidth]{model_combined.pdf}
     \caption{%
         {\bf Deep learning model architecture}:
         \textbf{(a)} The CNN-i+q model accepts multichannel input that combined
@@ -844,7 +844,7 @@ gold standard dataset.
 
 \begin{figure}[tbp]
     \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/dl_learning_curves.pdf}
+    \includegraphics[width=\linewidth]{dl_learning_curves.pdf}
     \caption[Deep learning model loss curves]{%
         {\bf Deep learning model loss curves}:
         The binary cross-entropy loss (top), accuracy (middle), and ROC-AUC
@@ -869,7 +869,7 @@ that uses \emph{Fibr} scores in addition to the \emph{QSIPrep} data quality metr
     {\phantomsubcaption\label{fig:dl-qc:hist:sex}}
     {\phantomsubcaption\label{fig:dl-qc:hist:site}}
     \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/deep_learning_qc.pdf}
+    \includegraphics[width=\linewidth]{deep_learning_qc.pdf}
     \caption{%
         {\bf Deep learning QC scores}:
         \textbf{(a)} ROC curves for two deep learning models trained on imaging data: one trained with
@@ -927,7 +927,7 @@ QC bins. In most bundles, low QC scores tend to flatten the MD profile, indicati
 
 \begin{figure}[tbp]
     \centering
-    \includegraphics[width=\linewidth]{bundle-profiles/qc-bins-dki-md.pdf}
+    \includegraphics[width=\linewidth]{qc-bins-dki-md.pdf}
     \caption{%
         {\bf MD bundle profiles show large QC group differences}:
         MD profiles binned by QC score in twenty-four major while matter
@@ -961,7 +961,7 @@ QC bins. In most bundles, low QC scores tend to flatten the MD profile, indicati
 \end{figure}
 \begin{figure}[tbp]
     \centering
-    \includegraphics[width=\linewidth]{bundle-profiles/qc-bins-dki-fa.pdf}
+    \includegraphics[width=\linewidth]{qc-bins-dki-fa.pdf}
     \caption[FA bundle profiles]{%
         {\bf FA bundle profiles binned by QC score}:
         FA profiles binned by QC score in twenty-four major while matter
@@ -1005,7 +1005,7 @@ along with the corresponding QC metrics:
     {\phantomsubcaption\label{fig:metric-dist:ndc-translation}}
     {\phantomsubcaption\label{fig:metric-dist:slices-translation}}
     \centering
-    \includegraphics[width=\linewidth]{bundle-profiles/qsiprep-metric-distributions.pdf}
+    \includegraphics[width=\linewidth]{qsiprep-metric-distributions.pdf}
     \caption{%
         {\bf Demographic and \emph{QSIPrep} quality metric distributions}:
         \textbf{(a)} HBN age distributions by sex for each scanning site. Dashed lines
@@ -1232,7 +1232,7 @@ are outside of the brain to be as informative as voxels in the major white matte
     {\phantomsubcaption\label{fig:ig:false-pos}}
     {\phantomsubcaption\label{fig:ig:false-neg}}
     \centering
-    \includegraphics[width=\linewidth]{deep-learning-qc/attribution_maps.pdf}
+    \includegraphics[width=\linewidth]{attribution_maps.pdf}
     \caption{%
         {\bf Integrated gradients attribution maps for the deep learning classifier}:
         Each column depicts a different channel of the input tensor: the $b=0$
@@ -1280,7 +1280,7 @@ ROC-AUC for generalization is uniformly high for both the XGB-q and the CNN-i mo
     {\phantomsubcaption\label{fig:site-generalization:dl}}
     {\phantomsubcaption\label{fig:site-generalization:xgb}}
     \centering
-    \includegraphics[width=\linewidth]{site-generalization/site_generalization.pdf}
+    \includegraphics[width=\linewidth]{site_generalization.pdf}
     \caption{%
         {\bf Generalization of QC scores to unseen sites}: In each experiment, CNN-i (\textbf{a}) and XGB-q (\textbf{b}) models were trained with some sites held out and evaluated only on data from these held out sites. Model performance is quantified as ROC-AUC (blue), accuracy (orange) and balanced accuracy (green). For XGB-q, the targets are the expert ratings on data from the held out site. For CNN-i, performance is scored against XGB scores (as used before; test set in filled circles), or expert ratings on the data from the held out site (report set in crosses). Summary statistics for this plot are listed in Table~\ref{tab:site-generalization}.
     }
@@ -1338,7 +1338,7 @@ prediction model (Figure~\ref{fig:age-prediction}).
 
 \begin{figure}[tbp]
     \centering
-    \includegraphics[width=\linewidth]{age-prediction/qc_sweep.pdf}
+    \includegraphics[width=\linewidth]{qc_sweep.pdf}
     \caption{%
         {\bf Imposing a QC cutoff improves age prediction}:
         Cross validated $R^2$ scores (left axis, blue dots) from an age
