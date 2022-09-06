@@ -13,6 +13,7 @@
 \usepackage{longtable}
 \usepackage{multirow}
 \usepackage{multicol}
+\usepackage{colortbl}
 \usepackage{xargs}  % Use more than one optional parameter in a new commands
 \usepackage[colorinlistoftodos,prependcaption]{todonotes}
 \PassOptionsToPackage{hyphens}{url}
@@ -45,7 +46,7 @@
 
 \linenumbers
 
-\title{An open, analysis-ready, and quality controlled resource for pediatric brain white-matter research}
+\title{An analysis-ready and quality controlled resource for pediatric brain white-matter research}
 
 \author[1,$\dagger$,*]{Adam Richie-Halford}
 \author[2,3,$\dagger$,*]{Matthew Cieslak}
@@ -60,7 +61,7 @@
 \author[5]{Ethan Roy}
 \author[2,3]{Valerie J. Sydnor}
 \author[1,5]{Jason Yeatman}
-\author[12]{The Fibr Community Science Consortium}
+\author[$\diamondsuit$]{The Fibr Community Science Consortium}
 \author[2,3,$\ddagger$]{Theodore D. Satterthwaite}
 \author[10,11,$\ddagger$]{Ariel Rokem}
 
@@ -75,12 +76,12 @@
 \affil[9]{University of Zurich, Department of Child and Adolescent Psychiatry and Psychotherapy, University Hospital of Psychiatry Zurich, Zurich, 8032, Switzerland}
 \affil[10]{University of Washington, Department of Psychology, Seattle, Washington, 98195, USA}
 \affil[11]{University of Washington, eScience Institute, Seattle, Washington, 98195, USA}
-\affil[12]{The Fibr Community Science Consortium}
 
 \affil[*]{corresponding authors: Adam Richie-Halford (adamrh@stanford.edu), Matthew Cieslak (matthew.cieslak@pennmedicine.upenn.edu)}
 
 \affil[$\dagger$]{These authors contributed equally to this work}
 \affil[$\ddagger$]{These authors also contributed equally to this work}
+\affil[$\diamondsuit$]{A full list of members appears in the Author Contributions.}
 
 
 \begin{abstract}
@@ -164,13 +165,13 @@ performance. In previous work, we demonstrated that deep learning can accurately
 emulate expert QC of T1-weighted (T1w) anatomical brain images
 \cite{keshavan2019-er}. To obtain a large enough training dataset of T1w images
 in our prior study, we deployed a community science tool
-\footnote{%
-    While the term ``citizen science'' evokes a sense of civic duty in
-    scientific engagement, it can also imply a barrier for community members who
-    want to contribute to science but may not be citizens of a particular
-    country. In this manuscript we use the more modern term ``community
-    science.''
-}
+% \footnote{%
+%     While the term ``citizen science'' evokes a sense of civic duty in
+%     scientific engagement, it can also imply a barrier for community members who
+%     want to contribute to science but may not be citizens of a particular
+%     country. In this manuscript we use the more modern term ``community
+%     science.''
+% }
 that collected quality
 control scores of parts of the dataset from volunteers through a web application.
 The scores were then calibrated using a gold standard expert-scored subset of
@@ -433,7 +434,7 @@ dataset.
 
 We then developed \emph{dmriprep-viewer},
 a dMRI data viewer and QC rating web application to display \emph{QSIPrep}
-outputs and collect expert ratings \cite{richie-halford2022-viewer}.
+outputs and collect expert ratings \cite{richiehalford2022nirv}.
 The viewer
 ingests \emph{QSIPrep} outputs and generates a browser-based interface for
 expert QC. It provides a study overview displaying the distributions of
@@ -543,10 +544,10 @@ raters provided $>3,000$ ratings each and are included in the \emph{Fibr} Commun
 Science Consortium as co-authors on this paper \cite{Ward-Fear2020-zq}.
 
 \comment{This paragraph and Figure~\ref{fig:web-apps} were previously in an appendix. We have moved them to the main text at the editor's request.}
-We created quality control web applications for both community raters and expert raters. These apps are publicly accessible at \url{https://fibr.dev}, for the community science instrument and at \url{http://www.nipreps.org/dmriprep-viewer/} for the expert rating instrument. We encourage readers to try these web applications on their own but have included screenshots and a summary of the interfaces in Figure~\ref{fig:web-apps}.
+We created quality control web applications for both community raters and expert raters. These apps are publicly accessible at \url{https://fibr.dev} and at \url{http://www.nipreps.org/dmriprep-viewer/}, for the community science instrument and the expert rating instrument, respectively. We encourage readers to try these web applications on their own but have included screenshots and a summary of the interfaces in Figure~\ref{fig:web-apps}.
 
 \begin{figure}[tbp]
-    \includegraphics[width=0.95\textwidth]{hbn-pod2-qc-instruments.pdf}
+    \includegraphics[width=0.9185\textwidth]{hbn-pod2-qc-instruments.pdf}
     \caption{
         {\bf HBN-POD2 quality control instruments}:
         {\bf (a)} The user interface for community science QC app \emph{Fibr}. After a
@@ -906,10 +907,7 @@ specifying a generating model, the CNN-i score is assumed.
 Figure~\ref{fig:dl-qc} depicts the distribution of these QC scores by age
 (Figure~\ref{fig:dl-qc:joint}), sex (Figure~\ref{fig:dl-qc:hist:sex}), and scanning site
 (Figure~\ref{fig:dl-qc:hist:site}). QC distributions are similar for each scan site
-and for male and female participants \footnote{%
-    Responses for the sex variable in HBN phenotypic data are limited to
-    ``male'' and ``female.''
-}.
+and for male and female participants. Responses for the sex variable in HBN phenotypic data are limited to ``male'' and ``female.''
 
 \subsubsection*{Tractometry}
 
@@ -979,9 +977,9 @@ QC bins. In most bundles, low QC scores tend to flatten the MD profile, indicati
 \subsection*{Curated imaging data}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Curated BIDS data and their corresponding \emph{QSIPrep} outputs are provided in the FCP-INDI Amazon Web Services (AWS) S3 bucket \added[comment={We added a data citation for the main dataset.}]{\cite{hbnpod2data}} as indicated in Table~\ref{tab:data-records}.
-This public resource can be accessed by anyone using standard S3 access tools.
-The processed diffusion derivatives are \href{
+Curated BIDS data and their corresponding \emph{QSIPrep} outputs are public resources that can be accessed by anyone using DataLad\cite{datalad} or standard Amazon Simple Storage Service (S3) access tools. The curated data are available in the FCP-INDI S3 bucket and as a DataLad dataset\cite{hbnpod2data} as indicated in Table~\ref{tab:data-records}.
+Likewise, the \emph{QSIPrep} derivatives are available on FCP-INDI, as a standalone DataLad dataset\cite{hbnpod2qsiprepdata}, and as a derivative subdataset in the primary HBN-POD2 DataLad dataset\cite{hbnpod2data}.
+These processed diffusion derivatives are \href{
 https://qsiprep.readthedocs.io/en/latest/preprocessing.html#outputs-of-qsiprep}{
 standard \emph{QSIPrep} outputs}, which contain preprocessed imaging data
 along with the corresponding QC metrics:
@@ -1027,15 +1025,15 @@ along with the corresponding QC metrics:
     \label{fig:metric-dist}
 \end{figure}
 
-\begin{longtable}{p{4.85cm}p{2.6cm}p{9cm}}
+\begin{longtable}{p{4.0cm}p{2.9cm}p{9.3cm}}
 \caption{HBN-POD2 data records} \label{tab:data-records} \\
 \toprule
-    Data Resource & Repository & Location \\
+    Data Resource & Repositories & Location \\
 \midrule
 \endfirsthead
 
 \toprule
-    Data Resource & Repository & Location \\
+    Data Resource & Repositories & Location \\
 \midrule
 \endhead
 \midrule
@@ -1045,61 +1043,108 @@ along with the corresponding QC metrics:
 
 \hline
 \hline
-\multicolumn{3}{l}{{$\dagger$ FCP-INDI: all paths are relative to the root \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/} \cite{hbnpod2data}}} \\
-\multicolumn{3}{l}{{* participants.tsv: located on FCP-INDI at relative path \texttt{derivatives/qsiprep/participants.tsv}}} \\
-\multicolumn{3}{l}{{$\ddagger$ OSF: DOI \href{https://doi.org/10.17605/OSF.IO/8CY32}{10.17605/OSF.IO/8CY32}, all paths are relative to the root \texttt{HBN-POD2 QC/OSF Storage}}} \\
+\multicolumn{3}{l}{{$\dagger$ FCP-INDI: all paths are relative to the root \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/}}} \\
+%
+\multicolumn{3}{l}{{$\diamondsuit$ HBN-POD2 DataLad dataset\cite{hbnpod2data}: use \texttt{datalad clone git@github.com:nrdg/HBN-POD2.git}.}} \\
+\multicolumn{3}{l}{{\hspace{5em}All paths are relative to the repository root.}} \\
+%
+\multicolumn{3}{l}{{$\Join$ \emph{QSIPrep} derivatives dataset\cite{hbnpod2qsiprepdata}:}} \\
+\multicolumn{3}{l}{{\hspace{5em}use \texttt{datalad clone git@github.com:nrdg/HBN-POD2-derivatives-qsiprep.git}.}} \\
+\multicolumn{3}{l}{{\hspace{5em}All paths are relative to the repository root.}} \\
+%
+\multicolumn{3}{l}{{$\square$ \emph{AFQ} derivatives dataset\cite{hbnpod2afqdata}:}} \\
+\multicolumn{3}{l}{{\hspace{5em}use \texttt{datalad clone git@github.com:nrdg/HBN-POD2-derivatives-afq.git}.}} \\
+\multicolumn{3}{l}{{\hspace{5em}All paths are relative to the repository root.}} \\
+\multicolumn{3}{l}{{* participants.tsv: located on FCP-INDI and in the HBN-POD2 DataLad dataset at relative path}} \\
+\multicolumn{3}{l}{{\hspace{5em}\texttt{derivatives/qsiprep/participants.tsv}, and in the HBN-POD2 \emph{QSIPrep} derivatives DataLad}} \\
+\multicolumn{3}{l}{{\hspace{5em}dataset at \texttt{participants.tsv}}} \\
+\multicolumn{3}{l}{{$\ddagger$ HBN-POD2 OSF Project\cite{hbn-pod2-osf}: all paths are relative to the root \texttt{HBN-POD2 QC/OSF Storage}}} \\
 \bottomrule
 \endlastfoot
     BIDS Curated Imaging
         & FCP-INDI\textsuperscript{$\dagger$}
         & \texttt{/} \\
+        & DataLad dataset\textsuperscript{$\diamondsuit$}
+        & \texttt{/} \\
+    \hline
     \emph{QSIPrep} preprocessed DWI
         & FCP-INDI\textsuperscript{$\dagger$}
         & \texttt{/derivatives/qsiprep/} \\
-    CuBIDS variant assignment
+        & DataLad dataset\textsuperscript{$\diamondsuit$}
+        & \texttt{/derivatives/qsiprep/} \\
+        & \emph{QSIPrep} dataset\textsuperscript{$\Join$}
+        & \texttt{/} \\
+    \hline
+    CuBIDS variants
         & \texttt{participants}*
         & \texttt{site\_variant} column  \\
+    \hline
     Raw expert ratings
         & OSF\textsuperscript{$\ddagger$}
         & \texttt{/expert-qc/} \\
+    \hline
     Expert QC scores
         & \texttt{participants}*
         & \texttt{expert\_qc\_score} column \\
+    \hline
     Raw community ratings
         & OSF\textsuperscript{$\ddagger$}
         & \texttt{/community-qc/} \\
+    \hline
     Community QC scores
         & \texttt{participants}*
         & \texttt{xgb\_qc\_score} column \\
+    \hline
     QSIQC QC scores
         & \texttt{participants}*
         & \texttt{xgb\_qsiprep\_qc\_score} column \\
-    QSIQC quality rating model
+    \hline
+    QSIQC model
         & GitHub
         & DOI: \href{https://doi.org/10.5281/zenodo.5949269}{10.5281/zenodo.5949269} \\
+    \hline
     Deep learning input images
         & FCP-INDI\textsuperscript{$\dagger$}
         & \texttt{/derivatives/qsiprep/derivatives/dlqc/} \\
-    Deep learning model checkpoints
+    \hline
+    Deep learning models
         & OSF\textsuperscript{$\ddagger$}
         & \texttt{/deep-learning-qc/saved-models} \\
+    \hline
     Deep learning QC scores
         & \texttt{participants}*
         & \texttt{dl\_qc\_score} column \\
-    Deep learning attribution maps
+    \hline
+    Deep learning attributions
         & OSF\textsuperscript{$\ddagger$}
         & \texttt{/deep-learning-qc/integrated-gradients} \\
-    pyAFQ tractography \& tractometry
+    \hline
+    \multirow{2}{4.0cm}{AFQ tractography \& tractometry}
         & FCP-INDI\textsuperscript{$\dagger$}
         & \texttt{/derivatives/afq/} \\
-    \added{pyAFQ streamline counts}
+        & DataLad dataset\textsuperscript{$\diamondsuit$}
+        & \texttt{/derivatives/afq/} \\
+        & \emph{AFQ} dataset\textsuperscript{$\square$}
+        & \texttt{/} \\
+    \hline
+    \added{AFQ streamline counts}
         &
         FCP-INDI\textsuperscript{$\dagger$}
         &
         \texttt{/derivatives/afq/participants.tsv} \\
-    pyAFQ tract profiles
+        & DataLad dataset\textsuperscript{$\diamondsuit$}
+        &
+        \texttt{/derivatives/afq/participants.tsv} \\
+        & \emph{AFQ} dataset\textsuperscript{$\square$}
+        & \texttt{/participants.tsv} \\
+    \hline
+    AFQ tract profiles
         & FCP-INDI\textsuperscript{$\dagger$}
         & \texttt{/derivatives/afq/combined\_tract\_profiles.csv} \\
+        & DataLad dataset\textsuperscript{$\diamondsuit$}
+        & \texttt{/derivatives/afq/combined\_tract\_profiles.csv} \\
+        & \emph{AFQ} dataset\textsuperscript{$\square$}
+        & \texttt{/combined\_tract\_profiles.csv} \\
 \end{longtable}
 
 \subsection*{CuBIDS Variants
@@ -1158,7 +1203,7 @@ Finally, the CNN-i+q model's positive class probabilities are available in the `
 \subsection*{Tractography and tractometry}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The outputs of the pyAFQ tractometry pipeline, including tractography and tract profiles, are provided in a BIDS derivative directory on FCP-INDI as specified in Table~\ref{tab:data-records}. In particular the FA and MD tract profiles for each participants are available on S3 at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/derivatives/afq/combined_tract_profiles.csv}.
+The outputs of the pyAFQ tractometry pipeline, including tractography and tract profiles, are provided as specified in Table~ref{tab:data-records}: in a BIDS derivative directory in the FCP-INDI AWS S3 bucket, as a Datalad dataset\cite{hbnpod2afqdata} and as a DataLad subdataset in the primary HBN-POD2 dataset\cite{hbnpod2data}. In particular the FA and MD tract profiles for each participants are available on S3 at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/derivatives/afq/combined_tract_profiles.csv}.
 \added[comment=We added information on the streamline counts file in response to Reviewer~\#2]{Streamline counts for each of the bundles are available at \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/derivatives/afq/participants.tsv}}
 
 For each subject, intermediate data derivatives of the pyAFQ pipeline are also provided. 
@@ -1615,7 +1660,7 @@ In order to separate data from analysis code \cite{Wilson2017-rj}, we provide in
 \begin{thebibliography}{100}
 \urlstyle{rm}
 \expandafter\ifx\csname url\endcsname\relax
-    \def\url#1{\texttt{#1}}\fi
+  \def\url#1{\texttt{#1}}\fi
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
 \expandafter\ifx\csname doiprefix\endcsname\relax\def\doiprefix{DOI: }\fi
 \providecommand{\bibinfo}[2]{#2}
@@ -1624,723 +1669,730 @@ In order to separate data from analysis code \cite{Wilson2017-rj}, we provide in
 \bibitem{Lebel2018-oy}
 \bibinfo{author}{Lebel, C.} \& \bibinfo{author}{Deoni, S.}
 \newblock \bibinfo{journal}{\bibinfo{title}{The development of brain white
-    matter microstructure}}.
-\newblock {\emph{\JournalTitle{Neuroimage}}} \textbf{\bibinfo{volume}{182}},
-    \bibinfo{pages}{207--218} (\bibinfo{year}{2018}).
+  matter microstructure}}.
+\newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{182}},
+  \bibinfo{pages}{207--218} (\bibinfo{year}{2018}).
+\newblock \bibinfo{note}{Microstructural Imaging}.
 
 \bibitem{Paus2008-gi}
 \bibinfo{author}{Paus, T.}, \bibinfo{author}{Keshavan, M.} \&
-    \bibinfo{author}{Giedd, J.~N.}
+  \bibinfo{author}{Giedd, J.~N.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Why do many psychiatric disorders
-    emerge during adolescence?}}
-\newblock {\emph{\JournalTitle{Nat. Rev. Neurosci.}}}
-    \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{947--957}
-    (\bibinfo{year}{2008}).
+  emerge during adolescence?}}
+\newblock {\emph{\JournalTitle{Nature Reviews Neuroscience}}}
+  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{947--957}
+  (\bibinfo{year}{2008}).
 
 \bibitem{Paus2010-qk}
 \bibinfo{author}{Paus, T.}
-\newblock \bibinfo{journal}{\bibinfo{title}{Population neuroscience: why and
-    how}}.
-\newblock {\emph{\JournalTitle{Hum. Brain Mapp.}}}
-    \textbf{\bibinfo{volume}{31}}, \bibinfo{pages}{891--903}
-    (\bibinfo{year}{2010}).
+\newblock \bibinfo{journal}{\bibinfo{title}{Population neuroscience: Why and
+  how}}.
+\newblock {\emph{\JournalTitle{Human Brain Mapping}}}
+  \textbf{\bibinfo{volume}{31}}, \bibinfo{pages}{891--903}
+  (\bibinfo{year}{2010}).
 
 \bibitem{Fair2021-eg}
 \bibinfo{author}{Fair, D.~A.}, \bibinfo{author}{Dosenbach, N.~U.},
-    \bibinfo{author}{Moore, A.~H.}, \bibinfo{author}{Satterthwaite, T.} \&
-    \bibinfo{author}{Milham, M.~P.}
-\newblock \bibinfo{journal}{\bibinfo{title}{Developmental cognitive
-    neuroscience in the era of networks and big data: Strengths, weaknesses,
-    opportunities, and threats}}.
+  \bibinfo{author}{Moore, A.~H.}, \bibinfo{author}{Satterthwaite, T.~D.} \&
+  \bibinfo{author}{Milham, M.~P.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{Developmental Cognitive
+  Neuroscience in the Era of Networks and Big Data: Strengths, Weaknesses,
+  Opportunities, and Threats}}}.
 \newblock {\emph{\JournalTitle{Annual Review of Developmental Psychology}}}
-    \textbf{\bibinfo{volume}{3}} (\bibinfo{year}{2021}).
+  \textbf{\bibinfo{volume}{3}}, \bibinfo{pages}{249--275}
+  (\bibinfo{year}{2021}).
 
 \bibitem{alexander2017yc}
 \bibinfo{author}{Alexander, L.~M.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{An open resource for
-    transdiagnostic research in pediatric mental health and learning
-    disorders}}}.
+  transdiagnostic research in pediatric mental health and learning
+  disorders}}}.
 \newblock {\emph{\JournalTitle{Scientific Data}}} \textbf{\bibinfo{volume}{4}},
-    \bibinfo{pages}{170181}, \url{10.1038/sdata.2017.181} (\bibinfo{year}{2017}).
+  \bibinfo{pages}{170181} (\bibinfo{year}{2017}).
 
 \bibitem{hbndata}
 \bibinfo{title}{{Functional Connectomes Project International Neuroimaging
-    Data-Sharing Initiative}}.
+  Data-Sharing Initiative}}.
 \newblock \bibinfo{howpublished}{\url{http://dx.doi.org/10.15387/CMI_HBN}}
-    (\bibinfo{year}{2017}).
+  (\bibinfo{year}{2017}).
 
 \bibitem{wandell2016-qt}
 \bibinfo{author}{Wandell, B.~A.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Clarifying Human White Matter}}}.
 \newblock {\emph{\JournalTitle{Annual review of neuroscience}}}
-    \textbf{\bibinfo{volume}{39}}, \bibinfo{pages}{103--128},
-    \url{10.1146/annurev-neuro-070815-013815} (\bibinfo{year}{2016}).
+  \textbf{\bibinfo{volume}{39}}, \bibinfo{pages}{103--128}
+  (\bibinfo{year}{2016}).
 
 \bibitem{Mennes2013-dl}
 \bibinfo{author}{Mennes, M.}, \bibinfo{author}{Biswal, B.~B.},
-    \bibinfo{author}{Castellanos, F.~X.} \& \bibinfo{author}{Milham, M.~P.}
+  \bibinfo{author}{Castellanos, F.~X.} \& \bibinfo{author}{Milham, M.~P.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Making data sharing work: the
-    FCP/INDI experience}}}.
+  FCP/INDI experience}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{82}},
-    \bibinfo{pages}{683--691}, \url{10.1016/j.neuroimage.2012.10.064}
-    (\bibinfo{year}{2013}).
+  \bibinfo{pages}{683--691}, \url{10.1016/j.neuroimage.2012.10.064}
+  (\bibinfo{year}{2013}).
 
 \bibitem{hbnpod2data}
 \bibinfo{author}{Richie-Halford, A.} \emph{et~al.}
 \newblock \bibinfo{title}{{Healthy Brain Network Preprocessed Open Diffusion
-    Derivatives}}.
-\newblock \bibinfo{howpublished}{AWS S3 URI
-    \url{s3://fcp-indi/data/Projects/HBN/BIDS_curated/}} (\bibinfo{year}{2022}).
+  Derivatives}}.
+\newblock \bibinfo{howpublished}{\url{https://doi.org/10.5281/zenodo.7047788}}
+  (\bibinfo{year}{2022}).
 
 \bibitem{van-essen2013-oi}
 \bibinfo{author}{Van~Essen, D.~C.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{The WU-Minn Human Connectome
-    Project: an overview}}}.
+  Project: an overview}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{80}},
-    \bibinfo{pages}{62--79}, \url{10.1016/j.neuroimage.2013.05.041}
-    (\bibinfo{year}{2013}).
+  \bibinfo{pages}{62--79}, \url{10.1016/j.neuroimage.2013.05.041}
+  (\bibinfo{year}{2013}).
 
 \bibitem{miller2016-mq}
 \bibinfo{author}{Miller, K.~L.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Multimodal population brain
-    imaging in the UK Biobank prospective epidemiological study}}}.
+  imaging in the UK Biobank prospective epidemiological study}}}.
 \newblock {\emph{\JournalTitle{Nature neuroscience}}}
-    \textbf{\bibinfo{volume}{19}}, \bibinfo{pages}{1523--1536},
-    \url{10.1038/nn.4393} (\bibinfo{year}{2016}).
+  \textbf{\bibinfo{volume}{19}}, \bibinfo{pages}{1523--1536},
+  \url{10.1038/nn.4393} (\bibinfo{year}{2016}).
 
 \bibitem{jernigan2018-my}
 \bibinfo{author}{Jernigan, T.~L.} \& \bibinfo{author}{Brown, S.~A.}
-\newblock \bibinfo{journal}{\bibinfo{title}{{Introduction}}}.
-\newblock {\emph{\JournalTitle{Developmental cognitive neuroscience}}}
-    \textbf{\bibinfo{volume}{32}}, \bibinfo{pages}{1--3},
-    \url{10.1016/j.dcn.2018.02.002} (\bibinfo{year}{2018}).
+\newblock \bibinfo{journal}{\bibinfo{title}{Introduction}}.
+\newblock {\emph{\JournalTitle{Developmental Cognitive Neuroscience}}}
+  \textbf{\bibinfo{volume}{32}}, \bibinfo{pages}{1--3} (\bibinfo{year}{2018}).
+\newblock \bibinfo{note}{{The Adolescent Brain Cognitive Development (ABCD)
+  Consortium: Rationale, Aims, and Assessment Strategy}}.
 
 \bibitem{taylor2017-or}
 \bibinfo{author}{Taylor, J.~R.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{The Cambridge Centre for Ageing
-    and Neuroscience (Cam-CAN) data repository: Structural and functional MRI,
-    MEG, and cognitive data from a cross-sectional adult lifespan sample}}}.
+  and Neuroscience (Cam-CAN) data repository: Structural and functional MRI,
+  MEG, and cognitive data from a cross-sectional adult lifespan sample}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{144}},
-    \bibinfo{pages}{262--269}, \url{10.1016/j.neuroimage.2015.09.018}
-    (\bibinfo{year}{2017}).
+  \bibinfo{pages}{262--269}, \url{10.1016/j.neuroimage.2015.09.018}
+  (\bibinfo{year}{2017}).
 
 \bibitem{shafto2014-ld}
 \bibinfo{author}{Shafto, M.~A.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{The Cambridge Centre for Ageing
-    and Neuroscience (Cam-CAN) study protocol: a cross-sectional, lifespan,
-    multidisciplinary examination of healthy cognitive ageing}}}.
+  and Neuroscience (Cam-CAN) study protocol: a cross-sectional, lifespan,
+  multidisciplinary examination of healthy cognitive ageing}}}.
 \newblock {\emph{\JournalTitle{BMC neurology}}} \textbf{\bibinfo{volume}{14}},
-    \bibinfo{pages}{204}, \url{10.1186/s12883-014-0204-1} (\bibinfo{year}{2014}).
+  \bibinfo{pages}{204}, \url{10.1186/s12883-014-0204-1} (\bibinfo{year}{2014}).
 
 \bibitem{glasser2013-lo}
 \bibinfo{author}{Glasser, M.~F.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{The minimal preprocessing
-    pipelines for the Human Connectome Project}}}.
+  pipelines for the Human Connectome Project}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{80}},
-    \bibinfo{pages}{105--124}, \url{10.1016/j.neuroimage.2013.04.127}
-    (\bibinfo{year}{2013}).
+  \bibinfo{pages}{105--124}, \url{10.1016/j.neuroimage.2013.04.127}
+  (\bibinfo{year}{2013}).
 
 \bibitem{jones2010-ps}
 \bibinfo{author}{Jones, D.~K.} \& \bibinfo{author}{Cercignani, M.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Twenty-five pitfalls in the
-    analysis of diffusion MRI data}}}.
+  analysis of diffusion MRI data}}}.
 \newblock {\emph{\JournalTitle{NMR in biomedicine}}}
-    \textbf{\bibinfo{volume}{23}}, \bibinfo{pages}{803--820},
-    \url{10.1002/nbm.1543} (\bibinfo{year}{2010}).
+  \textbf{\bibinfo{volume}{23}}, \bibinfo{pages}{803--820}
+  (\bibinfo{year}{2010}).
 
 \bibitem{yeh2019-kb}
 \bibinfo{author}{Yeh, F.-C.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Differential tractography as a
-    track-based biomarker for neuronal injury}}}.
+  track-based biomarker for neuronal injury}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{202}},
-    \bibinfo{pages}{116131}, \url{10.1016/j.neuroimage.2019.116131}
-    (\bibinfo{year}{2019}).
+  \bibinfo{pages}{116131}, \url{10.1016/j.neuroimage.2019.116131}
+  (\bibinfo{year}{2019}).
 
 \bibitem{gorgolewski2016-lh}
 \bibinfo{author}{Gorgolewski, K.~J.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{The brain imaging data structure,
-    a format for organizing and describing outputs of neuroimaging
-    experiments}}}.
-\newblock {\emph{\JournalTitle{Scientific data}}} \textbf{\bibinfo{volume}{3}},
-    \bibinfo{pages}{160044}, \url{10.1038/sdata.2016.44} (\bibinfo{year}{2016}).
+  a format for organizing and describing outputs of neuroimaging
+  experiments}}}.
+\newblock {\emph{\JournalTitle{Scientific Data}}} \textbf{\bibinfo{volume}{3}},
+  \bibinfo{pages}{160044} (\bibinfo{year}{2016}).
 
 \bibitem{cieslak2021-iq}
 \bibinfo{author}{Cieslak, M.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{QSIPrep: an integrative platform
-    for preprocessing and reconstructing diffusion MRI data}}}.
-\newblock {\emph{\JournalTitle{Nature methods}}} \textbf{\bibinfo{volume}{18}},
-    \bibinfo{pages}{775--778}, \url{10.1038/s41592-021-01185-5}
-    (\bibinfo{year}{2021}).
+  for preprocessing and reconstructing diffusion MRI data}}}.
+\newblock {\emph{\JournalTitle{Nature Methods}}} \textbf{\bibinfo{volume}{18}},
+  \bibinfo{pages}{775--778} (\bibinfo{year}{2021}).
 
 \bibitem{Gorgolewski2017-mb}
 \bibinfo{author}{Gorgolewski, K.~J.} \emph{et~al.}
-\newblock \bibinfo{journal}{\bibinfo{title}{{BIDS} apps: Improving ease of use,
-    accessibility, and reproducibility of neuroimaging data analysis methods}}.
-\newblock {\emph{\JournalTitle{PLoS Comput. Biol.}}}
-    \textbf{\bibinfo{volume}{13}}, \bibinfo{pages}{e1005209}
-    (\bibinfo{year}{2017}).
+\newblock \bibinfo{journal}{\bibinfo{title}{{BIDS apps: Improving ease of use,
+  accessibility, and reproducibility of neuroimaging data analysis methods}}}.
+\newblock {\emph{\JournalTitle{PLOS Computational Biology}}}
+  \textbf{\bibinfo{volume}{13}}, \bibinfo{pages}{1--16} (\bibinfo{year}{2017}).
 
 \bibitem{lecun2015deep}
 \bibinfo{author}{LeCun, Y.}, \bibinfo{author}{Bengio, Y.} \&
-    \bibinfo{author}{Hinton, G.}
+  \bibinfo{author}{Hinton, G.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Deep learning}}}.
 \newblock {\emph{\JournalTitle{Nature}}} \textbf{\bibinfo{volume}{521}},
-    \bibinfo{pages}{436--444}, \url{10.1038/nature14539} (\bibinfo{year}{2015}).
+  \bibinfo{pages}{436--444}, \url{10.1038/nature14539} (\bibinfo{year}{2015}).
 
 \bibitem{keshavan2019-er}
 \bibinfo{author}{Keshavan, A.}, \bibinfo{author}{Yeatman, J.~D.} \&
-    \bibinfo{author}{Rokem, A.}
+  \bibinfo{author}{Rokem, A.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Combining Citizen Science and Deep
-    Learning to Amplify Expertise in Neuroimaging}}}.
-\newblock {\emph{\JournalTitle{Frontiers in neuroinformatics}}}
-    \textbf{\bibinfo{volume}{13}}, \bibinfo{pages}{29},
-    \url{10.3389/fninf.2019.00029} (\bibinfo{year}{2019}).
+  Learning to Amplify Expertise in Neuroimaging}}}.
+\newblock {\emph{\JournalTitle{Frontiers in Neuroinformatics}}}
+  \textbf{\bibinfo{volume}{13}}, \bibinfo{pages}{29} (\bibinfo{year}{2019}).
 
 \bibitem{lipton2017doctor}
 \bibinfo{author}{Lipton, Z.~C.}
 \newblock \bibinfo{title}{{The Doctor Just Won't Accept That!}}
-    (\bibinfo{year}{2017}).
-\newblock \eprint{1711.08037}.
+  (\bibinfo{year}{2017}).
+\newblock \eprint{https://arxiv.org/abs/1711.08037}.
 
 \bibitem{salahuddin2022transparency}
 \bibinfo{author}{Salahuddin, Z.}, \bibinfo{author}{Woodruff, H.~C.},
-    \bibinfo{author}{Chatterjee, A.} \& \bibinfo{author}{Lambin, P.}
+  \bibinfo{author}{Chatterjee, A.} \& \bibinfo{author}{Lambin, P.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Transparency of deep neural
-    networks for medical image analysis: A review of interpretability methods}}}.
+  networks for medical image analysis: A review of interpretability methods}}}.
 \newblock {\emph{\JournalTitle{Computers in biology and medicine}}}
-    \textbf{\bibinfo{volume}{140}}, \bibinfo{pages}{105111},
-    \url{10.1016/j.compbiomed.2021.105111} (\bibinfo{year}{2022}).
+  \textbf{\bibinfo{volume}{140}}, \bibinfo{pages}{105111},
+  \url{10.1016/j.compbiomed.2021.105111} (\bibinfo{year}{2022}).
 
 \bibitem{Zech2018-ki}
 \bibinfo{author}{Zech, J.~R.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Variable generalization performance
-    of a deep learning model to detect pneumonia in chest radiographs: A
-    cross-sectional study}}.
+  of a deep learning model to detect pneumonia in chest radiographs: A
+  cross-sectional study}}.
 \newblock {\emph{\JournalTitle{PLoS Med.}}} \textbf{\bibinfo{volume}{15}},
-    \bibinfo{pages}{e1002683} (\bibinfo{year}{2018}).
+  \bibinfo{pages}{e1002683} (\bibinfo{year}{2018}).
 
 \bibitem{sundararajan2017axiomatic}
 \bibinfo{author}{Sundararajan, M.}, \bibinfo{author}{Taly, A.} \&
-    \bibinfo{author}{Yan, Q.}
+  \bibinfo{author}{Yan, Q.}
 \newblock \bibinfo{title}{Axiomatic attribution for deep networks}.
 \newblock In \bibinfo{editor}{Precup, D.} \& \bibinfo{editor}{Teh, Y.~W.}
-    (eds.) \emph{\bibinfo{booktitle}{Proceedings of the 34th International
-    Conference on Machine Learning}}, vol.~\bibinfo{volume}{70} of
-    \emph{\bibinfo{series}{Proceedings of Machine Learning Research}},
-    \bibinfo{pages}{3319--3328} (\bibinfo{publisher}{PMLR},
-    \bibinfo{year}{2017}).
+  (eds.) \emph{\bibinfo{booktitle}{Proceedings of the 34th International
+  Conference on Machine Learning}}, vol.~\bibinfo{volume}{70} of
+  \emph{\bibinfo{series}{Proceedings of Machine Learning Research}},
+  \bibinfo{pages}{3319--3328} (\bibinfo{publisher}{PMLR},
+  \bibinfo{year}{2017}).
 
 \bibitem{murdoch2019definitions}
 \bibinfo{author}{Murdoch, W.~J.}, \bibinfo{author}{Singh, C.},
-    \bibinfo{author}{Kumbier, K.}, \bibinfo{author}{Abbasi-Asl, R.} \&
-    \bibinfo{author}{Yu, B.}
+  \bibinfo{author}{Kumbier, K.}, \bibinfo{author}{Abbasi-Asl, R.} \&
+  \bibinfo{author}{Yu, B.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Definitions, methods, and
-    applications in interpretable machine learning}}.
+  applications in interpretable machine learning}}.
 \newblock {\emph{\JournalTitle{Proceedings of the National Academy of
-    Sciences}}} \textbf{\bibinfo{volume}{116}}, \bibinfo{pages}{22071--22080},
-    \url{10.1073/pnas.1900654116} (\bibinfo{year}{2019}).
-\newblock \eprint{https://www.pnas.org/content/116/44/22071.full.pdf}.
+  Sciences}}} \textbf{\bibinfo{volume}{116}}, \bibinfo{pages}{22071--22080},
+  \url{10.1073/pnas.1900654116} (\bibinfo{year}{2019}).
 
 \bibitem{laird2021large}
 \bibinfo{author}{Laird, A.~R.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Large, open datasets for human
-    connectomics research: Considerations for reproducible and responsible data
-    use}}}.
+  connectomics research: Considerations for reproducible and responsible data
+  use}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{244}},
-    \bibinfo{pages}{118579}, \url{10.1016/j.neuroimage.2021.118579}
-    (\bibinfo{year}{2021}).
+  \bibinfo{pages}{118579} (\bibinfo{year}{2021}).
 
 \bibitem{casey2018adolescent}
 \bibinfo{author}{Casey, B.~J.} \emph{et~al.}
-\newblock \bibinfo{journal}{\bibinfo{title}{The adolescent brain cognitive
-    development (abcd) study: imaging acquisition across 21 sites}}.
+\newblock \bibinfo{journal}{\bibinfo{title}{{The adolescent brain cognitive
+  development (ABCD) study: imaging acquisition across 21 sites}}}.
 \newblock {\emph{\JournalTitle{Developmental cognitive neuroscience}}}
-    \textbf{\bibinfo{volume}{32}}, \bibinfo{pages}{43--54}
-    (\bibinfo{year}{2018}).
+  \textbf{\bibinfo{volume}{32}}, \bibinfo{pages}{43--54}
+  (\bibinfo{year}{2018}).
 
 \bibitem{sydney-covitz2022-cubids}
 \bibinfo{author}{Covitz, S.} \emph{et~al.}
-\newblock \bibinfo{title}{{Curation of BIDS (CuBIDS): a sanity-preserving
-    workflow and software package for curating large BIDS datasets}}
-    (\bibinfo{year}{2022}).
-\newblock \bibinfo{note}{In preparation}.
+\newblock \bibinfo{journal}{\bibinfo{title}{{Curation of BIDS (CuBIDS): a
+  workflow and software package for streamlining reproducible curation of large
+  BIDS datasets}}}.
+\newblock {\emph{\JournalTitle{bioRxiv}}}  (\bibinfo{year}{2022}).
 
 \bibitem{halchenko2021datalad}
 \bibinfo{author}{Halchenko, Y.~O.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Datalad: distributed system for
-    joint management of code, data, and their relationship}}.
+  joint management of code, data, and their relationship}}.
 \newblock {\emph{\JournalTitle{Journal of Open Source Software}}}
-    \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{3262},
-    \url{10.21105/joss.03262} (\bibinfo{year}{2021}).
+  \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{3262} (\bibinfo{year}{2021}).
 
 \bibitem{nipype1}
 \bibinfo{author}{Gorgolewski, K.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Nipype: a flexible, lightweight
-    and extensible neuroimaging data processing framework in Python}}}.
+  and extensible neuroimaging data processing framework in Python}}}.
 \newblock {\emph{\JournalTitle{Frontiers in Neuroinformatics}}}
-    \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{13},
-    \url{10.3389/fninf.2011.00013} (\bibinfo{year}{2011}).
+  \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{13} (\bibinfo{year}{2011}).
 
 \bibitem{nipype2}
 \bibinfo{author}{Gorgolewski, K.~J.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Nipype}}}.
 \newblock {\emph{\JournalTitle{Software}}} \url{10.5281/zenodo.596855}
-    (\bibinfo{year}{2018}).
+  (\bibinfo{year}{2018}).
 
 \bibitem{n4}
 \bibinfo{author}{Tustison, N.~J.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{N4ITK: Improved N3 Bias
-    Correction}}}.
+  Correction}}}.
 \newblock {\emph{\JournalTitle{IEEE Transactions on Medical Imaging}}}
-    \textbf{\bibinfo{volume}{29}}, \bibinfo{pages}{1310--1320},
-    \url{10.1109/TMI.2010.2046908} (\bibinfo{year}{2010}).
+  \textbf{\bibinfo{volume}{29}}, \bibinfo{pages}{1310--1320}
+  (\bibinfo{year}{2010}).
 
 \bibitem{fstemplate}
 \bibinfo{author}{Reuter, M.}, \bibinfo{author}{Rosas, H.~D.} \&
-    \bibinfo{author}{Fischl, B.}
+  \bibinfo{author}{Fischl, B.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Highly accurate inverse consistent
-    registration: A robust approach}}.
+  registration: A robust approach}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{53}},
-    \bibinfo{pages}{1181--1196}, \url{10.1016/j.neuroimage.2010.07.020}
-    (\bibinfo{year}{2010}).
+  \bibinfo{pages}{1181--1196} (\bibinfo{year}{2010}).
 
 \bibitem{mni}
 \bibinfo{author}{Fonov, V.}, \bibinfo{author}{Evans, A.},
-    \bibinfo{author}{McKinstry, R.}, \bibinfo{author}{Almli, C.} \&
-    \bibinfo{author}{Collins, D.}
+  \bibinfo{author}{McKinstry, R.}, \bibinfo{author}{Almli, C.} \&
+  \bibinfo{author}{Collins, D.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Unbiased nonlinear average
-    age-appropriate brain templates from birth to adulthood}}.
+  age-appropriate brain templates from birth to adulthood}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{47,
-    Supplement 1}}, \bibinfo{pages}{S102}, \url{10.1016/S1053-8119(09)70884-5}
-    (\bibinfo{year}{2009}).
+  Supplement 1}}, \bibinfo{pages}{S102} (\bibinfo{year}{2009}).
 
 \bibitem{ants}
 \bibinfo{author}{Avants, B.}, \bibinfo{author}{Epstein, C.},
-    \bibinfo{author}{Grossman, M.} \& \bibinfo{author}{Gee, J.}
+  \bibinfo{author}{Grossman, M.} \& \bibinfo{author}{Gee, J.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Symmetric diffeomorphic image
-    registration with cross-correlation: Evaluating automated labeling of elderly
-    and neurodegenerative brain}}}.
+  registration with cross-correlation: Evaluating automated labeling of elderly
+  and neurodegenerative brain}}}.
 \newblock {\emph{\JournalTitle{Medical Image Analysis}}}
-    \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{26--41},
-    \url{10.1016/j.media.2007.06.004} (\bibinfo{year}{2008}).
+  \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{26--41}
+  (\bibinfo{year}{2008}).
 
 \bibitem{fsl-fast}
 \bibinfo{author}{Zhang, Y.}, \bibinfo{author}{Brady, M.} \&
-    \bibinfo{author}{Smith, S.}
+  \bibinfo{author}{Smith, S.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Segmentation of brain {MR} images
-    through a hidden {M}arkov random field model and the expectation-maximization
-    algorithm}}.
+  through a hidden {M}arkov random field model and the expectation-maximization
+  algorithm}}.
 \newblock {\emph{\JournalTitle{IEEE Transactions on Medical Imaging}}}
-    \textbf{\bibinfo{volume}{20}}, \bibinfo{pages}{45--57},
-    \url{10.1109/42.906424} (\bibinfo{year}{2001}).
+  \textbf{\bibinfo{volume}{20}}, \bibinfo{pages}{45--57}
+  (\bibinfo{year}{2001}).
 
 \bibitem{dwidenoise1}
 \bibinfo{author}{Veraart, J.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Denoising of diffusion {MRI} using
-    random matrix theory}}.
+  random matrix theory}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{142}},
-    \bibinfo{pages}{394--406} (\bibinfo{year}{2016}).
+  \bibinfo{pages}{394--406} (\bibinfo{year}{2016}).
 
 \bibitem{anderssoneddy}
 \bibinfo{author}{Andersson, J.~L.} \& \bibinfo{author}{Sotiropoulos, S.~N.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{An integrated approach to
-    correction for off-resonance effects and subject movement in diffusion MR
-    imaging}}}.
+  correction for off-resonance effects and subject movement in diffusion MR
+  imaging}}}.
 \newblock {\emph{\JournalTitle{Neuroimage}}} \textbf{\bibinfo{volume}{125}},
-    \bibinfo{pages}{1063--1078} (\bibinfo{year}{2016}).
+  \bibinfo{pages}{1063--1078} (\bibinfo{year}{2016}).
 
 \bibitem{eddyrepol}
 \bibinfo{author}{Andersson, J.~L.}, \bibinfo{author}{Graham, M.~S.},
-    \bibinfo{author}{Zsoldos, E.} \& \bibinfo{author}{Sotiropoulos, S.~N.}
+  \bibinfo{author}{Zsoldos, E.} \& \bibinfo{author}{Sotiropoulos, S.~N.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Incorporating outlier detection
-    and replacement into a non-parametric framework for movement and distortion
-    correction of diffusion MR images}}}.
+  and replacement into a non-parametric framework for movement and distortion
+  correction of diffusion MR images}}}.
 \newblock {\emph{\JournalTitle{Neuroimage}}} \textbf{\bibinfo{volume}{141}},
-    \bibinfo{pages}{556--572} (\bibinfo{year}{2016}).
+  \bibinfo{pages}{556--572} (\bibinfo{year}{2016}).
 
 \bibitem{topup}
 \bibinfo{author}{Andersson, J.~L.}, \bibinfo{author}{Skare, S.} \&
-    \bibinfo{author}{Ashburner, J.}
+  \bibinfo{author}{Ashburner, J.}
 \newblock \bibinfo{journal}{\bibinfo{title}{How to correct susceptibility
-    distortions in spin-echo echo-planar images: application to diffusion tensor
-    imaging}}.
+  distortions in spin-echo echo-planar images: application to diffusion tensor
+  imaging}}.
 \newblock {\emph{\JournalTitle{Neuroimage}}} \textbf{\bibinfo{volume}{20}},
-    \bibinfo{pages}{870--888} (\bibinfo{year}{2003}).
+  \bibinfo{pages}{870--888} (\bibinfo{year}{2003}).
 
 \bibitem{power-fd-dvars}
 \bibinfo{author}{Power, J.~D.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Methods to detect, characterize,
-    and remove motion artifact in resting state fMRI}}}.
+  and remove motion artifact in resting state fMRI}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{84}},
-    \bibinfo{pages}{320--341}, \url{10.1016/j.neuroimage.2013.08.048}
-    (\bibinfo{year}{2014}).
+  \bibinfo{pages}{320--341} (\bibinfo{year}{2014}).
 
 \bibitem{nilearn}
 \bibinfo{author}{Abraham, A.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Machine learning for neuroimaging
-    with scikit-learn}}}.
+  with scikit-learn}}}.
 \newblock {\emph{\JournalTitle{Frontiers in Neuroinformatics}}}
-    \textbf{\bibinfo{volume}{8}}, \url{10.3389/fninf.2014.00014}
-    (\bibinfo{year}{2014}).
+  \textbf{\bibinfo{volume}{8}} (\bibinfo{year}{2014}).
 
 \bibitem{dipy}
 \bibinfo{author}{Garyfallidis, E.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{DIPY, a library for the analysis
-    of diffusion MRI data}}}.
+  of diffusion MRI data}}}.
 \newblock {\emph{\JournalTitle{Frontiers in neuroinformatics}}}
-    \textbf{\bibinfo{volume}{8}}, \bibinfo{pages}{8} (\bibinfo{year}{2014}).
+  \textbf{\bibinfo{volume}{8}}, \bibinfo{pages}{8} (\bibinfo{year}{2014}).
 
 \bibitem{cloudknot}
 \bibinfo{author}{Richie-Halford, A.} \& \bibinfo{author}{Rokem, A.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Cloudknot: A Python Library to Run
-    your Existing Code on AWS Batch}}}.
+  your Existing Code on AWS Batch}}}.
 \newblock {\emph{\JournalTitle{Proceedings of the 17th Python in Science
-    Conference}}} \bibinfo{pages}{8--14}, \url{10.25080/Majora-4af1f417-001}
-    (\bibinfo{year}{2018}).
+  Conference}}} \bibinfo{pages}{8--14} (\bibinfo{year}{2018}).
 
-\bibitem{richie-halford2022-viewer}
+\bibitem{richiehalford2022nirv}
 \bibinfo{author}{Richie-Halford, A.} \emph{et~al.}
-\newblock \bibinfo{title}{{dmriprep-viewer: a web application for quality
-    control of large neuroimaging datasets}} (\bibinfo{year}{2022}).
-\newblock \bibinfo{note}{In preparation}.
+\newblock \bibinfo{title}{{NiRV: the Neuroimaging Report Viewer}}.
+\newblock In \emph{\bibinfo{booktitle}{Organization for Human Brain Mapping
+  2022}} (\bibinfo{address}{Glasgow, Scotland}, \bibinfo{year}{2022}).
 
 \bibitem{di-eugenio2004-bb}
 \bibinfo{author}{Di~Eugenio, B.} \& \bibinfo{author}{Glass, M.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{The kappa statistic: a second
-    look}}}.
+  look}}}.
 \newblock {\emph{\JournalTitle{Computational Linguistics}}}
-    \textbf{\bibinfo{volume}{30}}, \bibinfo{pages}{95--101},
-    \url{10.1162/089120104773633402} (\bibinfo{year}{2004}).
+  \textbf{\bibinfo{volume}{30}}, \bibinfo{pages}{95--101},
+  \url{10.1162/089120104773633402} (\bibinfo{year}{2004}).
 
 \bibitem{scikit-learn}
 \bibinfo{author}{Pedregosa, F.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Scikit-learn: Machine learning in
-    {P}ython}}.
+  {P}ython}}.
 \newblock {\emph{\JournalTitle{Journal of Machine Learning Research}}}
-    \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{2825--2830}
-    (\bibinfo{year}{2011}).
+  \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{2825--2830}
+  (\bibinfo{year}{2011}).
 
 \bibitem{hallgren2012-ze}
 \bibinfo{author}{Hallgren, K.~A.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Computing Inter-Rater Reliability
-    for Observational Data: An Overview and Tutorial}}}.
+  for Observational Data: An Overview and Tutorial}}}.
 \newblock {\emph{\JournalTitle{Tutorials in quantitative methods for
-    psychology}}} \textbf{\bibinfo{volume}{8}}, \bibinfo{pages}{23--34},
-    \url{10.20982/tqmp.08.1.p023} (\bibinfo{year}{2012}).
+  psychology}}} \textbf{\bibinfo{volume}{8}}, \bibinfo{pages}{23--34},
+  \url{10.20982/tqmp.08.1.p023} (\bibinfo{year}{2012}).
 
 \bibitem{vallat2018pingouin}
 \bibinfo{author}{Vallat, R.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Pingouin: statistics in python}}.
 \newblock {\emph{\JournalTitle{Journal of Open Source Software}}}
-    \textbf{\bibinfo{volume}{3}}, \bibinfo{pages}{1026},
-    \url{10.21105/joss.01026} (\bibinfo{year}{2018}).
+  \textbf{\bibinfo{volume}{3}}, \bibinfo{pages}{1026},
+  \url{10.21105/joss.01026} (\bibinfo{year}{2018}).
 
 \bibitem{Cicchetti1994-fz}
 \bibinfo{author}{Cicchetti, D.~V.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Guidelines, criteria, and rules of
-    thumb for evaluating normed and standardized assessment instruments in
-    psychology}}.
+  thumb for evaluating normed and standardized assessment instruments in
+  psychology}}.
 \newblock {\emph{\JournalTitle{Psychol. Assess.}}}
-    \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{284--290}
-    (\bibinfo{year}{1994}).
+  \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{284--290}
+  (\bibinfo{year}{1994}).
 
 \bibitem{Ward-Fear2020-zq}
 \bibinfo{author}{Ward-Fear, G.}, \bibinfo{author}{Pauly, G.~B.},
-    \bibinfo{author}{Vendetti, J.~E.} \& \bibinfo{author}{Shine, R.}
+  \bibinfo{author}{Vendetti, J.~E.} \& \bibinfo{author}{Shine, R.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Authorship protocols must change to
-    credit citizen scientists}}.
+  credit citizen scientists}}.
 \newblock {\emph{\JournalTitle{Trends Ecol. Evol.}}}
-    \textbf{\bibinfo{volume}{35}}, \bibinfo{pages}{187--190}
-    (\bibinfo{year}{2020}).
+  \textbf{\bibinfo{volume}{35}}, \bibinfo{pages}{187--190}
+  (\bibinfo{year}{2020}).
 
 \bibitem{chen2016-eb}
 \bibinfo{author}{Chen, T.} \& \bibinfo{author}{Guestrin, C.}
 \newblock \bibinfo{title}{{XGBoost: A Scalable Tree Boosting System}}.
 \newblock In \emph{\bibinfo{booktitle}{{Proceedings of the 22nd ACM SIGKDD
-    International Conference on Knowledge Discovery and Data Mining}}}, KDD '16,
-    \bibinfo{pages}{785--794}, \url{10.1145/2939672.2939785}
-    (\bibinfo{publisher}{Association for Computing Machinery},
-    \bibinfo{address}{New York, NY, USA}, \bibinfo{year}{2016}).
+  International Conference on Knowledge Discovery and Data Mining}}}, KDD '16,
+  \bibinfo{pages}{785--794}, \url{10.1145/2939672.2939785}
+  (\bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{year}{2016}).
 
 \bibitem{xgboost}
 \bibinfo{author}{Chen, T.} \& \bibinfo{author}{Guestrin, C.}
 \newblock \bibinfo{title}{{XGBoost}: A scalable tree boosting system}.
 \newblock In \emph{\bibinfo{booktitle}{Proceedings of the 22nd ACM SIGKDD
-    International Conference on Knowledge Discovery and Data Mining}}, KDD '16,
-    \bibinfo{pages}{785--794}, \url{10.1145/2939672.2939785}
-    (\bibinfo{publisher}{ACM}, \bibinfo{address}{New York, NY, USA},
-    \bibinfo{year}{2016}).
+  International Conference on Knowledge Discovery and Data Mining}}, KDD '16,
+  \bibinfo{pages}{785--794}, \url{10.1145/2939672.2939785}
+  (\bibinfo{publisher}{ACM}, \bibinfo{address}{New York, NY, USA},
+  \bibinfo{year}{2016}).
 
 \bibitem{scikit-optimize}
 \bibinfo{author}{Head, T.}, \bibinfo{author}{Kumar, M.},
-    \bibinfo{author}{Nahrstaedt, H.}, \bibinfo{author}{Louppe, G.} \&
-    \bibinfo{author}{Shcherbatyi, I.}
+  \bibinfo{author}{Nahrstaedt, H.}, \bibinfo{author}{Louppe, G.} \&
+  \bibinfo{author}{Shcherbatyi, I.}
 \newblock \bibinfo{title}{scikit-optimize/scikit-optimize},
-    \url{10.5281/zenodo.5565057} (\bibinfo{year}{2021}).
+  \url{10.5281/zenodo.5565057} (\bibinfo{year}{2021}).
 
 \bibitem{lundberg2017unified}
 \bibinfo{author}{Lundberg, S.~M.} \& \bibinfo{author}{Lee, S.-I.}
 \newblock \bibinfo{title}{A unified approach to interpreting model
-    predictions}.
+  predictions}.
 \newblock In \bibinfo{editor}{Guyon, I.} \emph{et~al.} (eds.)
-    \emph{\bibinfo{booktitle}{Advances in Neural Information Processing Systems
-    30}}, \bibinfo{pages}{4765--4774} (\bibinfo{publisher}{Curran Associates,
-    Inc.}, \bibinfo{year}{2017}).
+  \emph{\bibinfo{booktitle}{Advances in Neural Information Processing Systems
+  30}}, \bibinfo{pages}{4765--4774} (\bibinfo{publisher}{Curran Associates,
+  Inc.}, \bibinfo{year}{2017}).
 
 \bibitem{lundberg2020local}
 \bibinfo{author}{Lundberg, S.~M.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{From Local Explanations to Global
-    Understanding with Explainable AI for Trees}}}.
+  Understanding with Explainable AI for Trees}}}.
 \newblock {\emph{\JournalTitle{Nature machine intelligence}}}
-    \textbf{\bibinfo{volume}{2}}, \bibinfo{pages}{56--67},
-    \url{10.1038/s42256-019-0138-9} (\bibinfo{year}{2020}).
+  \textbf{\bibinfo{volume}{2}}, \bibinfo{pages}{56--67},
+  \url{10.1038/s42256-019-0138-9} (\bibinfo{year}{2020}).
 
 \bibitem{zunair2020-bs}
 \bibinfo{author}{Zunair, H.}, \bibinfo{author}{Rahman, A.},
-    \bibinfo{author}{Mohammed, N.} \& \bibinfo{author}{Cohen, J.~P.}
+  \bibinfo{author}{Mohammed, N.} \& \bibinfo{author}{Cohen, J.~P.}
 \newblock \bibinfo{title}{{Uniformizing Techniques to Process CT Scans with 3D
-    CNNs for Tuberculosis Prediction}}.
+  CNNs for Tuberculosis Prediction}}.
 \newblock In \emph{\bibinfo{booktitle}{{Predictive Intelligence in Medicine}}},
-    \bibinfo{pages}{156--168}, \url{10.1007/978-3-030-59354-4\_15}
-    (\bibinfo{publisher}{Springer International Publishing},
-    \bibinfo{year}{2020}).
+  \bibinfo{pages}{156--168} (\bibinfo{publisher}{Springer International
+  Publishing}, \bibinfo{year}{2020}).
 
 \bibitem{dicente2019clef}
 \bibinfo{author}{Dicente~Cid, Y.} \emph{et~al.}
 \newblock \bibinfo{title}{Overview of imagecleftuberculosis 2019 - automatic
-    ct-based report generation and tuberculosis severity assessment}.
+  ct-based report generation and tuberculosis severity assessment}.
 \newblock In \emph{\bibinfo{booktitle}{{CLEF}}} (\bibinfo{year}{2019}).
 
 \bibitem{tensorflow}
 \bibinfo{author}{Abadi, M.} \emph{et~al.}
 \newblock \bibinfo{title}{{TensorFlow}: Large-scale machine learning on
-    heterogeneous systems} (\bibinfo{year}{2015}).
+  heterogeneous systems} (\bibinfo{year}{2015}).
 \newblock \bibinfo{note}{Software available from tensorflow.org}.
 
 \bibitem{keras}
 \bibinfo{author}{Chollet, F.} \emph{et~al.}
 \newblock \bibinfo{title}{Keras}.
 \newblock \bibinfo{howpublished}{\url{https://keras.io}}
-    (\bibinfo{year}{2015}).
+  (\bibinfo{year}{2015}).
 
 \bibitem{kingma2017adam}
 \bibinfo{author}{Kingma, D.~P.} \& \bibinfo{author}{Ba, J.}
 \newblock \bibinfo{title}{Adam: A method for stochastic optimization}
-    (\bibinfo{year}{2017}).
+  (\bibinfo{year}{2017}).
 \newblock \eprint{1412.6980}.
 
 \bibitem{yeatman2012-rc}
 \bibinfo{author}{Yeatman, J.~D.}, \bibinfo{author}{Dougherty, R.~F.},
-    \bibinfo{author}{Myall, N.~J.}, \bibinfo{author}{Wandell, B.~A.} \&
-    \bibinfo{author}{Feldman, H.~M.}
+  \bibinfo{author}{Myall, N.~J.}, \bibinfo{author}{Wandell, B.~A.} \&
+  \bibinfo{author}{Feldman, H.~M.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Tract Profiles of White Matter
-    Properties: Automating Fiber-Tract Quantification}}}.
+  Properties: Automating Fiber-Tract Quantification}}}.
 \newblock {\emph{\JournalTitle{PloS one}}} \textbf{\bibinfo{volume}{7}},
-    \bibinfo{pages}{e49790}, \url{10.1371/journal.pone.0049790}
-    (\bibinfo{year}{2012}).
+  \bibinfo{pages}{e49790} (\bibinfo{year}{2012}).
 
 \bibitem{jones2005pasta}
 \bibinfo{author}{Jones, D.~K.}, \bibinfo{author}{Travis, A.~R.},
-    \bibinfo{author}{Eden, G.}, \bibinfo{author}{Pierpaoli, C.} \&
-    \bibinfo{author}{Basser, P.~J.}
+  \bibinfo{author}{Eden, G.}, \bibinfo{author}{Pierpaoli, C.} \&
+  \bibinfo{author}{Basser, P.~J.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{PASTA: pointwise assessment of
-    streamline tractography attributes}}}.
+  streamline tractography attributes}}}.
 \newblock {\emph{\JournalTitle{Magnetic resonance in medicine: official journal
-    of the Society of Magnetic Resonance in Medicine / Society of Magnetic
-    Resonance in Medicine}}} \textbf{\bibinfo{volume}{53}},
-    \bibinfo{pages}{1462--1467}, \url{10.1002/mrm.20484} (\bibinfo{year}{2005}).
+  of the Society of Magnetic Resonance in Medicine / Society of Magnetic
+  Resonance in Medicine}}} \textbf{\bibinfo{volume}{53}},
+  \bibinfo{pages}{1462--1467}, \url{10.1002/mrm.20484} (\bibinfo{year}{2005}).
 
 \bibitem{colby2012along}
 \bibinfo{author}{Colby, J.~B.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Along-tract statistics allow for
-    enhanced tractography analysis}}}.
+  enhanced tractography analysis}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{59}},
-    \bibinfo{pages}{3227--3242}, \url{10.1016/j.neuroimage.2011.11.004}
-    (\bibinfo{year}{2012}).
+  \bibinfo{pages}{3227--3242}, \url{10.1016/j.neuroimage.2011.11.004}
+  (\bibinfo{year}{2012}).
 
 \bibitem{odonnell2009tract}
 \bibinfo{author}{O'Donnell, L.~J.}, \bibinfo{author}{Westin, C.-F.} \&
-    \bibinfo{author}{Golby, A.~J.}
+  \bibinfo{author}{Golby, A.~J.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Tract-based morphometry for white
-    matter group analysis}}}.
+  matter group analysis}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{45}},
-    \bibinfo{pages}{832--844}, \url{10.1016/j.neuroimage.2008.12.023}
-    (\bibinfo{year}{2009}).
+  \bibinfo{pages}{832--844}, \url{10.1016/j.neuroimage.2008.12.023}
+  (\bibinfo{year}{2009}).
 
 \bibitem{kruper2021evaluating}
 \bibinfo{author}{Kruper, J.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Evaluating the reliability of human
-    brain white matter tractometry}}.
+  brain white matter tractometry}}.
 \newblock {\emph{\JournalTitle{Aperture Neuro}}}
-    \url{10.1101/2021.02.24.432740} (\bibinfo{year}{2021}).
-\newblock
-    \eprint{https://www.biorxiv.org/content/early/2021/02/24/2021.02.24.432740.full.pdf}.
+  \url{10.1101/2021.02.24.432740} (\bibinfo{year}{2021}).
 
 \bibitem{bells2011tractometry}
 \bibinfo{author}{Bells, S.} \emph{et~al.}
 \newblock \bibinfo{title}{Tractometry--comprehensive multi-modal quantitative
-    assessment of white matter along specific tracts}.
+  assessment of white matter along specific tracts}.
 \newblock In \emph{\bibinfo{booktitle}{Proc. ISMRM}}, vol.
-    \bibinfo{volume}{678}, \bibinfo{pages}{1} (\bibinfo{year}{2011}).
+  \bibinfo{volume}{678}, \bibinfo{pages}{1} (\bibinfo{year}{2011}).
 
 \bibitem{tournier2008csd}
 \bibinfo{author}{Tournier, J.-D.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Resolving crossing fibres using
-    constrained spherical deconvolution: validation using diffusion-weighted
-    imaging phantom data}}.
+  constrained spherical deconvolution: validation using diffusion-weighted
+  imaging phantom data}}.
 \newblock {\emph{\JournalTitle{Neuroimage}}} \textbf{\bibinfo{volume}{42}},
-    \bibinfo{pages}{617--625} (\bibinfo{year}{2008}).
+  \bibinfo{pages}{617--625} (\bibinfo{year}{2008}).
 
 \bibitem{Wakana2007-nw}
 \bibinfo{author}{Wakana, S.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Reproducibility of quantitative
-    tractography methods applied to cerebral white matter}}}.
+  tractography methods applied to cerebral white matter}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{36}},
-    \bibinfo{pages}{630--644}, \url{10.1016/j.neuroimage.2007.02.049}
-    (\bibinfo{year}{2007}).
+  \bibinfo{pages}{630--644}, \url{10.1016/j.neuroimage.2007.02.049}
+  (\bibinfo{year}{2007}).
 
 \bibitem{Hua2008-di}
 \bibinfo{author}{Hua, K.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Tract probability maps in
-    stereotaxic spaces: analyses of white matter anatomy and tract-specific
-    quantification}}}.
+  stereotaxic spaces: analyses of white matter anatomy and tract-specific
+  quantification}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{39}},
-    \bibinfo{pages}{336--347}, \url{10.1016/j.neuroimage.2007.07.053}
-    (\bibinfo{year}{2008}).
+  \bibinfo{pages}{336--347}, \url{10.1016/j.neuroimage.2007.07.053}
+  (\bibinfo{year}{2008}).
 
 \bibitem{jensen2005-ta}
 \bibinfo{author}{Jensen, J.~H.}, \bibinfo{author}{Helpern, J.~A.},
-    \bibinfo{author}{Ramani, A.}, \bibinfo{author}{Lu, H.} \&
-    \bibinfo{author}{Kaczynski, K.}
+  \bibinfo{author}{Ramani, A.}, \bibinfo{author}{Lu, H.} \&
+  \bibinfo{author}{Kaczynski, K.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Diffusional kurtosis imaging: the
-    quantification of non-gaussian water diffusion by means of magnetic resonance
-    imaging}}}.
+  quantification of non-gaussian water diffusion by means of magnetic resonance
+  imaging}}}.
 \newblock {\emph{\JournalTitle{Magnetic resonance in medicine: official journal
-    of the Society of Magnetic Resonance in Medicine / Society of Magnetic
-    Resonance in Medicine}}} \textbf{\bibinfo{volume}{53}},
-    \bibinfo{pages}{1432--1440}, \url{10.1002/mrm.20508} (\bibinfo{year}{2005}).
+  of the Society of Magnetic Resonance in Medicine / Society of Magnetic
+  Resonance in Medicine}}} \textbf{\bibinfo{volume}{53}},
+  \bibinfo{pages}{1432--1440} (\bibinfo{year}{2005}).
 
 \bibitem{Henriques2021-lk}
 \bibinfo{author}{Henriques, R.~N.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Diffusional kurtosis imaging in the
-    diffusion imaging in python project}}.
+  diffusion imaging in python project}}.
 \newblock {\emph{\JournalTitle{Front. Hum. Neurosci.}}}
-    \textbf{\bibinfo{volume}{15}}, \bibinfo{pages}{390} (\bibinfo{year}{2021}).
+  \textbf{\bibinfo{volume}{15}}, \bibinfo{pages}{390} (\bibinfo{year}{2021}).
+
+\bibitem{datalad}
+\bibinfo{author}{Halchenko, Y.~O.} \emph{et~al.}
+\newblock \bibinfo{journal}{\bibinfo{title}{{DataLad: distributed system for
+  joint management of code, data, and their relationship}}}.
+\newblock {\emph{\JournalTitle{{Journal of Open Source Software}}}}
+  \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{3262},
+  \url{10.21105/joss.03262} (\bibinfo{year}{2021}).
+
+\bibitem{hbnpod2qsiprepdata}
+\bibinfo{author}{Richie-Halford, A.} \emph{et~al.}
+\newblock \bibinfo{title}{{Healthy Brain Network QSIPrep Derivatives}}.
+\newblock \bibinfo{howpublished}{\url{https://doi.org/10.5281/zenodo.7047785}}
+  (\bibinfo{year}{2022}).
 
 \bibitem{Fonov2009-ze}
 \bibinfo{author}{Fonov, V.~S.}, \bibinfo{author}{Evans, A.~C.},
-    \bibinfo{author}{McKinstry, R.~C.}, \bibinfo{author}{Almli, C.~R.} \&
-    \bibinfo{author}{Collins, D.~L.}
+  \bibinfo{author}{McKinstry, R.~C.}, \bibinfo{author}{Almli, C.~R.} \&
+  \bibinfo{author}{Collins, D.~L.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Unbiased nonlinear average
-    age-appropriate brain templates from birth to adulthood}}.
+  age-appropriate brain templates from birth to adulthood}}.
 \newblock {\emph{\JournalTitle{Neuroimage}}} \textbf{\bibinfo{volume}{47}},
-    \bibinfo{pages}{S102} (\bibinfo{year}{2009}).
+  \bibinfo{pages}{S102} (\bibinfo{year}{2009}).
+
+\bibitem{hbnpod2afqdata}
+\bibinfo{author}{Richie-Halford, A.} \emph{et~al.}
+\newblock \bibinfo{title}{{Healthy Brain Network AFQ Derivatives}}.
+\newblock \bibinfo{howpublished}{\url{https://doi.org/10.5281/zenodo.7048954}}
+  (\bibinfo{year}{2022}).
+
+\bibitem{hbn-pod2-osf}
+\bibinfo{author}{Richie-Halford, A.} \& \bibinfo{author}{Rokem, A.}
+\newblock \bibinfo{title}{Hbn-pod2 qc}, \url{10.17605/OSF.IO/8CY32}
+  (\bibinfo{year}{2022}).
 
 \bibitem{ancona2019gradient}
 \bibinfo{author}{Ancona, M.}, \bibinfo{author}{Ceolini, E.},
-    \bibinfo{author}{{\"O}ztireli, C.} \& \bibinfo{author}{Gross, M.}
+  \bibinfo{author}{{\"O}ztireli, C.} \& \bibinfo{author}{Gross, M.}
 \newblock \bibinfo{title}{{Gradient-Based Attribution Methods}}.
 \newblock In \bibinfo{editor}{Samek, W.}, \bibinfo{editor}{Montavon, G.},
-    \bibinfo{editor}{Vedaldi, A.}, \bibinfo{editor}{Hansen, L.~K.} \&
-    \bibinfo{editor}{M{\"u}ller, K.-R.} (eds.)
-    \emph{\bibinfo{booktitle}{{Explainable AI: Interpreting, Explaining and
-    Visualizing Deep Learning}}}, \bibinfo{pages}{169--191},
-    \url{10.1007/978-3-030-28954-6\_9} (\bibinfo{publisher}{Springer
-    International Publishing}, \bibinfo{address}{Cham}, \bibinfo{year}{2019}).
+  \bibinfo{editor}{Vedaldi, A.}, \bibinfo{editor}{Hansen, L.~K.} \&
+  \bibinfo{editor}{M{\"u}ller, K.-R.} (eds.)
+  \emph{\bibinfo{booktitle}{{Explainable AI: Interpreting, Explaining and
+  Visualizing Deep Learning}}}, \bibinfo{pages}{169--191},
+  \url{10.1007/978-3-030-28954-6\_9} (\bibinfo{publisher}{Springer
+  International Publishing}, \bibinfo{address}{Cham}, \bibinfo{year}{2019}).
 
 \bibitem{sayres2019using}
 \bibinfo{author}{Sayres, R.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Using a Deep Learning Algorithm
-    and Integrated Gradients Explanation to Assist Grading for Diabetic
-    Retinopathy}}}.
+  and Integrated Gradients Explanation to Assist Grading for Diabetic
+  Retinopathy}}}.
 \newblock {\emph{\JournalTitle{Ophthalmology}}} \textbf{\bibinfo{volume}{126}},
-    \bibinfo{pages}{552--564}, \url{10.1016/j.ophtha.2018.11.016}
-    (\bibinfo{year}{2019}).
+  \bibinfo{pages}{552--564}, \url{10.1016/j.ophtha.2018.11.016}
+  (\bibinfo{year}{2019}).
 
 \bibitem{Mehta2021-zp}
 \bibinfo{author}{Mehta, P.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Automated detection of glaucoma
-    with interpretable machine learning using clinical data and multi-modal
-    retinal images}}.
+  with interpretable machine learning using clinical data and multi-modal
+  retinal images}}.
 \newblock {\emph{\JournalTitle{Am. J. Ophthalmol.}}}  (\bibinfo{year}{2021}).
 
 \bibitem{wargnier-dauchelle2021interpretable}
 \bibinfo{author}{Wargnier-Dauchelle, V.}, \bibinfo{author}{Grenier, T.},
-    \bibinfo{author}{Durand-Dubief, F.}, \bibinfo{author}{Cotton, F.} \&
-    \bibinfo{author}{Sdika, M.}
+  \bibinfo{author}{Durand-Dubief, F.}, \bibinfo{author}{Cotton, F.} \&
+  \bibinfo{author}{Sdika, M.}
 \newblock \bibinfo{title}{{A More Interpretable Classifier For Multiple
-    Sclerosis}}.
+  Sclerosis}}.
 \newblock In \emph{\bibinfo{booktitle}{{2021 IEEE 18th International Symposium
-    on Biomedical Imaging (ISBI)}}}, \bibinfo{pages}{1062--1066},
-    \url{10.1109/ISBI48211.2021.9434074} (\bibinfo{year}{2021}).
+  on Biomedical Imaging (ISBI)}}}, \bibinfo{pages}{1062--1066},
+  \url{10.1109/ISBI48211.2021.9434074} (\bibinfo{year}{2021}).
 
 \bibitem{integrated-gradients-tutorial}
 \bibinfo{author}{TensorFlow~Authors, T.}
 \newblock \bibinfo{title}{Integrated gradients tutorial}.
 \newblock
-    \bibinfo{howpublished}{\url{https://www.tensorflow.org/tutorials/interpretability/integrated_gradients}}
-    (\bibinfo{year}{2021}).
+  \bibinfo{howpublished}{\url{https://www.tensorflow.org/tutorials/interpretability/integrated_gradients}}
+  (\bibinfo{year}{2021}).
 \newblock \bibinfo{note}{Accessed: 2021-11-15}.
 
 \bibitem{esteban2017mriqc}
 \bibinfo{author}{Esteban, O.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{MRIQC: Advancing the automatic
-    prediction of image quality in MRI from unseen sites}}}.
+  prediction of image quality in MRI from unseen sites}}}.
 \newblock {\emph{\JournalTitle{PloS one}}} \textbf{\bibinfo{volume}{12}},
-    \bibinfo{pages}{e0184661}, \url{10.1371/journal.pone.0184661}
-    (\bibinfo{year}{2017}).
+  \bibinfo{pages}{e0184661} (\bibinfo{year}{2017}).
 
 \bibitem{velez2007balanced}
 \bibinfo{author}{Velez, D.~R.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{A balanced accuracy function for
-    epistasis modeling in imbalanced datasets using multifactor dimensionality
-    reduction}}}.
+  epistasis modeling in imbalanced datasets using multifactor dimensionality
+  reduction}}}.
 \newblock {\emph{\JournalTitle{Genetic epidemiology}}}
-    \textbf{\bibinfo{volume}{31}}, \bibinfo{pages}{306--315},
-    \url{10.1002/gepi.20211} (\bibinfo{year}{2007}).
+  \textbf{\bibinfo{volume}{31}}, \bibinfo{pages}{306--315}
+  (\bibinfo{year}{2007}).
 
 \bibitem{richie-halford2021multidimensional}
 \bibinfo{author}{Richie-Halford, A.}, \bibinfo{author}{Yeatman, J.~D.},
-    \bibinfo{author}{Simon, N.} \& \bibinfo{author}{Rokem, A.}
+  \bibinfo{author}{Simon, N.} \& \bibinfo{author}{Rokem, A.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Multidimensional analysis and
-    detection of informative features in human brain white matter}}}.
+  detection of informative features in human brain white matter}}}.
 \newblock {\emph{\JournalTitle{PLoS computational biology}}}
-    \textbf{\bibinfo{volume}{17}}, \bibinfo{pages}{e1009136},
-    \url{10.1371/journal.pcbi.1009136} (\bibinfo{year}{2021}).
+  \textbf{\bibinfo{volume}{17}}, \bibinfo{pages}{e1009136},
+  \url{10.1371/journal.pcbi.1009136} (\bibinfo{year}{2021}).
 
 \bibitem{Johnson2007-kl}
 \bibinfo{author}{Johnson, W.~E.}, \bibinfo{author}{Li, C.} \&
-    \bibinfo{author}{Rabinovic, A.}
+  \bibinfo{author}{Rabinovic, A.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Adjusting batch effects in
-    microarray expression data using empirical Bayes methods}}}.
+  microarray expression data using empirical Bayes methods}}}.
 \newblock {\emph{\JournalTitle{Biostatistics}}} \textbf{\bibinfo{volume}{8}},
-    \bibinfo{pages}{118--127}, \url{10.1093/biostatistics/kxj037}
-    (\bibinfo{year}{2007}).
+  \bibinfo{pages}{118--127}, \url{10.1093/biostatistics/kxj037}
+  (\bibinfo{year}{2007}).
 
 \bibitem{fortin2018-hk}
 \bibinfo{author}{Fortin, J.-P.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Harmonization of cortical
-    thickness measurements across scanners and sites}}}.
+  thickness measurements across scanners and sites}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{167}},
-    \bibinfo{pages}{104--120}, \url{10.1016/j.neuroimage.2017.11.024}
-    (\bibinfo{year}{2018}).
+  \bibinfo{pages}{104--120} (\bibinfo{year}{2018}).
 
 \bibitem{fortin2017-be}
 \bibinfo{author}{Fortin, J.-P.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Harmonization of multi-site
-    diffusion tensor imaging data}}}.
+  diffusion tensor imaging data}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{161}},
-    \bibinfo{pages}{149--170}, \url{10.1016/j.neuroimage.2017.08.047}
-    (\bibinfo{year}{2017}).
+  \bibinfo{pages}{149--170} (\bibinfo{year}{2017}).
 
 \bibitem{nielson2018detecting}
 \bibinfo{author}{Nielson, D.~M.} \emph{et~al.}
-\newblock \bibinfo{journal}{\bibinfo{title}{Detecting and harmonizing scanner
-    differences in the abcd study - annual release 1.0}}.
+\newblock \bibinfo{journal}{\bibinfo{title}{{Detecting and harmonizing scanner
+  differences in the ABCD study - annual release 1.0}}}.
 \newblock {\emph{\JournalTitle{bioRxiv}}} \url{10.1101/309260}
-    (\bibinfo{year}{2018}).
-\newblock
-    \eprint{https://www.biorxiv.org/content/early/2018/05/02/309260.full.pdf}.
+  (\bibinfo{year}{2018}).
 
 \bibitem{neurocombat-sklearn}
 \bibinfo{author}{Pinaya, W. H.~L.}
@@ -2348,274 +2400,269 @@ In order to separate data from analysis code \cite{Wilson2017-rj}, we provide in
 
 \bibitem{nelson2020biomarkers}
 \bibinfo{author}{Nelson, P.~G.}, \bibinfo{author}{Promislow, D. E.~L.} \&
-    \bibinfo{author}{Masel, J.}
+  \bibinfo{author}{Masel, J.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Biomarkers for Aging Identified in
-    Cross-sectional Studies Tend to Be Non-causative}}}.
+  Cross-sectional Studies Tend to Be Non-causative}}}.
 \newblock {\emph{\JournalTitle{The journals of gerontology. Series A,
-    Biological sciences and medical sciences}}} \textbf{\bibinfo{volume}{75}},
-    \bibinfo{pages}{466--472}, \url{10.1093/gerona/glz174}
-    (\bibinfo{year}{2020}).
+  Biological sciences and medical sciences}}} \textbf{\bibinfo{volume}{75}},
+  \bibinfo{pages}{466--472}, \url{10.1093/gerona/glz174}
+  (\bibinfo{year}{2020}).
 
 \bibitem{franke2010estimating}
 \bibinfo{author}{Franke, K.}, \bibinfo{author}{Ziegler, G.},
-    \bibinfo{author}{Kl{\"o}ppel, S.}, \bibinfo{author}{Gaser, C.} \&
-    \bibinfo{author}{{Alzheimer's Disease Neuroimaging Initiative}}.
+  \bibinfo{author}{Kl{\"o}ppel, S.}, \bibinfo{author}{Gaser, C.} \&
+  \bibinfo{author}{{Alzheimer's Disease Neuroimaging Initiative}}.
 \newblock \bibinfo{journal}{\bibinfo{title}{{Estimating the age of healthy
-    subjects from T1-weighted MRI scans using kernel methods: exploring the
-    influence of various parameters}}}.
+  subjects from T1-weighted MRI scans using kernel methods: exploring the
+  influence of various parameters}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{50}},
-    \bibinfo{pages}{883--892}, \url{10.1016/j.neuroimage.2010.01.005}
-    (\bibinfo{year}{2010}).
+  \bibinfo{pages}{883--892}, \url{10.1016/j.neuroimage.2010.01.005}
+  (\bibinfo{year}{2010}).
 
 \bibitem{cole2019brain}
 \bibinfo{author}{Cole, J.~H.}, \bibinfo{author}{Marioni, R.~E.},
-    \bibinfo{author}{Harris, S.~E.} \& \bibinfo{author}{Deary, I.~J.}
+  \bibinfo{author}{Harris, S.~E.} \& \bibinfo{author}{Deary, I.~J.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Brain age and other bodily 'ages':
-    implications for neuropsychiatry}}}.
+  implications for neuropsychiatry}}}.
 \newblock {\emph{\JournalTitle{Molecular psychiatry}}}
-    \textbf{\bibinfo{volume}{24}}, \bibinfo{pages}{266--281},
-    \url{10.1038/s41380-018-0098-1} (\bibinfo{year}{2019}).
+  \textbf{\bibinfo{volume}{24}}, \bibinfo{pages}{266--281},
+  \url{10.1038/s41380-018-0098-1} (\bibinfo{year}{2019}).
 
 \bibitem{yeatman2014lifespan}
 \bibinfo{author}{Yeatman, J.~D.}, \bibinfo{author}{Wandell, B.~A.} \&
-    \bibinfo{author}{Mezer, A.~A.}
+  \bibinfo{author}{Mezer, A.~A.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Lifespan maturation and
-    degeneration of human brain white matter}}}.
+  degeneration of human brain white matter}}}.
 \newblock {\emph{\JournalTitle{Nature communications}}}
-    \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{4932}, \url{10.1038/ncomms5932}
-    (\bibinfo{year}{2014}).
+  \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{4932}, \url{10.1038/ncomms5932}
+  (\bibinfo{year}{2014}).
 
 \bibitem{Pestilli2021}
 \bibinfo{author}{Pestilli, F.} \emph{et~al.}
 \newblock \bibinfo{title}{A community-driven development of the {B}rain
-    {I}maging {D}ata {S}tandard (bids) to describe macroscopic brain
-    connections}, \url{10.17605/OSF.IO/U4G5P} (\bibinfo{year}{2021}).
+  {I}maging {D}ata {S}tandard (bids) to describe macroscopic brain
+  connections}, \url{10.17605/OSF.IO/U4G5P} (\bibinfo{year}{2021}).
 
 \bibitem{yeatman2018browser}
 \bibinfo{author}{Yeatman, J.~D.}, \bibinfo{author}{Richie-Halford, A.},
-    \bibinfo{author}{Smith, J.~K.}, \bibinfo{author}{Keshavan, A.} \&
-    \bibinfo{author}{Rokem, A.}
+  \bibinfo{author}{Smith, J.~K.}, \bibinfo{author}{Keshavan, A.} \&
+  \bibinfo{author}{Rokem, A.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{A browser-based tool for
-    visualization and analysis of diffusion MRI data}}}.
+  visualization and analysis of diffusion MRI data}}}.
 \newblock {\emph{\JournalTitle{Nature communications}}}
-    \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{940},
-    \url{10.1038/s41467-018-03297-7} (\bibinfo{year}{2018}).
+  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{940},
+  \url{10.1038/s41467-018-03297-7} (\bibinfo{year}{2018}).
 
 \bibitem{yeh2020-nu}
 \bibinfo{author}{Yeh, C.-H.}, \bibinfo{author}{Jones, D.~K.},
-    \bibinfo{author}{Liang, X.}, \bibinfo{author}{Descoteaux, M.} \&
-    \bibinfo{author}{Connelly, A.}
+  \bibinfo{author}{Liang, X.}, \bibinfo{author}{Descoteaux, M.} \&
+  \bibinfo{author}{Connelly, A.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Mapping Structural Connectivity
-    Using Diffusion MRI: Challenges and Opportunities}}}.
+  Using Diffusion MRI: Challenges and Opportunities}}}.
 \newblock {\emph{\JournalTitle{Journal of magnetic resonance imaging: JMRI}}}
-    \url{10.1002/jmri.27188} (\bibinfo{year}{2020}).
+  (\bibinfo{year}{2020}).
 
 \bibitem{siegel2017quality}
 \bibinfo{author}{Siegel, J.~S.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Data Quality Influences Observed
-    Links Between Functional Connectivity and Behavior}}}.
+  Links Between Functional Connectivity and Behavior}}}.
 \newblock {\emph{\JournalTitle{Cerebral cortex}}}
-    \textbf{\bibinfo{volume}{27}}, \bibinfo{pages}{4492--4502},
-    \url{10.1093/cercor/bhw253} (\bibinfo{year}{2017}).
+  \textbf{\bibinfo{volume}{27}}, \bibinfo{pages}{4492--4502},
+  \url{10.1093/cercor/bhw253} (\bibinfo{year}{2017}).
 
 \bibitem{power2012spurious}
 \bibinfo{author}{Power, J.~D.}, \bibinfo{author}{Barnes, K.~A.},
-    \bibinfo{author}{Snyder, A.~Z.}, \bibinfo{author}{Schlaggar, B.~L.} \&
-    \bibinfo{author}{Petersen, S.~E.}
+  \bibinfo{author}{Snyder, A.~Z.}, \bibinfo{author}{Schlaggar, B.~L.} \&
+  \bibinfo{author}{Petersen, S.~E.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Spurious but systematic
-    correlations in functional connectivity MRI networks arise from subject
-    motion}}}.
+  correlations in functional connectivity MRI networks arise from subject
+  motion}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{59}},
-    \bibinfo{pages}{2142--2154}, \url{10.1016/j.neuroimage.2011.10.018}
-    (\bibinfo{year}{2012}).
+  \bibinfo{pages}{2142--2154}, \url{10.1016/j.neuroimage.2011.10.018}
+  (\bibinfo{year}{2012}).
 
 \bibitem{satterthwaite2012impact}
 \bibinfo{author}{Satterthwaite, T.~D.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Impact of in-scanner head motion
-    on multiple measures of functional connectivity: relevance for studies of
-    neurodevelopment in youth}}}.
+  on multiple measures of functional connectivity: relevance for studies of
+  neurodevelopment in youth}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{60}},
-    \bibinfo{pages}{623--632}, \url{10.1016/j.neuroimage.2011.12.063}
-    (\bibinfo{year}{2012}).
+  \bibinfo{pages}{623--632}, \url{10.1016/j.neuroimage.2011.12.063}
+  (\bibinfo{year}{2012}).
 
 \bibitem{fair2012distinct}
 \bibinfo{author}{Fair, D.~A.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Distinct neural signatures
-    detected for ADHD subtypes after controlling for micro-movements in resting
-    state functional connectivity MRI data}}}.
+  detected for ADHD subtypes after controlling for micro-movements in resting
+  state functional connectivity MRI data}}}.
 \newblock {\emph{\JournalTitle{Frontiers in systems neuroscience}}}
-    \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{80},
-    \url{10.3389/fnsys.2012.00080} (\bibinfo{year}{2012}).
+  \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{80},
+  \url{10.3389/fnsys.2012.00080} (\bibinfo{year}{2012}).
 
 \bibitem{yendiki2014spurious}
 \bibinfo{author}{Yendiki, A.}, \bibinfo{author}{Koldewyn, K.},
-    \bibinfo{author}{Kakunoori, S.}, \bibinfo{author}{Kanwisher, N.} \&
-    \bibinfo{author}{Fischl, B.}
+  \bibinfo{author}{Kakunoori, S.}, \bibinfo{author}{Kanwisher, N.} \&
+  \bibinfo{author}{Fischl, B.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Spurious group differences due to
-    head motion in a diffusion MRI study}}}.
+  head motion in a diffusion MRI study}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{88}},
-    \bibinfo{pages}{79--90}, \url{10.1016/j.neuroimage.2013.11.027}
-    (\bibinfo{year}{2014}).
+  \bibinfo{pages}{79--90}, \url{10.1016/j.neuroimage.2013.11.027}
+  (\bibinfo{year}{2014}).
 
 \bibitem{Ghassemi2021-zg}
 \bibinfo{author}{Ghassemi, M.}, \bibinfo{author}{Oakden-Rayner, L.} \&
-    \bibinfo{author}{Beam, A.~L.}
+  \bibinfo{author}{Beam, A.~L.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{The false hope of current
-    approaches to explainable artificial intelligence in health care}}}.
+  approaches to explainable artificial intelligence in health care}}}.
 \newblock {\emph{\JournalTitle{The Lancet. Digital health}}}
-    \textbf{\bibinfo{volume}{3}}, \bibinfo{pages}{e745--e750},
-    \url{10.1016/S2589-7500(21)00208-9} (\bibinfo{year}{2021}).
+  \textbf{\bibinfo{volume}{3}}, \bibinfo{pages}{e745--e750},
+  \url{10.1016/S2589-7500(21)00208-9} (\bibinfo{year}{2021}).
 
 \bibitem{richiehalford2022qsiqc}
 \bibinfo{author}{Richie-Halford, A.} \& \bibinfo{author}{Rokem, A.}
 \newblock \bibinfo{title}{Qsiqc: Predict diffusion mri quality ratings},
-    \url{10.5281/zenodo.5949269} (\bibinfo{year}{2022}).
+  \url{10.5281/zenodo.5949269} (\bibinfo{year}{2022}).
 
 \bibitem{tobe2021longitudinal}
 \bibinfo{author}{Tobe, R.~H.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{A longitudinal resource for
-    studying connectome development and its psychiatric associations during
-    childhood}}.
+  studying connectome development and its psychiatric associations during
+  childhood}}.
 \newblock {\emph{\JournalTitle{medRxiv}}} \url{10.1101/2021.03.09.21253168}
-    (\bibinfo{year}{2021}).
-\newblock
-    \eprint{https://www.medrxiv.org/content/early/2021/03/12/2021.03.09.21253168.full.pdf}.
+  (\bibinfo{year}{2021}).
 
 \bibitem{rosen2018quantitative}
 \bibinfo{author}{Rosen, A. F.~G.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Quantitative assessment of
-    structural image quality}}}.
+  structural image quality}}}.
 \newblock {\emph{\JournalTitle{NeuroImage}}} \textbf{\bibinfo{volume}{169}},
-    \bibinfo{pages}{407--418}, \url{10.1016/j.neuroimage.2017.12.059}
-    (\bibinfo{year}{2018}).
+  \bibinfo{pages}{407--418} (\bibinfo{year}{2018}).
 
 \bibitem{avesani2019-ey}
 \bibinfo{author}{Avesani, P.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{The open diffusion data
-    derivatives, brain data upcycling via integrated publishing of derivatives
-    and reproducible open cloud services}}}.
-\newblock {\emph{\JournalTitle{Scientific data}}} \textbf{\bibinfo{volume}{6}},
-    \bibinfo{pages}{69}, \url{10.1038/s41597-019-0073-y} (\bibinfo{year}{2019}).
+  derivatives, brain data upcycling via integrated publishing of derivatives
+  and reproducible open cloud services}}}.
+\newblock {\emph{\JournalTitle{Scientific Data}}} \textbf{\bibinfo{volume}{6}},
+  \bibinfo{pages}{69} (\bibinfo{year}{2019}).
 
 \bibitem{nobrainer}
 \bibinfo{author}{Kaczmarzyk, J.} \emph{et~al.}
 \newblock \bibinfo{title}{neuronets/nobrainer: 0.2.0},
-    \url{10.5281/zenodo.5803350} (\bibinfo{year}{2021}).
+  \url{10.5281/zenodo.5803350} (\bibinfo{year}{2021}).
 
 \bibitem{kluyver2016jupyter}
 \bibinfo{author}{Kluyver, T.} \emph{et~al.}
 \newblock \bibinfo{title}{{Jupyter Notebooks -- a publishing format for
-    reproducible computational workflows}}.
+  reproducible computational workflows}}.
 \newblock In \emph{\bibinfo{booktitle}{{Positioning and Power in Academic
-    Publishing: Players, Agents and Agendas}}}, \bibinfo{pages}{87--90},
-    \url{10.3233/978-1-61499-649-1-87} (\bibinfo{publisher}{IOS Press},
-    \bibinfo{address}{Amsterdam, NY}, \bibinfo{year}{2016}).
+  Publishing: Players, Agents and Agendas}}}, \bibinfo{pages}{87--90},
+  \url{10.3233/978-1-61499-649-1-87} (\bibinfo{publisher}{IOS Press},
+  \bibinfo{address}{Amsterdam, NY}, \bibinfo{year}{2016}).
 
 \bibitem{merkel2014docker}
 \bibinfo{author}{Merkel, D.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Docker: lightweight linux
-    containers for consistent development and deployment}}.
+  containers for consistent development and deployment}}.
 \newblock {\emph{\JournalTitle{Linux journal}}}
-    \textbf{\bibinfo{volume}{2014}}, \bibinfo{pages}{2} (\bibinfo{year}{2014}).
+  \textbf{\bibinfo{volume}{2014}}, \bibinfo{pages}{2} (\bibinfo{year}{2014}).
 
 \bibitem{richiehalford2022hbnpod2qc}
 \bibinfo{author}{Richie-Halford, A.} \& \bibinfo{author}{Rokem, A.}
 \newblock \bibinfo{title}{{HBN-POD2-QC: Code accompanying the HBN-POD2
-    manuscript}}, \url{10.5281/zenodo.6462128} (\bibinfo{year}{2022}).
+  manuscript}}, \url{10.5281/zenodo.6462128} (\bibinfo{year}{2022}).
 
 \bibitem{mckinney-proc-scipy-2010}
 \bibinfo{author}{{M}c{K}inney, W.}
 \newblock \bibinfo{title}{{D}ata {S}tructures for {S}tatistical {C}omputing in
-    {P}ython}.
+  {P}ython}.
 \newblock In \bibinfo{editor}{{S}t\'efan van~der {W}alt} \&
-    \bibinfo{editor}{{J}arrod {M}illman} (eds.)
-    \emph{\bibinfo{booktitle}{{P}roceedings of the 9th {P}ython in {S}cience
-    {C}onference}}, \bibinfo{pages}{56--61}, \url{10.25080/Majora-92bf1922-00a}
-    (\bibinfo{year}{2010}).
+  \bibinfo{editor}{{J}arrod {M}illman} (eds.)
+  \emph{\bibinfo{booktitle}{{P}roceedings of the 9th {P}ython in {S}cience
+  {C}onference}}, \bibinfo{pages}{56--61}, \url{10.25080/Majora-92bf1922-00a}
+  (\bibinfo{year}{2010}).
 
 \bibitem{reback2020pandas}
 \bibinfo{author}{pandas~development team, T.}
 \newblock \bibinfo{title}{pandas-dev/pandas: Pandas},
-    \url{10.5281/zenodo.3509134} (\bibinfo{year}{2020}).
+  \url{10.5281/zenodo.3509134} (\bibinfo{year}{2020}).
 
 \bibitem{harris2020array}
 \bibinfo{author}{Harris, C.~R.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Array programming with {NumPy}}}.
 \newblock {\emph{\JournalTitle{Nature}}} \textbf{\bibinfo{volume}{585}},
-    \bibinfo{pages}{357--362}, \url{10.1038/s41586-020-2649-2}
-    (\bibinfo{year}{2020}).
+  \bibinfo{pages}{357--362}, \url{10.1038/s41586-020-2649-2}
+  (\bibinfo{year}{2020}).
 
 \bibitem{hunter2007matplotlib}
 \bibinfo{author}{Hunter, J.~D.}
 \newblock \bibinfo{journal}{\bibinfo{title}{Matplotlib: A 2d graphics
-    environment}}.
+  environment}}.
 \newblock {\emph{\JournalTitle{Computing in Science \& Engineering}}}
-    \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{90--95},
-    \url{10.1109/MCSE.2007.55} (\bibinfo{year}{2007}).
+  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{90--95},
+  \url{10.1109/MCSE.2007.55} (\bibinfo{year}{2007}).
 
 \bibitem{waskom2021seaborn}
 \bibinfo{author}{Waskom, M.~L.}
 \newblock \bibinfo{journal}{\bibinfo{title}{seaborn: statistical data
-    visualization}}.
+  visualization}}.
 \newblock {\emph{\JournalTitle{Journal of Open Source Software}}}
-    \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{3021},
-    \url{10.21105/joss.03021} (\bibinfo{year}{2021}).
+  \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{3021},
+  \url{10.21105/joss.03021} (\bibinfo{year}{2021}).
 
 \bibitem{Wilson2017-rj}
 \bibinfo{author}{Wilson, G.} \emph{et~al.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Good enough practices in
-    scientific computing}}}.
+  scientific computing}}}.
 \newblock {\emph{\JournalTitle{PLoS computational biology}}}
-    \textbf{\bibinfo{volume}{13}}, \bibinfo{pages}{e1005510},
-    \url{10.1371/journal.pcbi.1005510} (\bibinfo{year}{2017}).
+  \textbf{\bibinfo{volume}{13}}, \bibinfo{pages}{e1005510},
+  \url{10.1371/journal.pcbi.1005510} (\bibinfo{year}{2017}).
 
 \bibitem{Foster-MSLS2017-rl}
 \bibinfo{author}{Foster, E.~D., MSLS} \& \bibinfo{author}{Deardorff, A., MLIS}.
 \newblock \bibinfo{journal}{\bibinfo{title}{{Open Science Framework (OSF)}}}.
 \newblock {\emph{\JournalTitle{Journal of the Medical Library Association:
-    JMLA}}} \textbf{\bibinfo{volume}{105}}, \url{10.5195/jmla.2017.88}
-    (\bibinfo{year}{2017}).
-
-\bibitem{hbn-pod2-osf}
-\bibinfo{author}{Richie-Halford, A.} \& \bibinfo{author}{Rokem, A.}
-\newblock \bibinfo{title}{Hbn-pod2 qc}, \url{10.17605/OSF.IO/8CY32}
-    (\bibinfo{year}{2022}).
+  JMLA}}} \textbf{\bibinfo{volume}{105}}, \url{10.5195/jmla.2017.88}
+  (\bibinfo{year}{2017}).
 
 \bibitem{nifti}
 \bibinfo{author}{Cox, R.~W.} \emph{et~al.}
 \newblock \bibinfo{title}{{A (sort of) new image data format standard:
-    NiFTI-1}}.
+  NiFTI-1}}.
 \newblock In \emph{\bibinfo{booktitle}{10th Annual Meeting of the Organization
-    for Human Brain Mapping}} (\bibinfo{year}{2004}).
+  for Human Brain Mapping}} (\bibinfo{year}{2004}).
 
 \bibitem{brand2015-vd}
 \bibinfo{author}{Brand, A.}, \bibinfo{author}{Allen, L.},
-    \bibinfo{author}{Altman, M.}, \bibinfo{author}{Hlava, M.} \&
-    \bibinfo{author}{Scott, J.}
+  \bibinfo{author}{Altman, M.}, \bibinfo{author}{Hlava, M.} \&
+  \bibinfo{author}{Scott, J.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Beyond authorship: attribution,
-    contribution, collaboration, and credit}}}.
+  contribution, collaboration, and credit}}}.
 \newblock {\emph{\JournalTitle{Learned publishing: journal of the Association
-    of Learned and Professional Society Publishers}}}
-    \textbf{\bibinfo{volume}{28}}, \bibinfo{pages}{151--155},
-    \url{10.1087/20150211} (\bibinfo{year}{2015}).
+  of Learned and Professional Society Publishers}}}
+  \textbf{\bibinfo{volume}{28}}, \bibinfo{pages}{151--155}
+  (\bibinfo{year}{2015}).
 
 \bibitem{allen2014-oc}
 \bibinfo{author}{Allen, L.}, \bibinfo{author}{Scott, J.},
-    \bibinfo{author}{Brand, A.}, \bibinfo{author}{Hlava, M.} \&
-    \bibinfo{author}{Altman, M.}
+  \bibinfo{author}{Brand, A.}, \bibinfo{author}{Hlava, M.} \&
+  \bibinfo{author}{Altman, M.}
 \newblock \bibinfo{journal}{\bibinfo{title}{{Publishing: Credit where credit is
-    due}}}.
+  due}}}.
 \newblock {\emph{\JournalTitle{Nature}}} \textbf{\bibinfo{volume}{508}},
-    \bibinfo{pages}{312--313}, \url{10.1038/508312a} (\bibinfo{year}{2014}).
+  \bibinfo{pages}{312--313}, \url{10.1038/508312a} (\bibinfo{year}{2014}).
 
 \end{thebibliography}
 
+% \bibliography{hbn-pod2}
 
 \section*{Acknowledgments}
 
 We would like to thank Anisha Keshavan for useful discussions of community
-science and web-based quality control and for her work on SwipesForScience. This
-manuscript was prepared using a limited access dataset obtained from the Child
+science and web-based quality control and for her work on SwipesForScience.
+We would like to thank Adina S. Wagner, Yaroslav O. Halchenko, and Michael Hanke for their guidance in creating the HBN-POD2 Datalad dataset.
+We thank Samuel Buck Johnson for useful discussions of data quality for the HBN structural MRI data.
+This manuscript was prepared using a limited access dataset obtained from the Child
 Mind Institute Biobank, The Healthy Brain Network dataset. This manuscript
 reflects the views of the authors and does not necessarily reflect the opinions
 or views of the Child Mind Institute. This work was supported via BRAIN Initiative grant 1RF1MH121868-01 from the National Institutes of Mental Health. Additional support was provided by grant 1R01EB027585-01 from the National Institutes of Biomedical Imaging and Bioengineering (PI: Eleftherios Garyfallidis). Additional support was provided by R01MH120482 and the Penn/CHOP Lifespan Brain Institute. 
@@ -2642,140 +2689,211 @@ Supervision: A.R. and T.S.;
 Project Administration: A.R-H. and A.R.;
 Funding Acquisition: A.R. and T.S.
 
-\section*{The \emph{Fibr} Community Science Consortium Authorship
-\comment{The contents of this subsection were previously in an appendix. We have moved it to the main text at the editor's request.}
+The following community raters provided over $3,000$ ratings and elected to be included in the \emph{Fibr} Community Science Consortium. They are considered bona fide authors on this paper.
+\newline
+\newline
+{\raggedright
+    \author{\orcid{0000-0003-1466-0352} Nicholas J. Abbott\textsuperscript{12},}
+    \author{\orcid{0000-0001-6511-1957} John A. E. Anderson\textsuperscript{13},}
+    \author{Gagana B\textsuperscript{14},}
+    \author{\orcid{0000-0002-0762-2596} MaryLena Bleile\textsuperscript{15},}
+    \author{\orcid{0000-0002-8356-7701} Peter S. Bloomfield\textsuperscript{14},}
+    \author{Vince Bottom\textsuperscript{16},}
+    \author{Josiane Bourque\textsuperscript{17},}
+    \author{\orcid{0000-0003-0787-6892} Rory Boyle\textsuperscript{18},}
+    \author{\orcid{0000-0002-1627-6576} Julia K. Brynildsen\textsuperscript{17},}
+    \author{\orcid{0000-0002-4391-0472} Navona Calarco\textsuperscript{19},}
+    \author{\orcid{0000-0001-5834-7101} Jaime J. Castrellon\textsuperscript{20},}
+    \author{\orcid{0000-0003-0944-6159} Natasha Chaku\textsuperscript{21},}
+    \author{\orcid{0000-0002-0117-9757} Bosi Chen\textsuperscript{22, 23},}
+    \author{\orcid{0000-0003-0866-3477} Sidhant Chopra\textsuperscript{14},}
+    \author{\orcid{0000-0001-8249-7396} Emily B. J. Coffey\textsuperscript{24},}
+    \author{\orcid{0000-0003-0928-2668} Nigel Colenbier\textsuperscript{25},}
+    \author{Daniel J. Cox\textsuperscript{26},}
+    \author{James Elliott Crippen\textsuperscript{14},}
+    \author{\orcid{0000-0002-3805-2936} Jacob J. Crouse\textsuperscript{27},}
+    \author{\orcid{0000-0003-0316-3895} Szabolcs David\textsuperscript{28},}
+    \author{\orcid{0000-0002-1378-2756} Benjamin De Leener\textsuperscript{29},}
+    \author{Gwyneth Delap\textsuperscript{30},}
+    \author{\orcid{0000-0001-8925-0871} Zhi-De Deng\textsuperscript{31},}
+    \author{\orcid{0000-0003-4946-0350} Jules Roger Dugre\textsuperscript{32},}
+    \author{\orcid{0000-0001-7061-7995} Anders Eklund\textsuperscript{33},}
+    \author{\orcid{0000-0002-7570-0939} Kirsten Ellis\textsuperscript{34},}
+    \author{\orcid{0000-0002-8386-4423} Arielle Ered\textsuperscript{35},}
+    \author{\orcid{0000-0002-3684-0605} Harry Farmer\textsuperscript{36},}
+    \author{\orcid{0000-0003-1814-7206} Joshua Faskowitz\textsuperscript{37},}
+    \author{\orcid{0000-0003-2457-1345} Jody E. Finch\textsuperscript{38},}
+    \author{\orcid{0000-0003-0077-7859} Guillaume Flandin\textsuperscript{39},}
+    \author{\orcid{0000-0001-7014-4665} Matthew W. Flounders\textsuperscript{14},}
+    \author{\orcid{0000-0001-8874-7843} Leon Fonville\textsuperscript{40},}
+    \author{Summer B. Frandsen\textsuperscript{41},}
+    \author{\orcid{0000-0003-3595-4210} Dea Garic\textsuperscript{42},}
+    \author{\orcid{0000-0002-9561-8983} Patricia Garrido-Vásquez\textsuperscript{43},}
+    \author{\orcid{0000-0002-7209-1736} Gabriel Gonzalez-Escamilla\textsuperscript{44},}
+    \author{\orcid{0000-0003-0383-4601} Shannon E. Grogans\textsuperscript{45},}
+    \author{\orcid{0000-0002-8653-1157} Mareike Grotheer\textsuperscript{46},}
+    \author{\orcid{0000-0001-6504-191X} David C. Gruskin\textsuperscript{47},}
+    \author{Guido I. Guberman\textsuperscript{48},}
+    \author{\orcid{0000-0003-0597-7956} Edda Briana Haggerty\textsuperscript{17},}
+    \author{Younghee Hahn\textsuperscript{14},}
+    \author{Elizabeth H. Hall\textsuperscript{16},}
+    \author{\orcid{0000-0002-0469-8886} Jamie L. Hanson\textsuperscript{49},}
+    \author{\orcid{0000-0002-8970-1983} Yann Harel\textsuperscript{50},}
+    \author{\orcid{0000-0002-8770-7396} Bruno Hebling Vieira\textsuperscript{51},}
+    \author{\orcid{0000-0002-7973-6752} Meike D. Hettwer\textsuperscript{52},}
+    \author{Harriet Hobday\textsuperscript{14},}
+    \author{\orcid{0000-0001-6738-1029} Corey Horien\textsuperscript{53},}
+    \author{Fan Huang\textsuperscript{14},}
+    \author{Zeeshan M. Huque\textsuperscript{17},}
+    \author{\orcid{0000-0002-5297-2229} Anthony R. James\textsuperscript{54},}
+    \author{\orcid{0000-0002-0963-9738} Isabella Kahhale\textsuperscript{49},}
+    \author{Sarah L. H. Kamhout\textsuperscript{55},}
+    \author{\orcid{0000-0003-4708-1672} Arielle S. Keller\textsuperscript{17},}
+    \author{\orcid{0000-0001-6840-4616} Harmandeep Singh Khera\textsuperscript{14},}
+    \author{\orcid{0000-0001-8915-496X} Gregory Kiar\textsuperscript{56},}
+    \author{\orcid{0000-0003-0786-3039} Peter Alexander Kirk\textsuperscript{39},}
+    \author{\orcid{0000-0003-0949-6754} Simon H. Kohl\textsuperscript{57},}
+    \author{Stephanie A. Korenic\textsuperscript{35},}
+    \author{\orcid{0000-0003-2562-9617} Cole Korponay\textsuperscript{58},}
+    \author{Alyssa K. Kozlowski\textsuperscript{55},}
+    \author{\orcid{0000-0003-0869-648X} Nevena Kraljevic\textsuperscript{57},}
+    \author{\orcid{0000-0002-8688-581X} Alberto Lazari\textsuperscript{59},}
+    \author{\orcid{0000-0002-6100-3235} Mackenzie J. Leavitt\textsuperscript{60},}
+    \author{\orcid{0000-0003-2246-4116} Zhaolong Li\textsuperscript{61},}
+    \author{\orcid{0000-0002-5684-4443} Giulia Liberati\textsuperscript{62},}
+    \author{\orcid{0000-0003-1311-726X} Elizabeth S. Lorenc\textsuperscript{63},}
+    \author{\orcid{0000-0001-5921-1353} Annabelle Julina Lossin\textsuperscript{14},}
+    \author{\orcid{0000-0002-2337-6073} Leon D. Lotter\textsuperscript{57},}
+    \author{\orcid{0000-0001-8702-3923} David M. Lydon-Staley\textsuperscript{17},}
+    \author{\orcid{0000-0003-3228-6501} Christopher R. Madan\textsuperscript{64},}
+    \author{\orcid{0000-0002-6777-4225} Neville Magielse\textsuperscript{57},}
+    \author{\orcid{0000-0002-0771-6795} Hilary A. Marusak\textsuperscript{65},}
+    \author{\orcid{0000-0001-9827-5421} Julien Mayor\textsuperscript{66},}
+    \author{\orcid{0000-0003-3422-0135} Amanda L. McGowan\textsuperscript{17},}
+    \author{Kahini P. Mehta\textsuperscript{17},}
+    \author{\orcid{0000-0002-8888-1572} Steven Lee Meisler\textsuperscript{18},}
+    \author{\orcid{0000-0002-5300-473X} Cleanthis Michael\textsuperscript{67},}
+    \author{\orcid{0000-0002-0225-6320} Mackenzie E. Mitchell\textsuperscript{42},}
+    \author{\orcid{0000-0002-5880-3688} Simon Morand-Beaulieu\textsuperscript{48},}
+    \author{\orcid{0000-0002-0668-2853} Benjamin T. Newman\textsuperscript{68},}
+    \author{\orcid{0000-0002-2717-193X} Jared A. Nielsen\textsuperscript{55},}
+    \author{Shane M. O'Mara\textsuperscript{69},}
+    \author{\orcid{0000-0002-1038-0225} Amar Ojha\textsuperscript{49},}
+    \author{Adam Omary\textsuperscript{14},}
+    \author{\orcid{0000-0003-0859-1311} Evren Özarslan\textsuperscript{70},}
+    \author{\orcid{0000-0002-9329-7207} Linden Parkes\textsuperscript{17},}
+    \author{Madeline Peterson\textsuperscript{55},}
+    \author{Adam Robert Pines\textsuperscript{71},}
+    \author{\orcid{0000-0002-9151-4319} Claudia Pisanu\textsuperscript{72},}
+    \author{\orcid{0000-0001-9495-3184} Ryan R. Rich\textsuperscript{67},}
+    \author{\orcid{0000-0003-1815-6655} Ashish K. Sahoo\textsuperscript{73},}
+    \author{\orcid{0000-0002-6001-7395} Amjad Samara\textsuperscript{61},}
+    \author{Farah Sayed\textsuperscript{17},}
+    \author{\orcid{0000-0002-1925-6669} Jonathan Thore Schneider\textsuperscript{14},}
+    \author{\orcid{0000-0002-0642-1717} Lindsay S. Shaffer\textsuperscript{74},}
+    \author{\orcid{0000-0001-8900-0792} Ekaterina Shatalina\textsuperscript{40},}
+    \author{\orcid{0000-0001-7107-1891} Sara A. Sims\textsuperscript{75},}
+    \author{\orcid{0000-0003-3010-6431} Skyler Sinclair\textsuperscript{14},}
+    \author{\orcid{0000-0002-3127-6427} Jae W. Song\textsuperscript{17},}
+    \author{\orcid{0000-0003-2877-078X} Griffin Stockton Hogrogian\textsuperscript{14},}
+    \author{\orcid{0000-0001-6377-3885} Ursula A. Tooley\textsuperscript{17},}
+    \author{Vaibhav Tripathi\textsuperscript{76},}
+    \author{\orcid{0000-0002-2670-4036} Hamid B. Turker\textsuperscript{77},}
+    \author{\orcid{0000-0003-2998-6849} Sofie Louise Valk\textsuperscript{78},}
+    \author{\orcid{0000-0002-0493-6274} Matthew B. Wall\textsuperscript{40},}
+    \author{Cheryl K. Walther\textsuperscript{73},}
+    \author{\orcid{0000-0001-9871-3006} Yuchao Wang\textsuperscript{14},}
+    \author{\orcid{0000-0003-2193-6003} Bertil Wegmann\textsuperscript{70},}
+    \author{\orcid{0000-0002-9503-2093} Thomas Welton\textsuperscript{79},}
+    \author{\orcid{0000-0003-0917-1570} Alex I. Wiesman\textsuperscript{48},}
+    \author{Andrew G. Wiesman\textsuperscript{14},}
+    \author{Mark Wiesman\textsuperscript{14},}
+    \author{\orcid{0000-0002-0701-9658} Drew E. Winters\textsuperscript{80},}
+    \author{Ruiyi Yuan\textsuperscript{14},}
+    \author{\orcid{0000-0001-8770-4614} Sadie J. Zacharek\textsuperscript{81},}
+    \author{\orcid{0000-0002-0204-6497} Chris Zajner\textsuperscript{82},}
+    \author{\orcid{0000-0001-7207-9641} Ilya Zakharov\textsuperscript{83},}
+    \author{\orcid{0000-0002-9733-380X} Gianpaolo Zammarchi\textsuperscript{72},}
+    \author{\orcid{0000-0001-9240-1327} Dale Zhou\textsuperscript{17},}
+    \author{\orcid{0000-0003-2570-8198} Benjamin Zimmerman\textsuperscript{84},}
+    \author{Kurt Zoner\textsuperscript{14}}
+    \par
 }
 
-The following community raters provided $>3,000$ ratings each and elected to be included in the \emph{Fibr} Community Science Consortium as co-authors on this paper:
-
-\begin{multicols}{3}
-\begin{itemize}[nosep,label={}]
-    \item \orcid{0000-0003-1466-0352} Nicholas J. Abbott
-    \item \orcid{0000-0001-6511-1957} John A. E. Anderson
-    \item \noorcid{} Gagana B.
-    \item \orcid{0000-0002-0762-2596} MaryLena Bleile
-    \item \orcid{0000-0002-8356-7701} Peter S. Bloomfield
-    \item \noorcid{} Vince Bottom
-    \item \noorcid{} Josiane Bourque
-    \item \orcid{0000-0003-0787-6892} Rory Boyle
-    \item \orcid{0000-0002-1627-6576} Julia K. Brynildsen
-    \item \orcid{0000-0002-4391-0472} Navona Calarco
-    \item \orcid{0000-0001-5834-7101} Jaime J. Castrellon
-    \item \orcid{0000-0003-0944-6159} Natasha Chaku
-    \item \orcid{0000-0002-0117-9757} Bosi Chen
-    \item \orcid{0000-0003-0866-3477} Sidhant Chopra
-    \item \orcid{0000-0001-8249-7396} Emily B. J. Coffey
-    \item \orcid{0000-0003-0928-2668} Nigel Colenbier
-    \item \noorcid{} Daniel J. Cox
-    \item \noorcid{} James Elliott Crippen
-    \item \orcid{0000-0002-3805-2936} Jacob J. Crouse
-    \item \orcid{0000-0003-0316-3895} Szabolcs David
-    \item \orcid{0000-0002-1378-2756} Benjamin De Leener
-    \item \noorcid{} Gwyneth Delap
-    \item \orcid{0000-0001-8925-0871} Zhi-De Deng
-    \item \orcid{0000-0003-4946-0350} Jules Roger Dugre
-    \item \orcid{0000-0001-7061-7995} Anders Eklund
-    \item \orcid{0000-0002-7570-0939} Kirsten Ellis
-    \item \orcid{0000-0002-8386-4423} Arielle Ered
-    \item \orcid{0000-0002-3684-0605} Harry Farmer
-    \item \orcid{0000-0003-1814-7206} Joshua Faskowitz
-    \item \orcid{0000-0003-2457-1345} Jody E. Finch
-    \item \orcid{0000-0003-0077-7859} Guillaume Flandin
-    \item \orcid{0000-0001-7014-4665} Matthew W. Flounders
-    \item \orcid{0000-0001-8874-7843} Leon Fonville
-    \item \noorcid{} Summer Frandsen
-    \item \orcid{0000-0003-3595-4210} Dea Garic
-    \item \orcid{0000-0002-9561-8983} Patricia Garrido-Vásquez
-    \item \orcid{0000-0002-7209-1736} Gabriel Gonzalez-Escamilla
-    \item \orcid{0000-0003-0383-4601} Shannon E. Grogans
-    \item \orcid{0000-0002-8653-1157} Mareike Grotheer
-    \item \orcid{0000-0001-6504-191X} David C. Gruskin
-    \item \noorcid{} Guido I. Guberman
-    \item \orcid{0000-0003-0597-7956} Edda Briana Haggerty
-    \item \noorcid{} Younghee Hahn
-    \item \noorcid{} Elizabeth H. Hall
-    \item \orcid{0000-0002-0469-8886} Jamie L. Hanson
-    \item \orcid{0000-0002-8970-1983} Yann Harel
-    \item \orcid{0000-0002-8770-7396} Bruno Hebling Vieira
-    \item \orcid{0000-0002-7973-6752} Meike D. Hettwer
-    \item \orcid{0000-0001-6738-1029} Corey Horien
-    \item \noorcid{} Fan Huang
-    \item \noorcid{} Zeeshan M. Huque
-    \item \orcid{0000-0002-5297-2229} Anthony R. James
-    \item \orcid{0000-0002-0963-9738} Isabella Kahhale
-    \item \noorcid{} Sarah L. H. Kamhout
-    \item \orcid{0000-0003-4708-1672} Arielle S. Keller
-    \item \orcid{0000-0001-6840-4616} Harmandeep Singh Khera
-    \item \orcid{0000-0001-8915-496X} Gregory Kiar
-    \item \orcid{0000-0003-0786-3039} Peter Alexander Kirk
-    \item \orcid{0000-0003-0949-6754} Simon H. Kohl
-    \item \noorcid{} Stephanie A. Korenic
-    \item \orcid{0000-0003-2562-9617} Cole Korponay
-    \item \noorcid{} Alyssa K. Kozlowski
-    \item \orcid{0000-0003-0869-648X} Nevena Kraljevic
-    \item \orcid{0000-0002-8688-581X} Alberto Lazari
-    \item \orcid{0000-0002-6100-3235} Mackenzie J. Leavitt
-    \item \orcid{0000-0003-2246-4116} Zhaolong Li
-    \item \orcid{0000-0002-5684-4443} Giulia Liberati
-    \item \orcid{0000-0003-1311-726X} Elizabeth S. Lorenc
-    \item \orcid{0000-0001-5921-1353} Annabelle Julina Lossin
-    \item \orcid{0000-0002-2337-6073} Leon D. Lotter
-    \item \orcid{0000-0001-8702-3923} David M. Lydon-Staley
-    \item \orcid{0000-0003-3228-6501} Christopher R. Madan
-    \item \orcid{0000-0002-6777-4225} Neville Magielse
-    \item \orcid{0000-0002-0771-6795} Hilary A. Marusak
-    \item \orcid{0000-0001-9827-5421} Julien Mayor
-    \item \orcid{0000-0003-3422-0135} Amanda L. McGowan
-    \item \noorcid{} Kahini P. Mehta
-    \item \orcid{0000-0002-8888-1572} Steven Lee Meisler
-    \item \orcid{0000-0002-5300-473X} Cleanthis Michael
-    \item \orcid{0000-0002-0225-6320} Mackenzie E. Mitchell
-    \item \orcid{0000-0002-5880-3688} Simon Morand-Beaulieu
-    \item \orcid{0000-0002-0668-2853} Benjamin T. Newman
-    \item \orcid{0000-0002-2717-193X} Jared A. Nielsen
-    \item \noorcid{} Shane M. O'Mara
-    \item \orcid{0000-0002-1038-0225} Amar Ojha
-    \item \noorcid{} Adam Omary
-    \item \orcid{0000-0003-0859-1311} Evren Özarslan
-    \item \orcid{0000-0002-9329-7207} Linden Parkes
-    \item \noorcid{} Madeline Peterson
-    \item \noorcid{} Adam Robert Pines
-    \item \orcid{0000-0002-9151-4319} Claudia Pisanu
-    \item \orcid{0000-0001-9495-3184} Ryan R. Rich
-    \item \orcid{0000-0003-1815-6655} Ashish K. Sahoo
-    \item \orcid{0000-0002-6001-7395} Amjad Samara
-    \item \noorcid{} Farah Sayed
-    \item \orcid{0000-0002-1925-6669} Jonathan Thore Schneider
-    \item \orcid{0000-0002-0642-1717} Lindsay S. Shaffer
-    \item \orcid{0000-0001-8900-0792} Ekaterina Shatalina
-    \item \orcid{0000-0001-7107-1891} Sara A. Sims
-    \item \orcid{0000-0003-3010-6431} Skyler Sinclair
-    \item \orcid{0000-0002-3127-6427} Jae W. Song
-    \item \orcid{0000-0003-2877-078X} Griffin Stockton Hogrogian
-    \item \orcid{0000-0002-9191-6764} Christian K. Tamnes
-    \item \orcid{0000-0001-6377-3885} Ursula A. Tooley
-    \item \noorcid{} Vaibhav Tripathi
-    \item \orcid{0000-0002-2670-4036} Hamid B. Turker
-    \item \orcid{0000-0003-2998-6849} Sofie Louise Valk
-    \item \orcid{0000-0002-0493-6274} Matthew B. Wall
-    \item \noorcid{} Cheryl K. Walther
-    \item \orcid{0000-0001-9871-3006} Yuchao Wang
-    \item \orcid{0000-0003-2193-6003} Bertil Wegmann
-    \item \orcid{0000-0002-9503-2093} Thomas Welton
-    \item \orcid{0000-0003-0917-1570} Alex I. Wiesman
-    \item \noorcid{} Andrew G. Wiesman
-    \item \noorcid{} Mark Wiesman
-    \item \orcid{0000-0002-0701-9658} Drew E. Winters
-    \item \noorcid{} Ruiyi Yuan
-    \item \orcid{0000-0001-8770-4614} Sadie J. Zacharek
-    \item \orcid{0000-0002-0204-6497} Chris Zajner
-    \item \orcid{0000-0001-7207-9641} Ilya Zakharov
-    \item \orcid{0000-0002-9733-380X} Gianpaolo Zammarchi
-    \item \orcid{0000-0001-9240-1327} Dale Zhou
-    \item \orcid{0000-0003-2570-8198} Benjamin Zimmerman
-    \item \noorcid{} Kurt Zoner
-\end{itemize}
-\end{multicols}
+\hfill \break
+\textsuperscript{12}Old Dominion University, Norfolk, VA 23529, USA\\
+\textsuperscript{13}Carleton University, Northfield, MN 55057, USA\\
+\textsuperscript{14}Declined to provide affiliation\\
+\textsuperscript{15}Southern Methodist University, Dallas, TX 75275, USA\\
+\textsuperscript{16}University of California-Davis, Davis, CA 95616, USA\\
+\textsuperscript{17}University of Pennsylvania, Philadelphia, PA 19104, USA\\
+\textsuperscript{18}Harvard University, Cambridge, MA 2138, USA\\
+\textsuperscript{19}University of Toronto, Toronto, ON M5T 2S8, Canada\\
+\textsuperscript{20}Duke University, Durham, NC 27708, USA\\
+\textsuperscript{21}University of Michigan-Ann Arbor, Ann Arbor, MI 48109, USA\\
+\textsuperscript{22}San Diego State University, San Diego, CA 92182, USA\\
+\textsuperscript{23}University of California-San Diego, La Jolla, CA 92093, USA\\
+\textsuperscript{24}Concordia University, Montréal, QC H4B 1R6, Canada\\
+\textsuperscript{25}Katholieke Universiteit Leuven, 3000 Leuven, Belgium\\
+\textsuperscript{26}University of Manchester, Manchester M13 9PL, United Kingdom\\
+\textsuperscript{27}University of Sydney, Camperdown NSW 2006, Australia\\
+\textsuperscript{28}University Medical Center Utrecht, 3584 CX Utrecht, Netherlands\\
+\textsuperscript{29}Polytechnique Montreal, Montréal, QC H3T 1J4, Canada\\
+\textsuperscript{30}University of Rochester, Rochester, NY 14627, USA\\
+\textsuperscript{31}National Institute of Mental Health, Bethesda, MD 20892, USA\\
+\textsuperscript{32}Centre de Recherche de l'Institut Universitaire en Santé Mentale de Montréal, Montréal, QC H1N 3M5, Canada\\
+\textsuperscript{33}Linköping university, 581 83 Linköping, Sweden\\
+\textsuperscript{34}Monash University, Clayton VIC 3800, Australia\\
+\textsuperscript{35}Temple University, Philadelphia, PA 19122, USA\\
+\textsuperscript{36}University of Greenwich, London SE10 9LS, United Kingdom\\
+\textsuperscript{37}Indiana University-Bloomington, Bloomington, IN 47405, USA\\
+\textsuperscript{38}Georgia State University, Atlanta, GA 30303, USA\\
+\textsuperscript{39}University College London, London WC1E 6BT, United Kingdom\\
+\textsuperscript{40}Imperial College London, London SW7 2BX, United Kingdom\\
+\textsuperscript{41}Brigham and Women's Hospital, Boston, MA 02115\\
+\textsuperscript{42}University of North Carolina at Chapel Hill, Chapel Hill, NC 27599, USA\\
+\textsuperscript{43}University of Concepción, Concepción, Bio Bio, Chile\\
+\textsuperscript{44}Universitätsmedizin der Johannes Gutenberg-Universität Mainz, 55131 Mainz, Germany,\\
+\textsuperscript{45}University of Maryland-College Park, College Park, MD 20742, USA\\
+\textsuperscript{46}Philipps-Universität Marbug, Marburg 35039\\
+\textsuperscript{47}Columbia University in the city of New York, New York, NY 10027, USA\\
+\textsuperscript{48}McGill University, Montreal, Quebec H3A 0G4, Canada\\
+\textsuperscript{49}University of Pittsburgh, Pittsburgh, PA 15260, USA\\
+\textsuperscript{50}University of Montréal, Montreal, Quebec H3T 1J4, Canada\\
+\textsuperscript{51}Universidade de São Paulo, Ribeirão Preto, Brazil\\
+\textsuperscript{52}Heinrich-Heine University Dusseldorf, 40225 Düsseldorf, Germany\\
+\textsuperscript{53}Yale University, New Haven, CT 6520, USA\\
+\textsuperscript{54}University of Chicago, Chicago, IL 60637, USA\\
+\textsuperscript{55}Brigham Young University, Provo, UT 84602, USA\\
+\textsuperscript{56}Child Mind Institute, New York, NY 10022\\
+\textsuperscript{57}Institute of Neurosciences and Medicine, Forschungszentrum Jülich, 52425 Jülich, Germany\\
+\textsuperscript{58}McLean Hospital, Belmont, MA 02478\\
+\textsuperscript{59}University of Oxford, Oxford OX1 2JD, United Kingdom\\
+\textsuperscript{60}Auburn University, Auburn, AL 36849, USA\\
+\textsuperscript{61}Washington University in St Louis, Saint Louis, MO 63130, USA\\
+\textsuperscript{62}Université catholique de Louvain, 1348 Ottignies-Louvain-la-Neuve, Belgium\\
+\textsuperscript{63}University of Texas at Austin, Austin, TX 78705, USA\\
+\textsuperscript{64}University of Nottingham, Nottingham NG7 2RD, United Kingdom\\
+\textsuperscript{65}Wayne State University, Detroit, MI 48202, USA\\
+\textsuperscript{66}University of Oslo, 0315 Oslo, Norway\\
+\textsuperscript{67}University of Michigan, Ann Arbor, MI 48109, USA\\
+\textsuperscript{68}University of Virginia, Charlottesville, VA 22903, USA\\
+\textsuperscript{69}Trinity College Dublin, Dublin 2, Ireland\\
+\textsuperscript{70}Linköping University, 581 83 Linköping, Sweden\\
+\textsuperscript{71}Stanford University, Stanford, CA 94305, USA\\
+\textsuperscript{72}University of Cagliari, 09124 Cagliari CA, Italy\\
+\textsuperscript{73}University of Florida, Gainesville, FL 32611, USA\\
+\textsuperscript{74}George Mason University, Fairfax, VA 22030, USA\\
+\textsuperscript{75}University of Alabama at Birmingham, Birmingham, AL 35294, USA\\
+\textsuperscript{76}Boston University, Boston, MA 2215, USA\\
+\textsuperscript{77}Cornell University, Ithaca, NY 14853, USA\\
+\textsuperscript{78}Max Planck Institute for Human Cognitive and Brain Sciences, 04103 Leipzig, Germany\\
+\textsuperscript{79}National Neuroscience Institute, Singapore, Singapore 308433\\
+\textsuperscript{80}University of Colorado School of Medicine, Aurora, CO 80045, USA\\
+\textsuperscript{81}Massachusetts Institute of Technology, Cambridge, MA 02139, USA\\
+\textsuperscript{82}Western Unviersity, London, ON N6A 3K7, Canada\\
+\textsuperscript{83}Psychological Institute of Russian Academy of Education, Moscow 129366, Russia\\
+\textsuperscript{84}University of Illinois Urbana-Champaign, Champaign, IL 61820, USA\\
 
 \section*{Competing interests}
 
